@@ -6,4 +6,9 @@
     <Nullable>disable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SocialMediaMini.Common\SocialMediaMini.Common.csproj" />
+    <ProjectReference Include="..\SocialMediaMini.DataAccess\SocialMediaMini.DataAccess.csproj" />
+  </ItemGroup>
+
 </Project>

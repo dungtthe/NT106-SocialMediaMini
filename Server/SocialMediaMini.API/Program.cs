@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using SocialMediaMini.DataAccess;
 using SocialMediaMini.DataAccess.Infrastructure;
 using SocialMediaMini.DataAccess.Repositories;
+using SocialMediaMini.Service;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,7 +30,7 @@ builder.Services.AddScoped<IPostRepository, PostRepository>();
 builder.Services.AddScoped<IUser_ChatRoomRepository, User_ChatRoomRepository>();
 
 //Đăng ký service
-
+builder.Services.AddScoped<IUserService, UserService>();
 
 //add jwt
 builder.Services.AddAuthentication(options =>
@@ -68,6 +70,29 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+builder.Services.AddControllers()
+    .ConfigureApiBehaviorOptions(options =>
+    {
+        options.InvalidModelStateResponseFactory = context =>
+        {
+            var errors = context.ModelState
+                .Where(e => e.Value.Errors.Count > 0)
+                .ToDictionary(
+                    kvp => kvp.Key,
+                    kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToArray()
+                );
+            var customResponse = new
+            {
+                type = "modelState",
+                httpStatusCode = StatusCodes.Status400BadRequest,
+                errors
+            };
+
+            return new BadRequestObjectResult(customResponse);
+        };
+    });
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
