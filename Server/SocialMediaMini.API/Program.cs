@@ -1,7 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using SocialMediaMini.DataAccess;
 using SocialMediaMini.DataAccess.Infrastructure;
 using SocialMediaMini.DataAccess.Repositories;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +30,39 @@ builder.Services.AddScoped<IUser_ChatRoomRepository, User_ChatRoomRepository>();
 //Đăng ký service
 
 
+//add jwt
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true, // Yêu cầu Kiểm tra Issuer
+        ValidateAudience = false, // Không cần Kiểm tra Audience
+        ValidateLifetime = true, // Yêu cầu Kiểm tra thời hạn của token
+        ClockSkew = TimeSpan.Zero, // Loại bỏ thời gian lệch,check thời hạn thêm chính xác
+        ValidateIssuerSigningKey = true, // Yêu cầu Kiểm tra Signature
+        ValidIssuer = builder.Configuration["Jwt:Issuer"], // Cấu hình Issuer
+                                                           // ValidAudience = builder.Configuration["Jwt:Audience"], // Cấu hình Audience
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+    };
+
+    options.Events = new JwtBearerEvents
+    {
+        OnAuthenticationFailed = context =>
+        {
+            if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+            {
+                //context.Response.Headers.Add("Token-Expired", "true");
+            }
+            return Task.CompletedTask;
+        }
+    };
+});
+
 
 // Add services to the container.
 
@@ -34,6 +70,19 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
+
+// Cấu hình CORS
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin() // Cho phép bất kỳ nguồn gốc nào
+               .AllowAnyHeader() // Cho phép bất kỳ header nào
+               .AllowAnyMethod(); // Cho phép bất kỳ phương thức HTTP nào
+    });
+});
 
 var app = builder.Build();
 
@@ -46,8 +95,28 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseRouting();
+app.UseCors(); // Áp dụng CORS
+
+app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
+
+//Area
+app.MapAreaControllerRoute(
+    name: "AdminArea",
+    areaName: "Admin",
+    pattern: "admin/{controller=Home}/{action=Index}/{id?}"
+);
+app.MapAreaControllerRoute(
+    name: "UserArea",
+    areaName: "User",
+    pattern: "user/{controller=Home}/{action=Index}/{id?}"
+);
+// Route mặc định
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}"
+);
 
 app.Run();
