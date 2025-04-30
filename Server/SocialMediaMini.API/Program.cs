@@ -85,7 +85,6 @@ builder.Services.AddControllers()
             var customResponse = new
             {
                 type = "modelState",
-                httpStatusCode = StatusCodes.Status400BadRequest,
                 errors
             };
 
