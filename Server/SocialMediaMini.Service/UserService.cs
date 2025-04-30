@@ -37,7 +37,7 @@ namespace SocialMediaMini.Service
 
         public async Task<Respone_LoginDTO> LoginAsync(Request_LoginDTO request)
         {
-            var fUser = (await _appUserRepository.FindAsync(x => x.UserName == request.UserName && x.Password == Security.HashPassword(request.Password))).FirstOrDefault();
+            var fUser = (await _appUserRepository.FindAsync(x => x.UserName == request.UserName && x.Password == SecurityHelper.HashPassword(request.Password))).FirstOrDefault();
             if (fUser == null)
             {
                 return new Respone_LoginDTO
@@ -65,7 +65,7 @@ namespace SocialMediaMini.Service
             var user = new AppUser
             {
                 UserName = request.UserName,
-                Password = Security.HashPassword(request.Password),
+                Password = SecurityHelper.HashPassword(request.Password),
                 FullName= request.UserName,
                 Email = request.Email,
                 PhoneNumber = request.PhoneNumber,

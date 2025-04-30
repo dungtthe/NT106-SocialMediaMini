@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using SocialMediaMini.API.Extensions;
 using SocialMediaMini.Common.Const;
 using SocialMediaMini.Common.DTOs.Request;
+using SocialMediaMini.Common.Helpers;
 using SocialMediaMini.Service;
 
 namespace SocialMediaMini.API.Areas.User
@@ -12,7 +14,7 @@ namespace SocialMediaMini.API.Areas.User
     [ApiController]
     public class UserController : ControllerBase
     {
-      
+
         private readonly IUserService _userService;
         public UserController(IUserService userService)
         {
@@ -27,8 +29,9 @@ namespace SocialMediaMini.API.Areas.User
                 var rsp = await _userService.RegisterAsync(data);
                 return this.ResponeMessageResult(rsp);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
+                await LoggerHelper.LogMsgAsync("RegisterAsync(Request_RegisterDTO data)", JsonConvert.SerializeObject(data), ex);
                 return this.InternalServerError();
             }
         }
@@ -58,10 +61,11 @@ namespace SocialMediaMini.API.Areas.User
             }
             catch (Exception ex)
             {
+                await LoggerHelper.LogMsgAsync("LoginAsync(Request_LoginDTO data)", JsonConvert.SerializeObject(data), ex);
                 return this.InternalServerError();
             }
         }
 
-        
+
     }
 }

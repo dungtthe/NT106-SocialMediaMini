@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace SocialMediaMini.Common.Helpers
 {
     
-    public static class Security
+    public static class SecurityHelper
     {
         public static string HashPassword(string password)
         {
