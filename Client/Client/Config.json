@@ -1,3 +1,22 @@
 {
 
+
+  //color
+  "color": {
+    "color-blue-one": "#005AE0",
+    "color-blue-two": "#004DBF",
+    "color-white-one": "#FFFFFF",
+    "color-grey-one": "#E5E7EB",
+    "color-grey-two": "#647289",
+    "color-black-one": "#576379",
+    "color-black-two": "#0F2240",
+    "color-black-three": "#081B3A",
+    "color-red-one": "#C31818"
+  },
+  //font
+  "font": {
+    "font-family": "Roboto",
+    "font-size-one": "14px",
+    "font-size-two": "16px"
+  }
 }
