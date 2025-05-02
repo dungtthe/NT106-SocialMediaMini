@@ -2,6 +2,7 @@
     x:Class="Client.Views.Chats.Pages.ChatPageView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:Client.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:local="clr-namespace:Client.Views.Chats.Pages"
@@ -14,6 +15,11 @@
     d:DesignWidth="1628"
     DataContext="{StaticResource ConversationViewModel}"
     mc:Ignorable="d">
+
+    <Page.Resources>
+        <converters:ZeroToCollapsedConverter x:Key="ZeroToCollapsedConverter" />
+    </Page.Resources>
+
     <Grid>
         <StackPanel Background="{DynamicResource ColorWhiteOne}" Orientation="Horizontal">
             <StackPanel Width="340">
@@ -185,7 +191,10 @@
                                             FontSize="12"
                                             Foreground="{DynamicResource ColorGreyTwo}"
                                             Text="{Binding LastTime}" />
-                                        <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                        <Grid
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Bottom"
+                                            Visibility="{Binding UnReadMessageCount, Converter={StaticResource ZeroToCollapsedConverter}}">
                                             <Ellipse
                                                 Width="15"
                                                 Height="15"

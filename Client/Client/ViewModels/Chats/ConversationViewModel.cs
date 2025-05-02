@@ -119,6 +119,11 @@ namespace Client.ViewModels.Chats
                             }
 
                             Items.Add(item);
+                            //test scroll
+                            Items.Add(item);
+                            Items.Add(item);
+                            Items.Add(item);
+                            Items.Add(item);
                         }
                     }
 
