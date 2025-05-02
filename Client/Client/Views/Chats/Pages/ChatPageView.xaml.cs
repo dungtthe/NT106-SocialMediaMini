@@ -27,5 +27,7 @@ namespace Client.Views.Chats.Pages
             ConversationViewModel conversationViewModel = new ConversationViewModel();
             DataContext = conversationViewModel;
         }
+
+        
     }
 }

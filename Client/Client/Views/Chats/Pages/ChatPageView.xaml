@@ -16,9 +16,17 @@
     DataContext="{StaticResource ConversationViewModel}"
     mc:Ignorable="d">
 
+
     <Page.Resources>
         <converters:ZeroToCollapsedConverter x:Key="ZeroToCollapsedConverter" />
+        <!--  Style cho ScrollBar  -->
+        <ResourceDictionary x:Key="scrConversations">
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/ResourcesXAML/ScrollBar.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Page.Resources>
+
 
     <Grid>
         <StackPanel Background="{DynamicResource ColorWhiteOne}" Orientation="Horizontal">
@@ -98,7 +106,7 @@
                     </Button>
                 </StackPanel>
                 <!--  filter conversation  -->
-                <StackPanel Margin="0,25,0,0" Orientation="Horizontal">
+                <StackPanel Margin="0,21,0,0" Orientation="Horizontal">
                     <Button
                         Margin="35,0,0,0"
                         Padding="0"
@@ -152,69 +160,76 @@
                     Background="{DynamicResource ColorGreyOne}" />
                 <!--  conversation list  -->
 
-                <Grid Margin="18,13,0,0">
-                    <ListBox ItemsSource="{Binding Items}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <!--  Avatar  -->
-                                    <Ellipse
-                                        Width="45"
-                                        Height="45"
-                                        Margin="0,0,15,0">
-                                        <Ellipse.Fill>
-                                            <ImageBrush ImageSource="{Binding Avatar}" />
-                                        </Ellipse.Fill>
-                                    </Ellipse>
-
-                                    <!--  title and content  -->
-                                    <Grid Width="225">
-                                        <TextBlock
-                                            VerticalAlignment="Top"
-                                            FontSize="16"
-                                            FontWeight="Regular"
-                                            Foreground="{DynamicResource ColorBlackThree}"
-                                            Text="{Binding RoomName}" />
-                                        <TextBlock
-                                            Margin="0,0,0,3"
-                                            VerticalAlignment="Bottom"
-                                            FontSize="14"
-                                            Foreground="{DynamicResource ColorGreyTwo}"
-                                            Text="{Binding LastMessage}" />
-                                    </Grid>
-
-                                    <!--  lasttime, unread count  -->
-                                    <Grid>
-                                        <TextBlock
-                                            HorizontalAlignment="Right"
-                                            VerticalAlignment="Top"
-                                            FontSize="12"
-                                            Foreground="{DynamicResource ColorGreyTwo}"
-                                            Text="{Binding LastTime}" />
-                                        <Grid
-                                            HorizontalAlignment="Right"
-                                            VerticalAlignment="Bottom"
-                                            Visibility="{Binding UnReadMessageCount, Converter={StaticResource ZeroToCollapsedConverter}}">
-                                            <Ellipse
-                                                Width="15"
-                                                Height="15"
-                                                Margin="0,0,0,5"
-                                                HorizontalAlignment="Center"
-                                                VerticalAlignment="Center"
-                                                Fill="Red" />
+                <Grid>
+                    <Grid Height="858" Margin="18,13,0,0">
+                        <ListBox
+                            Background="Transparent"
+                            BorderThickness="0"
+                            ItemsSource="{Binding Items}"
+                            Style="{StaticResource ModernListBoxStyle}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <!--  Avatar  -->
+                                        <Ellipse
+                                            Width="45"
+                                            Height="45"
+                                            Margin="0,0,15,0">
+                                            <Ellipse.Fill>
+                                                <ImageBrush ImageSource="{Binding Avatar}" />
+                                            </Ellipse.Fill>
+                                        </Ellipse>
+                                        <!--  title and content  -->
+                                        <Grid Width="209">
                                             <TextBlock
-                                                Margin="0,0,0,5"
-                                                HorizontalAlignment="Center"
-                                                VerticalAlignment="Center"
-                                                FontSize="11"
-                                                Text="{Binding UnReadMessageCount}" />
+                                                VerticalAlignment="Top"
+                                                FontSize="16"
+                                                FontWeight="Regular"
+                                                Foreground="{DynamicResource ColorBlackThree}"
+                                                Text="{Binding RoomName}" />
+                                            <TextBlock
+                                                Margin="0,0,0,3"
+                                                VerticalAlignment="Bottom"
+                                                FontSize="14"
+                                                Foreground="{DynamicResource ColorGreyTwo}"
+                                                Text="{Binding LastMessage}" />
                                         </Grid>
-                                    </Grid>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
+                                        <!--  lasttime, unread count  -->
+                                        <Grid>
+                                            <TextBlock
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Top"
+                                                FontSize="12"
+                                                Foreground="{DynamicResource ColorGreyTwo}"
+                                                Text="{Binding LastTime}" />
+                                            <Grid
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Bottom"
+                                                Visibility="{Binding UnReadMessageCount, Converter={StaticResource ZeroToCollapsedConverter}}">
+                                                <Ellipse
+                                                    Width="15"
+                                                    Height="15"
+                                                    Margin="0,0,0,5"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Fill="Red" />
+                                                <TextBlock
+                                                    Margin="0,0,0,5"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    FontSize="11"
+                                                    Text="{Binding UnReadMessageCount}" />
+                                            </Grid>
+                                        </Grid>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
                 </Grid>
+
+
+
             </StackPanel>
             <!--  right line  -->
             <Grid
@@ -222,10 +237,7 @@
                 Height="991"
                 Background="{DynamicResource ColorGreyOne}" />
             <!--  conversation detail  -->
-            <Grid
-                Width="1287"
-                Height="991"
-                Background="Blue" />
+            <Grid Width="1287" Height="991" />
         </StackPanel>
     </Grid>
 </Page>

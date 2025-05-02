@@ -24,6 +24,7 @@
                     <SolidColorBrush x:Key="ColorRedOne" Color="#C31818" />
                 </ResourceDictionary>
                 <ResourceDictionary Source="/ResourcesXAML/MainResource.xaml" />
+                <ResourceDictionary Source="/ResourcesXAML/ScrollBar.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 
