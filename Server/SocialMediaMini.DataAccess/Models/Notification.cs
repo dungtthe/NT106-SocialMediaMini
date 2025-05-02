@@ -12,13 +12,13 @@ namespace SocialMediaMini.DataAccess.Models
     {
         public long UserId { get; set; }
         [ForeignKey(nameof(UserId))]
-        public AppUser User { get; set; }
+        public virtual AppUser User { get; set; }
 
         public byte Type { get; set; }//0 là thông báo tin nhắn, 1 là post, 2 là comment,3 là react
 
-        public long ReferenceId { get; set; }
+        public long ReferenceId { get; set; }// là tin nhắn thì tham chiếu tới chatroom
 
-        public string Content {  get; set; }
+        public string Content {  get; set; }//là tin nhắn thì để rỗng cũng được
         public bool IsRead {  get; set; }
         public DateTime CreateAt { get; set; }
     }

@@ -14,11 +14,12 @@ namespace SocialMediaMini.DataAccess.Models
         public long LeaderId {  get; set; }
         [Required]
         public string UserIds {  get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; }//nếu không là nhóm thì để null
         public bool IsGroupChat {  get; set; }
         public bool IsDelete {  get; set; }
         public bool CanAddMember { get; set; }
         public bool CanSendMessage { get; set;}
+        public virtual ICollection<Message> Messages { get; set; }
 
     }
 }

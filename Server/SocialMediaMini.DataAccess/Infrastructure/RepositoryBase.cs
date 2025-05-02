@@ -13,8 +13,8 @@ namespace SocialMediaMini.DataAccess.Infrastructure
         Task<T> AddAsync(T entity);
         void Update(T entity);
         void Delete(T entity);
-        Task<bool> DeleteByIdAsync(int id);
-        Task<T> GetSingleByIdAsync(int id);
+        Task<bool> DeleteByIdAsync(long id);
+        Task<T> GetSingleByIdAsync(long id);
         Task<IEnumerable<T>> GetAllAsync();
         Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);
         Task<IEnumerable<T>> GetAllWithIncludeAsync(params Expression<Func<T, object>>[] includes);
@@ -57,7 +57,7 @@ namespace SocialMediaMini.DataAccess.Infrastructure
         {
             dbSet.Remove(entity);
         }
-        public async Task<bool> DeleteByIdAsync(int id)
+        public async Task<bool> DeleteByIdAsync(long id)
         {
             var entity = await dbSet.FindAsync(id);
             if (entity == null) return false;
@@ -67,7 +67,7 @@ namespace SocialMediaMini.DataAccess.Infrastructure
         }
 
         //trả về null nếu không tìm thấy
-        public async Task<T> GetSingleByIdAsync(int id)
+        public async Task<T> GetSingleByIdAsync(long id)
         {
             return await dbSet.FindAsync(id);
         }

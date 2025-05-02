@@ -12,11 +12,11 @@ namespace SocialMediaMini.DataAccess.Models
     {
         public long UserId { get; set; }
         [ForeignKey(nameof(UserId))]
-        public AppUser User { get; set; }
+        public virtual AppUser User { get; set; }
 
         public long ChatRoomId { get; set; }
         [ForeignKey(nameof(ChatRoomId))]
-        public ChatRoom ChatRoom { get; set; }
+        public virtual ChatRoom ChatRoom { get; set; }
 
         public bool IsLeft { get; set; }
     }

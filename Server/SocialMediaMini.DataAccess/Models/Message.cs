@@ -15,15 +15,15 @@ namespace SocialMediaMini.DataAccess.Models
         public DateTime CreateAt { get; set; }
         public long UserId { get; set; }
         [ForeignKey(nameof(UserId))]
-        public AppUser User { get; set; }
+        public virtual AppUser User { get; set; }
 
         public long? ParrentMessageId { get; set; }
         [ForeignKey(nameof(ParrentMessageId))]
-        public Message ParentMessage { set; get; }
+        public virtual Message ParentMessage { set; get; }
 
         public long ChatRoomId { get; set; }
         [ForeignKey(nameof(ChatRoomId))]
-        public ChatRoom ChatRoom { get; set; }
+        public virtual ChatRoom ChatRoom { get; set; }
 
         public string ReactionType_UserId_Ids { get; set; }
         public string ReadByUserIds { get; set; }

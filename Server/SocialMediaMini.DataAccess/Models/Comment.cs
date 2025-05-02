@@ -19,15 +19,15 @@ namespace SocialMediaMini.DataAccess.Models
 
         public long UserId { get; set; }
         [ForeignKey(nameof(UserId))]
-        public AppUser User { get; set; }
+        public virtual AppUser User { get; set; }
 
         public long? ParrentCommentId { get; set; }
         [ForeignKey(nameof(ParrentCommentId))]
-        public Comment ParentComment { set; get; }
+        public virtual Comment ParentComment { set; get; }
 
         public long PostId { get; set; }
         [ForeignKey(nameof(PostId))]
-        public Post Post { get; set; }
+        public virtual Post Post { get; set; }
 
         public string ReactionType_UserId_Ids { get; set; }
 

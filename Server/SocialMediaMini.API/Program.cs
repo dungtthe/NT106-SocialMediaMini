@@ -6,13 +6,22 @@ using SocialMediaMini.DataAccess;
 using SocialMediaMini.DataAccess.Infrastructure;
 using SocialMediaMini.DataAccess.Repositories;
 using SocialMediaMini.Service;
+using System.Diagnostics;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 //Add DbContext
 builder.Services.AddDbContext<SocialMediaMiniContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("MyDbConnectString")));
+{
+    options.UseLazyLoadingProxies();
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MyDbConnectString"));
+
+    //loggin sql to console
+    options.EnableSensitiveDataLogging();//kiểu mấy cái tham số á
+    options.LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information);
+});
+
 
 // Đăng ký DbFactory và UnitOfWork
 builder.Services.AddScoped<IDbFactory, DbFactory>();
@@ -31,6 +40,7 @@ builder.Services.AddScoped<IUser_ChatRoomRepository, User_ChatRoomRepository>();
 
 //Đăng ký service
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IChatRoomService, ChatRoomService>();
 
 //add jwt
 builder.Services.AddAuthentication(options =>

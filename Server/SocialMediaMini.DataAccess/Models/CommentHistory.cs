@@ -17,6 +17,6 @@ namespace SocialMediaMini.DataAccess.Models
         public DateTime CreateAt { get; set; }
         public long CommentId { get; set; }
         [ForeignKey(nameof(CommentId))]
-        public Comment Comment { get; set; }
+        public virtual Comment Comment { get; set; }
     }
 }
