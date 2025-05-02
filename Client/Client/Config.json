@@ -1,5 +1,5 @@
 {
-
+  "baseApiUrl": "https://localhost:7130",
 
   //color
   "color": {
