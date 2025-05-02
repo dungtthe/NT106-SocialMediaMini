@@ -12,6 +12,7 @@
     Height="991"
     d:DesignHeight="991"
     d:DesignWidth="1628"
+    DataContext="{StaticResource ConversationViewModel}"
     mc:Ignorable="d">
     <Grid>
         <StackPanel Background="{DynamicResource ColorWhiteOne}" Orientation="Horizontal">
@@ -144,6 +145,67 @@
                     Margin="0,-9,0,0"
                     Background="{DynamicResource ColorGreyOne}" />
                 <!--  conversation list  -->
+
+                <Grid Margin="18,13,0,0">
+                    <ListBox ItemsSource="{Binding Items}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <!--  Avatar  -->
+                                    <Ellipse
+                                        Width="45"
+                                        Height="45"
+                                        Margin="0,0,15,0">
+                                        <Ellipse.Fill>
+                                            <ImageBrush ImageSource="{Binding Avatar}" />
+                                        </Ellipse.Fill>
+                                    </Ellipse>
+
+                                    <!--  title and content  -->
+                                    <Grid Width="225">
+                                        <TextBlock
+                                            VerticalAlignment="Top"
+                                            FontSize="16"
+                                            FontWeight="Regular"
+                                            Foreground="{DynamicResource ColorBlackThree}"
+                                            Text="{Binding RoomName}" />
+                                        <TextBlock
+                                            Margin="0,0,0,3"
+                                            VerticalAlignment="Bottom"
+                                            FontSize="14"
+                                            Foreground="{DynamicResource ColorGreyTwo}"
+                                            Text="{Binding LastMessage}" />
+                                    </Grid>
+
+                                    <!--  lasttime, unread count  -->
+                                    <Grid>
+                                        <TextBlock
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Top"
+                                            FontSize="12"
+                                            Foreground="{DynamicResource ColorGreyTwo}"
+                                            Text="{Binding LastTime}" />
+                                        <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                            <Ellipse
+                                                Width="15"
+                                                Height="15"
+                                                Margin="0,0,0,5"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Fill="Red" />
+                                            <TextBlock
+                                                Margin="0,0,0,5"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                FontSize="11"
+                                                Text="{Binding UnReadMessageCount}" />
+                                        </Grid>
+                                    </Grid>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
             </StackPanel>
             <!--  right line  -->
             <Grid
@@ -155,10 +217,6 @@
                 Width="1287"
                 Height="991"
                 Background="Blue" />
-
-
-
-
         </StackPanel>
     </Grid>
 </Page>

@@ -23,6 +23,7 @@
                     <SolidColorBrush x:Key="ColorBlackThree" Color="#081B3A" />
                     <SolidColorBrush x:Key="ColorRedOne" Color="#C31818" />
                 </ResourceDictionary>
+                <ResourceDictionary Source="/ResourcesXAML/MainResource.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 

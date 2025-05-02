@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Client.ViewModels.Chats;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,8 @@ namespace Client.Views.Chats.Pages
         public ChatPageView()
         {
             InitializeComponent();
+            ConversationViewModel conversationViewModel = new ConversationViewModel();
+            DataContext = conversationViewModel;
         }
     }
 }

@@ -12,13 +12,13 @@
     <None Remove="Resources\Icons\icon-add-friend.png" />
     <None Remove="Resources\Icons\icon-add-group.png" />
     <None Remove="Resources\Icons\icon-search.png" />
+    <None Remove="Resources\Images\meolag.jpg" />
+    <None Remove="Resources\Images\no_img_group.png" />
+    <None Remove="Resources\Images\no_img_user.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
-    <Folder Include="Resources\Images\" />
     <Folder Include="Services\" />
-    <Folder Include="ViewModels\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,6 +31,9 @@
     <Resource Include="Resources\Icons\icon-add-friend.png" />
     <Resource Include="Resources\Icons\icon-add-group.png" />
     <Resource Include="Resources\Icons\icon-search.png" />
+    <Resource Include="Resources\Images\meolag.jpg" />
+    <Resource Include="Resources\Images\no_img_group.png" />
+    <Resource Include="Resources\Images\no_img_user.png" />
   </ItemGroup>
 
   <ItemGroup>
