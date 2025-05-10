@@ -23,5 +23,12 @@ namespace Client.Views
         {
             InitializeComponent();
         }
+
+        private void LogInTextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var loginWindow = new LoginWindowView();
+            loginWindow.Show();
+            this.Close();
+        }
     }
 }

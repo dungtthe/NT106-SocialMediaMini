@@ -23,5 +23,17 @@ namespace Client.Views
         {
             InitializeComponent();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BacktoLogin_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var BacktoLogin = new LoginWindowView();
+            BacktoLogin.Show();
+            this.Close();
+        }
     }
 }

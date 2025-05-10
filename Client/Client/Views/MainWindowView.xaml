@@ -16,7 +16,7 @@
     WindowStyle="None"
     mc:Ignorable="d">
     <Grid>
-        <!--  tile bar  -->
+        <!-- Tile bar -->
         <Border
             Width="1629"
             Height="29"
@@ -27,7 +27,7 @@
             <Grid />
         </Border>
 
-        <!--  slider bar  -->
+        <!-- Slider bar -->
         <Border
             Width="72"
             Height="1020"
@@ -35,10 +35,132 @@
             VerticalAlignment="Top"
             Background="{DynamicResource ColorBlueOne}"
             CornerRadius="5,0,0,5">
-            <Grid />
+            <StackPanel>
+                <!-- Avatar -->
+                <Image
+                    Source="/Resources/Images/meolag.jpg"
+                    Width="50"
+                    Height="50"
+                    Margin="11,20,11,30"
+                    RenderOptions.BitmapScalingMode="HighQuality">
+                    <Image.Effect>
+                        <DropShadowEffect ShadowDepth="2" 
+                                         BlurRadius="5" 
+                                         Opacity="0.3"/>
+                    </Image.Effect>
+                    <Image.Style>
+                        <Style TargetType="Image">
+                            <Setter Property="Opacity" Value="1"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Opacity" Value="0.8"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
+
+                <!-- Chat Button -->
+                <Button
+                    x:Name="ChatButton"
+                    Width="50"
+                    Height="50"
+                    Margin="11,0,11,10"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Cursor="Hand"
+                    Click="ChatButton_Click">
+                    <Button.Content>
+                        <!-- Chat Icon (Speech Bubble) -->
+                        <Path
+                            Data="M12,2A10,10 0 0,0 2,12C2,16.42 5.58,20 10,20C11.95,20 13.73,19.23 15.1,18L18,20L15.1,17.1C16.37,15.73 17,14 17,12A10,10 0 0,0 12,2Z"
+                            Fill="White"
+                            Stretch="Uniform"
+                            Width="30"
+                            Height="30"/>
+                    </Button.Content>
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}">
+                                            <ContentPresenter HorizontalAlignment="Center" 
+                                                              VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#1AFFFFFF"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="RenderTransform">
+                                        <Setter.Value>
+                                            <ScaleTransform ScaleX="0.95" ScaleY="0.95"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <!-- Blog Button -->
+                <Button
+                    x:Name="BlogButton"
+                    Width="50"
+                    Height="50"
+                    Margin="11,0,11,10"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Cursor="Hand"
+                    Click="BlogButton_Click">
+                    <Button.Content>
+                        <!-- Blog Icon (Document) -->
+                        <Path
+                            Data="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"
+                            Fill="White"
+                            Stretch="Uniform"
+                            Width="30"
+                            Height="30"/>
+                    </Button.Content>
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}">
+                                            <ContentPresenter HorizontalAlignment="Center" 
+                                                              VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#1AFFFFFF"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="RenderTransform">
+                                        <Setter.Value>
+                                            <ScaleTransform ScaleX="0.95" ScaleY="0.95"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </StackPanel>
         </Border>
 
-        <!--  page-content  -->
+        <!-- Page-content -->
         <Border
             Width="1628"
             Height="991"
@@ -50,4 +172,3 @@
         </Border>
     </Grid>
 </Window>
-

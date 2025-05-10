@@ -1,4 +1,5 @@
-﻿using Client.Views.Chats.Pages;
+﻿using Client.Views.Blog;
+using Client.Views.Chats.Pages;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,6 +22,15 @@ namespace Client.Views
         {
             InitializeComponent();
             MainFrame.Navigate(new ChatPageView());
+        }
+        private void ChatButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new ChatPageView());
+        }
+
+        private void BlogButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new BlogPageView());
         }
     }
 }
