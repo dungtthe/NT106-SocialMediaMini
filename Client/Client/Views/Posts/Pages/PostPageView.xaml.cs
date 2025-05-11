@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Client.ViewModels.Posts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,17 @@ namespace Client.Views.Posts.Pages
     /// </summary>
     public partial class PostPageView : Page
     {
+        private static bool isFirst =true;
         public PostPageView()
         {
             InitializeComponent();
+            if (!isFirst)
+            {
+                this.DataContext = new PostViewModel();
+                return;
+            }
+
+            isFirst = false;
         }
     }
 }

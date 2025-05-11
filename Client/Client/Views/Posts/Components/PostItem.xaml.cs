@@ -24,32 +24,5 @@ namespace Client.Views.Posts.Components
         {
             InitializeComponent();
         }
-
-        public string Username
-        {
-            get { return (string)GetValue(UsernameProperty); }
-            set { SetValue(UsernameProperty, value); }
-        }
-
-        public static readonly DependencyProperty UsernameProperty =
-            DependencyProperty.Register("Username", typeof(string), typeof(PostItem), new PropertyMetadata("Username"));
-
-        public string Timestamp
-        {
-            get { return (string)GetValue(TimestampProperty); }
-            set { SetValue(TimestampProperty, value); }
-        }
-
-        public static readonly DependencyProperty TimestampProperty =
-            DependencyProperty.Register("Timestamp", typeof(string), typeof(PostItem), new PropertyMetadata("Timestamp"));
-
-        public string Content
-        {
-            get { return (string)GetValue(ContentProperty); }
-            set { SetValue(ContentProperty, value); }
-        }
-
-        public static readonly DependencyProperty ContentProperty =
-            DependencyProperty.Register("Content", typeof(string), typeof(PostItem), new PropertyMetadata("Blog content goes here."));
     }
 }

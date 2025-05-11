@@ -9,6 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Icons\comment.png" />
+    <None Remove="Resources\Icons\heart.png" />
     <None Remove="Resources\Icons\icon-add-friend.png" />
     <None Remove="Resources\Icons\icon-add-group.png" />
     <None Remove="Resources\Icons\icon-search.png" />
@@ -20,16 +22,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="MaterialDesignColors" Version="2.1.4" />
     <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Icons\comment.png" />
+    <Resource Include="Resources\Icons\heart.png" />
     <Resource Include="Resources\Icons\icon-add-friend.png" />
     <Resource Include="Resources\Icons\icon-add-group.png" />
     <Resource Include="Resources\Icons\icon-search.png" />
