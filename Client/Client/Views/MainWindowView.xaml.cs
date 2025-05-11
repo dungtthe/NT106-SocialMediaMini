@@ -1,5 +1,5 @@
-﻿using Client.Views.Blog;
-using Client.Views.Chats.Pages;
+﻿using Client.Views.Chats.Pages;
+using Client.Views.Posts.Pages;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -30,7 +30,7 @@ namespace Client.Views
 
         private void BlogButton_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new BlogPageView());
+            MainFrame.Navigate(new PostPageView());
         }
     }
 }

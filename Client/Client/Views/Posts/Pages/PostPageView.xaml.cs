@@ -13,11 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Client.Views.Blog
+namespace Client.Views.Posts.Pages
 {
-    public partial class BlogPageView : UserControl
+    /// <summary>
+    /// Interaction logic for PostPageView.xaml
+    /// </summary>
+    public partial class PostPageView : Page
     {
-        public BlogPageView()
+        public PostPageView()
         {
             InitializeComponent();
         }

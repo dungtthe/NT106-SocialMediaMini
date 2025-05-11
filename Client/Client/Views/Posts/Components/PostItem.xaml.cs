@@ -13,11 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Client.Views.Blog
+namespace Client.Views.Posts.Components
 {
-    public partial class BlogItem : UserControl
+    /// <summary>
+    /// Interaction logic for PostItem.xaml
+    /// </summary>
+    public partial class PostItem : UserControl
     {
-        public BlogItem()
+        public PostItem()
         {
             InitializeComponent();
         }
@@ -29,7 +32,7 @@ namespace Client.Views.Blog
         }
 
         public static readonly DependencyProperty UsernameProperty =
-            DependencyProperty.Register("Username", typeof(string), typeof(BlogItem), new PropertyMetadata("Username"));
+            DependencyProperty.Register("Username", typeof(string), typeof(PostItem), new PropertyMetadata("Username"));
 
         public string Timestamp
         {
@@ -38,7 +41,7 @@ namespace Client.Views.Blog
         }
 
         public static readonly DependencyProperty TimestampProperty =
-            DependencyProperty.Register("Timestamp", typeof(string), typeof(BlogItem), new PropertyMetadata("Timestamp"));
+            DependencyProperty.Register("Timestamp", typeof(string), typeof(PostItem), new PropertyMetadata("Timestamp"));
 
         public string Content
         {
@@ -47,6 +50,6 @@ namespace Client.Views.Blog
         }
 
         public static readonly DependencyProperty ContentProperty =
-            DependencyProperty.Register("Content", typeof(string), typeof(BlogItem), new PropertyMetadata("Blog content goes here."));
+            DependencyProperty.Register("Content", typeof(string), typeof(PostItem), new PropertyMetadata("Blog content goes here."));
     }
 }

@@ -15,6 +15,8 @@
     <None Remove="Resources\Images\meolag.jpg" />
     <None Remove="Resources\Images\no_img_group.png" />
     <None Remove="Resources\Images\no_img_user.png" />
+    <None Remove="Resources\Logos\logo.ico" />
+    <None Remove="Resources\Logos\logo.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,6 +36,8 @@
     <Resource Include="Resources\Images\meolag.jpg" />
     <Resource Include="Resources\Images\no_img_group.png" />
     <Resource Include="Resources\Images\no_img_user.png" />
+    <Resource Include="Resources\Logos\logo.ico" />
+    <Resource Include="Resources\Logos\logo.png" />
   </ItemGroup>
 
   <ItemGroup>
