@@ -41,6 +41,7 @@ builder.Services.AddScoped<IUser_ChatRoomRepository, User_ChatRoomRepository>();
 //Đăng ký service
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IChatRoomService, ChatRoomService>();
+builder.Services.AddScoped<IPostService, PostService>();
 
 //add jwt
 builder.Services.AddAuthentication(options =>
