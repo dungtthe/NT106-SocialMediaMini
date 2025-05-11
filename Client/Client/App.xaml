@@ -15,9 +15,13 @@
                     <!--  Color Resources  -->
                     <SolidColorBrush x:Key="ColorBlueOne" Color="#005AE0" />
                     <SolidColorBrush x:Key="ColorBlueTwo" Color="#004DBF" />
+                    <SolidColorBrush x:Key="ColorBlueThree" Color="#DBEBFF" />
+                    <SolidColorBrush x:Key="ColorBlueFour" Color="#C7E0FF" />
                     <SolidColorBrush x:Key="ColorWhiteOne" Color="#FFFFFF" />
                     <SolidColorBrush x:Key="ColorGreyOne" Color="#E5E7EB" />
                     <SolidColorBrush x:Key="ColorGreyTwo" Color="#647289" />
+                    <SolidColorBrush x:Key="ColorGreyThree" Color="#D9D9D9" />
+                    <SolidColorBrush x:Key="ColorGreyFour" Color="#EBECF0" />
                     <SolidColorBrush x:Key="ColorBlackOne" Color="#576379" />
                     <SolidColorBrush x:Key="ColorBlackTwo" Color="#0F2240" />
                     <SolidColorBrush x:Key="ColorBlackThree" Color="#081B3A" />

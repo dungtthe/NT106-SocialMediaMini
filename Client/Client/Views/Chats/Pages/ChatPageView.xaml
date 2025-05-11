@@ -237,7 +237,270 @@
                 Height="991"
                 Background="{DynamicResource ColorGreyOne}" />
             <!--  conversation detail  -->
-            <Grid Width="1287" Height="991" />
+            <Grid Width="1287" Height="991">
+                <StackPanel>
+                    <!--  user  -->
+                    <StackPanel
+                        Height="78"
+                        Background="{DynamicResource ColorWhiteOne}"
+                        Orientation="Horizontal">
+                        <!--  Avatar  -->
+                        <Ellipse
+                            Width="60"
+                            Height="60"
+                            Margin="30,0,0,0">
+                            <Ellipse.Fill>
+                                <ImageBrush ImageSource="/Resources/Images/meolag.jpg" />
+                            </Ellipse.Fill>
+                        </Ellipse>
+
+                        <!--  fullname and status  -->
+                        <StackPanel Margin="20,10,0,0">
+                            <TextBlock
+                                FontSize="20"
+                                FontWeight="SemiBold"
+                                Foreground="{DynamicResource ColorBlackThree}"
+                                Text="Nguyễn Văn A" />
+                            <TextBlock
+                                Margin="0,5,0,0"
+                                FontSize="16"
+                                FontStyle="Italic"
+                                FontWeight="Regular"
+                                Foreground="{DynamicResource ColorBlackThree}"
+                                Opacity="0.5"
+                                Text="Truy cập 3 giờ trước" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!--  message  -->
+                    <StackPanel Height="798" Background="{DynamicResource ColorGreyFour}">
+                        <Border Padding="10">
+                            <StackPanel Orientation="Vertical">
+                                <!--  tin nhắn của người khác  -->
+                                <StackPanel Margin="0,10,0,10" Orientation="Horizontal">
+                                    <!--  Avatar  -->
+                                    <Ellipse
+                                        Width="60"
+                                        Height="60"
+                                        Margin="0,0,15,0"
+                                        VerticalAlignment="Top">
+                                        <Ellipse.Fill>
+                                            <ImageBrush ImageSource="/Resources/Images/meolag.jpg" />
+                                        </Ellipse.Fill>
+                                    </Ellipse>
+                                    <Border
+                                        MaxWidth="1000"
+                                        Padding="8"
+                                        HorizontalAlignment="Left"
+                                        Background="{DynamicResource ColorWhiteOne}"
+                                        CornerRadius="8">
+                                        <StackPanel HorizontalAlignment="Left">
+                                            <TextBlock
+                                                FontSize="16"
+                                                Foreground="{DynamicResource ColorBlackThree}"
+                                                Text="Quan điểm thứ nhất cho rằng, văn bản là phương thức để truyền đạt thông tin từ một cá nhân này đến cá nhân khác hoặc từ một tổ chức đến cá nhân/tổ chức khác thông qua ngôn ngữ viết trên chất liệu giấy hoặc điện tử."
+                                                TextWrapping="Wrap" />
+                                            <TextBlock
+                                                Margin="0,3,0,0"
+                                                HorizontalAlignment="Right"
+                                                FontSize="14"
+                                                Foreground="Gray"
+                                                Text="18:15" />
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+
+                                <!--  tin của mình  -->
+                                <StackPanel
+                                    Margin="0,10,0,10"
+                                    HorizontalAlignment="Right"
+                                    Orientation="Horizontal">
+                                    <Border
+                                        MaxWidth="1000"
+                                        Padding="8"
+                                        HorizontalAlignment="Right"
+                                        Background="{DynamicResource ColorBlueThree}"
+                                        CornerRadius="8">
+                                        <StackPanel>
+                                            <TextBlock
+                                                FontSize="16"
+                                                Foreground="{DynamicResource ColorBlackThree}"
+                                                Text="Văn bản là tuy gần gũi nhưng lại rất đa dạng về thể loại. Chính vì vậy, có nhiều quan điểm giải thích về văn bản."
+                                                TextWrapping="Wrap" />
+                                            <TextBlock
+                                                Margin="0,3,0,0"
+                                                HorizontalAlignment="Right"
+                                                FontSize="14"
+                                                Foreground="Gray"
+                                                Text="18:15" />
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+
+                                <!--  tin của mình (loại có trả lời)  -->
+                                <StackPanel
+                                    Margin="0,10,0,10"
+                                    HorizontalAlignment="Right"
+                                    Orientation="Horizontal">
+                                    <Border
+                                        MaxWidth="1000"
+                                        Padding="8"
+                                        Background="{DynamicResource ColorBlueThree}"
+                                        CornerRadius="8">
+                                        <StackPanel>
+                                            <!--  tin nhắn được tl  -->
+                                            <Border
+                                                Margin="0,0,0,6"
+                                                Padding="4"
+                                                Background="{DynamicResource ColorBlueFour}"
+                                                CornerRadius="8">
+                                                <StackPanel>
+                                                    <!--  tên người nhắn  -->
+                                                    <TextBlock
+                                                        FontSize="16"
+                                                        FontWeight="Medium"
+                                                        Foreground="{DynamicResource ColorBlackThree}"
+                                                        Text="Nguyễn Văn A" />
+                                                    <!--  nội dung tin nhắn  -->
+                                                    <TextBlock
+                                                        FontSize="16"
+                                                        Foreground="{DynamicResource ColorBlackThree}"
+                                                        Text="Quan điểm thứ nhất cho rằng, văn bản là phương thức để truyền đạt thông tin từ một cá nhân này đến cá nhân khác hoặc từ một tổ chức đến cá nhân/tổ chức khác thông qua ngôn ngữ viết trên chất liệu giấy hoặc điện tử."
+                                                        TextWrapping="Wrap" />
+                                                </StackPanel>
+                                            </Border>
+                                            <!--  phần trả lời  -->
+                                            <TextBlock
+                                                Margin="0,3,0,0"
+                                                FontSize="15"
+                                                Foreground="{DynamicResource ColorBlackThree}"
+                                                Text="Hả"
+                                                TextWrapping="Wrap" />
+                                            <TextBlock
+                                                Margin="0,3,0,0"
+                                                HorizontalAlignment="Right"
+                                                FontSize="14"
+                                                Foreground="Gray"
+                                                Text="18:48" />
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+
+                                <!--  tin của người khác (loại có trả lời)  -->
+                                <StackPanel Margin="0,10,0,10" Orientation="Horizontal">
+                                    <!--  Avatar  -->
+                                    <Ellipse
+                                        Width="60"
+                                        Height="60"
+                                        Margin="0,0,15,0"
+                                        VerticalAlignment="Top">
+                                        <Ellipse.Fill>
+                                            <ImageBrush ImageSource="/Resources/Images/meolag.jpg" />
+                                        </Ellipse.Fill>
+                                    </Ellipse>
+                                    <Border
+                                        MaxWidth="1000"
+                                        Padding="8"
+                                        HorizontalAlignment="Left"
+                                        Background="{DynamicResource ColorWhiteOne}"
+                                        CornerRadius="8">
+                                        <StackPanel>
+                                            <!--  tin nhắn được tl  -->
+                                            <Border
+                                                Margin="0,0,0,6"
+                                                Padding="4"
+                                                Background="{DynamicResource ColorGreyOne}"
+                                                CornerRadius="8">
+                                                <StackPanel>
+                                                    <!--  tên người nhắn  -->
+                                                    <TextBlock
+                                                        FontSize="16"
+                                                        FontWeight="Medium"
+                                                        Foreground="{DynamicResource ColorBlackThree}"
+                                                        Text="Dung" />
+                                                    <!--  nội dung tin nhắn  -->
+                                                    <TextBlock
+                                                        FontSize="16"
+                                                        Foreground="{DynamicResource ColorBlackThree}"
+                                                        Text="Hả"
+                                                        TextWrapping="Wrap" />
+                                                </StackPanel>
+                                            </Border>
+                                            <!--  phần trả lời  -->
+                                            <TextBlock
+                                                Margin="0,3,0,0"
+                                                FontSize="15"
+                                                Foreground="{DynamicResource ColorBlackThree}"
+                                                Text="Ý mình là văn bản thật tuyệt vời!"
+                                                TextWrapping="Wrap" />
+                                            <TextBlock
+                                                Margin="0,3,0,0"
+                                                HorizontalAlignment="Right"
+                                                FontSize="14"
+                                                Foreground="Gray"
+                                                Text="18:48" />
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                    </StackPanel>
+
+                    <!--  input  -->
+                    <StackPanel Height="114">
+                        <!--  inputfile  -->
+                        <StackPanel Height="45" Orientation="Horizontal">
+                            <Image
+                                Height="32"
+                                Margin="20,0,0,0"
+                                Source="/Resources/Icons/addSticker.png" />
+                            <Image
+                                Height="30"
+                                Margin="8,0,0,0"
+                                Source="/Resources/Icons/addFile.png" />
+                        </StackPanel>
+                        <!--  line  -->
+                        <Grid
+                            Width="1287"
+                            Height="1"
+                            Margin="0,0,0,0"
+                            Background="{DynamicResource ColorGreyOne}" />
+                        <!--  inputtext  -->
+                        <Grid Height="70">
+                            <TextBox
+                                Margin="20,0,0,0"
+                                VerticalContentAlignment="Center"
+                                materialDesign:HintAssist.Hint="Nhập tin nhắn"
+                                materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                BorderThickness="0"
+                                FontSize="16"
+                                Foreground="{DynamicResource ColorBlackOne}"
+                                Text="{Binding MessageInput}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="TextChanged">
+                                        <i:InvokeCommandAction Command="{Binding Search}" CommandParameter="{Binding ElementName=searchBox}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </TextBox>
+
+                            <Button
+                                Height="40"
+                                Margin="0,0,20,0"
+                                HorizontalAlignment="Right"
+                                Background="Transparent"
+                                BorderBrush="Transparent">
+                                <Image
+                                    Height="34"
+                                    Margin="0,0,20,0"
+                                    HorizontalAlignment="Right"
+                                    Source="/Resources/Icons/sendmsg.png" />
+                            </Button>
+
+                        </Grid>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
         </StackPanel>
     </Grid>
 </Page>
