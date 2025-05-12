@@ -4,6 +4,7 @@ using Client.Models.Respone;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ namespace Client.ViewModels.Chats
 {
     public class ConversationViewModel : BaseViewModel
     {
-        public class ItemViewModel : BaseItemViewModel
+        public class ItemChatRoomViewModel : BaseItemViewModel
         {
             private long _chatRoomId;
             private string _roomName;
@@ -64,15 +65,15 @@ namespace Client.ViewModels.Chats
 
 
 
-        private List<ItemViewModel> _items;
-        public List<ItemViewModel> Items
+        private ObservableCollection<ItemChatRoomViewModel> _chatRooms;
+        public ObservableCollection<ItemChatRoomViewModel> ChatRooms
         {
-            get { return _items; }
-            set { SetProperty(ref _items, value, nameof(Items)); }
+            get { return _chatRooms; }
+            set { SetProperty(ref _chatRooms, value, nameof(ChatRooms)); }
         }
         public  ConversationViewModel()
         {
-            Items = new List<ItemViewModel>();
+            ChatRooms = new ObservableCollection<ItemChatRoomViewModel>();
             Task.Run(async () =>
             {
                 while (true)
@@ -94,10 +95,10 @@ namespace Client.ViewModels.Chats
                     var conversations = JsonConvert.DeserializeObject<List<Respone_GetConversations.ConversationDTO>>(response.ResponseBody);
                     if (conversations != null)
                     {
-                        Items = new List<ItemViewModel>();
+                        ChatRooms = new ObservableCollection<ItemChatRoomViewModel>();
                         foreach (var conversation in conversations)
                         {
-                            var item = new ItemViewModel
+                            var item = new ItemChatRoomViewModel
                             {
                                 ChatRoomId = conversation.ChatRoomId,
                                 RoomName = conversation.RoomName,
@@ -118,12 +119,12 @@ namespace Client.ViewModels.Chats
                                 item.Avatar = "/Resources/Images/" + item.Avatar;
                             }
 
-                            Items.Add(item);
-                            //test scroll
-                            Items.Add(item);
-                            Items.Add(item);
-                            Items.Add(item);
-                            Items.Add(item);
+                            ChatRooms.Add(item);
+                            ////test scroll
+                            //Items.Add(item);
+                            //Items.Add(item);
+                            //Items.Add(item);
+                            //Items.Add(item);
                         }
                     }
 
