@@ -28,7 +28,7 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <!--  Header: Avatar, Username, Timestamp  -->
+            <!-- Header: Avatar, Username, Timestamp -->
             <Grid Grid.Row="0" Margin="0,0,0,10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -56,7 +56,7 @@
                 </StackPanel>
             </Grid>
 
-            <!--  Blog Content  -->
+            <!-- Post Content -->
             <TextBlock
                 Grid.Row="1"
                 Margin="0,0,0,10"
@@ -64,7 +64,7 @@
                 Text="{Binding Content}"
                 TextWrapping="Wrap" />
 
-            <!--  Images in post  -->
+            <!-- Images in post -->
             <ItemsControl
                 Grid.Row="1"
                 Margin="0,40,0,10"
@@ -107,7 +107,7 @@
                 HorizontalAlignment="Left"
                 Orientation="Horizontal">
 
-                <!--  Like Button  -->
+                <!-- Like Button -->
                 <Button
                     Width="110"
                     Height="30"
@@ -152,8 +152,9 @@
                     </Button.Style>
                 </Button>
 
-                <!--  Comment Button  -->
+                <!-- Comment Button -->
                 <Button
+                    x:Name="CommentButton"
                     Width="120"
                     Height="30"
                     Background="Transparent"
@@ -161,7 +162,8 @@
                     BorderThickness="1"
                     Cursor="Hand"
                     FontSize="12"
-                    Foreground="{DynamicResource ColorBlueOne}">
+                    Foreground="{DynamicResource ColorBlueOne}"
+                    Click="CommentButton_Click">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Border
@@ -196,7 +198,6 @@
                     </Button.Style>
                 </Button>
             </StackPanel>
-
         </Grid>
     </Border>
 </UserControl>

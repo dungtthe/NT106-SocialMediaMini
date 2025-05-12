@@ -16,17 +16,176 @@
     WindowStyle="None"
     mc:Ignorable="d">
     <Grid>
-        <!-- Tile bar -->
+        <!-- Title bar -->
         <Border
-            Width="1629"
-            Height="29"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Background="{DynamicResource ColorGreyOne}"
-            CornerRadius="0,5,0,0">
-            <Grid />
-        </Border>
+    Width="1629"
+    Height="29"
+    HorizontalAlignment="Right"
+    VerticalAlignment="Top"
+    Background="{DynamicResource ColorGreyOne}"
+    CornerRadius="0,5,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
+                <!-- Minimize Button -->
+                <Button
+            x:Name="MinimizeButton"
+            Grid.Column="1"
+            Width="40"
+            Height="29"
+            Background="Transparent"
+            BorderThickness="0"
+            Cursor="Hand"
+            Click="MinimizeButton_Click">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}">
+                                <Image
+                            Width="24"
+                            Height="24"
+                            Source="/Resources/Icons/minimize.png"
+                            Stretch="Uniform"
+                            RenderTransformOrigin="0.5,0.5">
+                                    <Image.RenderTransform>
+                                        <ScaleTransform ScaleX="1" ScaleY="1" />
+                                    </Image.RenderTransform>
+                                </Image>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="{DynamicResource ColorBlueOne}" />
+                                    <Setter Property="RenderTransform">
+                                        <Setter.Value>
+                                            <ScaleTransform ScaleX="1.1" ScaleY="1.1" />
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                                <!-- Smooth transition -->
+                                <Trigger Property="IsMouseOver" Value="False">
+                                    <Setter Property="RenderTransform">
+                                        <Setter.Value>
+                                            <ScaleTransform ScaleX="1" ScaleY="1" />
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <!-- Maximize/Restore Button -->
+                <Button
+            x:Name="MaximizeButton"
+            Grid.Column="2"
+            Width="40"
+            Height="29"
+            Background="Transparent"
+            BorderThickness="0"
+            Cursor="Hand"
+            Click="MaximizeButton_Click">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}">
+                                <Border
+                            Margin="2">
+                                    <Image
+                                Width="24"
+                                Height="24"
+                                Source="/Resources/Icons/maximize.png"
+                                Stretch="Uniform"
+                                RenderTransformOrigin="0.5,0.5">
+                                        <Image.RenderTransform>
+                                            <ScaleTransform ScaleX="1" ScaleY="1" />
+                                        </Image.RenderTransform>
+                                    </Image>
+                                </Border>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="{DynamicResource ColorBlueOne}" />
+                                    <Setter Property="RenderTransform">
+                                        <Setter.Value>
+                                            <ScaleTransform ScaleX="1.1" ScaleY="1.1" />
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                                <!-- Smooth transition -->
+                                <Trigger Property="IsMouseOver" Value="False">
+                                    <Setter Property="RenderTransform">
+                                        <Setter.Value>
+                                            <ScaleTransform ScaleX="1" ScaleY="1" />
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <!-- Close Button -->
+                <Button
+            x:Name="CloseButton"
+            Grid.Column="3"
+            Width="40"
+            Height="29"
+            Background="Transparent"
+            BorderThickness="0"
+            Cursor="Hand"
+            Click="CloseButton_Click">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}">
+                                <Image
+                            Width="24"
+                            Height="24"
+                            Source="/Resources/Icons/close.png"
+                            Stretch="Uniform"
+                            RenderTransformOrigin="0.5,0.5">
+                                    <Image.RenderTransform>
+                                        <ScaleTransform ScaleX="1" ScaleY="1" />
+                                    </Image.RenderTransform>
+                                </Image>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="{DynamicResource ColorBlueOne}" />
+                                    <Setter Property="RenderTransform">
+                                        <Setter.Value>
+                                            <ScaleTransform ScaleX="1.1" ScaleY="1.1" />
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                                <!-- Smooth transition -->
+                                <Trigger Property="IsMouseOver" Value="False">
+                                    <Setter Property="RenderTransform">
+                                        <Setter.Value>
+                                            <ScaleTransform ScaleX="1" ScaleY="1" />
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </Grid>
+        </Border>
         <!-- Slider bar -->
         <Border
             Width="72"
@@ -72,12 +231,16 @@
                     Click="ChatButton_Click">
                     <Button.Content>
                         <!-- Chat Icon (Speech Bubble) -->
-                        <Path
-                            Data="M12,2A10,10 0 0,0 2,12C2,16.42 5.58,20 10,20C11.95,20 13.73,19.23 15.1,18L18,20L15.1,17.1C16.37,15.73 17,14 17,12A10,10 0 0,0 12,2Z"
-                            Fill="White"
+                        <Image
+                            Width="24"
+                            Height="24"
+                            Source="/Resources/Icons/chat.png"
                             Stretch="Uniform"
-                            Width="30"
-                            Height="30"/>
+                            RenderTransformOrigin="0.5,0.5">
+                            <Image.RenderTransform>
+                                <ScaleTransform ScaleX="1" ScaleY="1" />
+                            </Image.RenderTransform>
+                        </Image>
                     </Button.Content>
                     <Button.Style>
                         <Style TargetType="Button">
@@ -121,12 +284,16 @@
                     Click="BlogButton_Click">
                     <Button.Content>
                         <!-- Blog Icon (Document) -->
-                        <Path
-                            Data="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"
-                            Fill="White"
+                        <Image
+                            Width="24"
+                            Height="24"
+                            Source="/Resources/Icons/post.png"
                             Stretch="Uniform"
-                            Width="30"
-                            Height="30"/>
+                            RenderTransformOrigin="0.5,0.5">        
+                            <Image.RenderTransform>
+                                <ScaleTransform ScaleX="1" ScaleY="1" />
+                            </Image.RenderTransform>
+                        </Image>
                     </Button.Content>
                     <Button.Style>
                         <Style TargetType="Button">

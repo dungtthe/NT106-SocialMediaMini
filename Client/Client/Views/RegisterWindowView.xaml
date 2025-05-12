@@ -21,8 +21,8 @@
         <!-- Logo -->
         <Image Grid.Row="0" 
                Source="/Resources/Images/logoHaloNew.png" 
-               Height="70" 
-               Width="70" 
+               Height="120" 
+               Width="202" 
                HorizontalAlignment="Center" 
                Margin="0,10,0,25"
                RenderOptions.BitmapScalingMode="HighQuality">
@@ -44,16 +44,16 @@
         </Image>
 
         <!-- Phone Number -->
-        <TextBox Grid.Row="1" 
+        <TextBox 
                  x:Name="PhoneNumberTextBox" 
                  Height="40" 
-                 Margin="0,0,0,15" 
+                 Margin="0,150,0,20" 
                  Padding="12,0"
                  VerticalContentAlignment="Center"
                  FontSize="14"
                  BorderThickness="1"
                  BorderBrush="{DynamicResource ColorBlueOne}"
-                 Tag="Phone Number">
+                 Tag="Nhập số điện thoại" Grid.RowSpan="2">
             <TextBox.Effect>
                 <DropShadowEffect ShadowDepth="1" 
                                  BlurRadius="4" 
@@ -99,16 +99,16 @@
         </TextBox>
 
         <!-- Password -->
-        <PasswordBox Grid.Row="2" 
+        <PasswordBox Grid.Row="1" 
                      x:Name="PasswordBox" 
                      Height="40" 
-                     Margin="0,0,0,15" 
+                     Margin="0,18,0,52" 
                      Padding="12,0"
                      VerticalContentAlignment="Center"
                      FontSize="14"
                      BorderThickness="1"
                      BorderBrush="{DynamicResource ColorBlueOne}"
-                     Tag="Password">
+                     Tag="Mật khẩu" Grid.RowSpan="2">
             <PasswordBox.Effect>
                 <DropShadowEffect ShadowDepth="1" 
                                  BlurRadius="4" 
@@ -154,16 +154,16 @@
         </PasswordBox>
 
         <!-- Confirm Password -->
-        <PasswordBox Grid.Row="3" 
+        <PasswordBox Grid.Row="2" 
                      x:Name="ConfirmPasswordBox" 
                      Height="40" 
-                     Margin="0,0,0,15" 
+                     Margin="0,21,0,0" 
                      Padding="12,0"
                      VerticalContentAlignment="Center"
                      FontSize="14"
                      BorderThickness="1"
                      BorderBrush="{DynamicResource ColorBlueOne}"
-                     Tag="Confirm Password">
+                     Tag="Xác nhận mật khẩu">
             <PasswordBox.Effect>
                 <DropShadowEffect ShadowDepth="1" 
                                  BlurRadius="4" 
@@ -209,10 +209,10 @@
         </PasswordBox>
 
         <!-- Register Button -->
-        <Button Grid.Row="4" 
-                Content="Register" 
+        <Button Grid.Row="3" 
+                Content="Đăng ký" 
                 Height="40" 
-                Margin="0,0,0,15"
+                Margin="0,0,0,46"
                 FontSize="16"
                 Background="{DynamicResource ColorBlueOne}"
                 Foreground="White"
@@ -253,8 +253,8 @@
         </Button>
 
         <!-- Login Link -->
-        <TextBlock Grid.Row="6" 
-                   Text="Already have an account? Log In" 
+        <TextBlock Grid.Row="3" 
+                   Text="Bạn đã có tài khoản? Đăng nhập" 
                    HorizontalAlignment="Center" 
                    FontSize="12"
                    Foreground="{DynamicResource ColorBlueOne}"
@@ -262,7 +262,7 @@
                    TextDecorations="Underline"
                    Height="16"
                    VerticalAlignment="Top"
-                   MouseLeftButtonDown="LogInTextBlock_MouseLeftButtonDown">
+                   MouseLeftButtonDown="LogInTextBlock_MouseLeftButtonDown" Margin="0,48,0,0">
             <TextBlock.Effect>
                 <DropShadowEffect ShadowDepth="1" 
                                  BlurRadius="3" 

@@ -9,14 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\Icons\addFile.png" />
-    <None Remove="Resources\Icons\addSticker.png" />
     <None Remove="Resources\Icons\comment.png" />
     <None Remove="Resources\Icons\heart.png" />
     <None Remove="Resources\Icons\icon-add-friend.png" />
     <None Remove="Resources\Icons\icon-add-group.png" />
     <None Remove="Resources\Icons\icon-search.png" />
-    <None Remove="Resources\Icons\sendmsg.png" />
     <None Remove="Resources\Images\meolag.jpg" />
     <None Remove="Resources\Images\no_img_group.png" />
     <None Remove="Resources\Images\no_img_user.png" />
@@ -31,14 +28,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\Icons\addFile.png" />
-    <Resource Include="Resources\Icons\addSticker.png" />
     <Resource Include="Resources\Icons\comment.png" />
     <Resource Include="Resources\Icons\heart.png" />
     <Resource Include="Resources\Icons\icon-add-friend.png" />
     <Resource Include="Resources\Icons\icon-add-group.png" />
     <Resource Include="Resources\Icons\icon-search.png" />
-    <Resource Include="Resources\Icons\sendmsg.png" />
     <Resource Include="Resources\Images\meolag.jpg" />
     <Resource Include="Resources\Images\no_img_group.png" />
     <Resource Include="Resources\Images\no_img_user.png" />
