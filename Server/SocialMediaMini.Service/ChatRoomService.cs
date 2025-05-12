@@ -136,6 +136,24 @@ namespace SocialMediaMini.Service
                 {
                     msgRsp.Content = msg.Content;
                 }
+
+                if (!usersTemp.Where(u => u.Id == msg.UserId).Any())
+                {
+                    var fSender = await _appUserRepository.GetSingleByIdAsync(msg.UserId);
+                    if (fSender == null)
+                    {
+                        continue;
+                    }
+                    usersTemp.Add(fSender);
+                }
+
+                var sender = usersTemp.Where(u => u.Id == msg.UserId).FirstOrDefault();
+                msgRsp.Sender = new Respone_ChatRoomDetail.User()
+                {
+                    Id = msg.UserId,
+                    FullName = sender.FullName,
+                    Avatar = sender.Images != null ? JsonConvert.DeserializeObject<string[]>(sender.Images)[0] : "no_img_user.png"
+                };
                 messages.Add(msgRsp);
             }
             rsp.Messages = messages;

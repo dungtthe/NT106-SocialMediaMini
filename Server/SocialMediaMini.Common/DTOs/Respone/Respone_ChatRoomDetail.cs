@@ -28,6 +28,7 @@ namespace SocialMediaMini.Common.DTOs.Respone
             public long Id { get; set; }
             public string Content { get; set; }
             public string CreatedAt { get; set; }
+            public User Sender { get; set; }
             public Message Parrent { get; set; }
             public List<Reaction> Reactions { get; set; }
             
