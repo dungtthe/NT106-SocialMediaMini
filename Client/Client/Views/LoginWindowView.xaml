@@ -5,267 +5,277 @@
     Title="Login"
     Width="300"
     Height="400"
-    Background="White"
+    AllowsTransparency="True"
+    Background="Transparent"
     ResizeMode="NoResize"
-    WindowStartupLocation="CenterScreen">
-    <Grid Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+    WindowStartupLocation="CenterScreen"
+    WindowStyle="None">
+    <Border Background="White" CornerRadius="10">
+        <Grid>
+            <Button
+                x:Name="btnClose"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Background="Transparent"
+                BorderThickness="0"
+                Click="btnClose_Click">
+                <Image
+                    Width="13"
+                    Height="13"
+                    Source="/Resources/Icons/iconclose.png" />
+            </Button>
+            <Grid Margin="20">
 
-        <!--  Logo  -->
-        <Image
-            Grid.Row="0"
-            Width="202"
-            Height="120"
-            Margin="0,-9,0,44"
-            HorizontalAlignment="Center"
-            RenderOptions.BitmapScalingMode="HighQuality"
-            Source="/Resources/Images/logoHaloNew.png">
-            <Image.Effect>
-                <DropShadowEffect
-                    BlurRadius="5"
-                    Opacity="0.3"
-                    ShadowDepth="2" />
-            </Image.Effect>
-            <Image.Style>
-                <Style TargetType="Image">
-                    <Setter Property="Opacity" Value="1" />
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Opacity" Value="0.8" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Image.Style>
-        </Image>
 
-        <!--  Phone Number  -->
-        <TextBox
-            x:Name="PhoneNumberTextBox"
-            Height="40"
-            Margin="0,115,0,0"
-            Padding="12,0"
-            VerticalContentAlignment="Center"
-            BorderBrush="{DynamicResource ColorBlueOne}"
-            BorderThickness="1"
-            FontSize="14"
-            Tag="Nhập số điện thoại">
-            <TextBox.Effect>
-                <DropShadowEffect
-                    BlurRadius="4"
-                    Opacity="0.2"
-                    ShadowDepth="1" />
-            </TextBox.Effect>
-            <TextBox.Style>
-                <Style TargetType="TextBox">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="TextBox">
-                                <Grid>
-                                    <Border
-                                        Background="White"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="{TemplateBinding BorderThickness}"
-                                        CornerRadius="8">
-                                        <ScrollViewer
-                                            x:Name="PART_ContentHost"
-                                            Margin="0"
-                                            VerticalAlignment="Center" />
-                                    </Border>
-                                    <TextBlock
-                                        Margin="12,0,0,0"
-                                        VerticalAlignment="Center"
-                                        FontStyle="Italic"
-                                        Foreground="Gray"
-                                        IsHitTestVisible="False"
-                                        Text="{TemplateBinding Tag}">
-                                        <TextBlock.Style>
-                                            <Style TargetType="TextBlock">
-                                                <Setter Property="Visibility" Value="Collapsed" />
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource TemplatedParent}}" Value="">
-                                                        <Setter Property="Visibility" Value="Visible" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                </Grid>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </TextBox.Style>
-        </TextBox>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-        <!--  Password  -->
-        <PasswordBox
-            x:Name="PasswordBox"
-            Grid.Row="2"
-            Height="40"
-            Margin="0,10,0,10"
-            Padding="12,0"
-            VerticalContentAlignment="Center"
-            BorderBrush="{DynamicResource ColorBlueOne}"
-            BorderThickness="1"
-            FontSize="14"
-            Tag="Mật khẩu">
-            <PasswordBox.Effect>
-                <DropShadowEffect
-                    BlurRadius="4"
-                    Opacity="0.2"
-                    ShadowDepth="1" />
-            </PasswordBox.Effect>
-            <PasswordBox.Style>
-                <Style TargetType="PasswordBox">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="PasswordBox">
-                                <Grid>
-                                    <Border
-                                        Background="White"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="{TemplateBinding BorderThickness}"
-                                        CornerRadius="8">
-                                        <ScrollViewer
-                                            x:Name="PART_ContentHost"
-                                            Margin="0"
-                                            VerticalAlignment="Center" />
-                                    </Border>
-                                    <TextBlock
-                                        Margin="12,0,0,0"
-                                        VerticalAlignment="Center"
-                                        FontStyle="Italic"
-                                        Foreground="Gray"
-                                        IsHitTestVisible="False"
-                                        Text="{TemplateBinding Tag}">
-                                        <TextBlock.Style>
-                                            <Style TargetType="TextBlock">
-                                                <Setter Property="Visibility" Value="Collapsed" />
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Password, RelativeSource={RelativeSource TemplatedParent}}" Value="">
-                                                        <Setter Property="Visibility" Value="Visible" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                </Grid>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </PasswordBox.Style>
-        </PasswordBox>
+                <!--  Logo  -->
+                <Image
+                    Grid.Row="0"
+                    Width="202"
+                    Height="120"
+                    Margin="0,-9,0,44"
+                    HorizontalAlignment="Center"
+                    RenderOptions.BitmapScalingMode="HighQuality"
+                    Source="/Resources/Images/logoHaloNew.png">
+                    <Image.Effect>
+                        <DropShadowEffect
+                            BlurRadius="5"
+                            Opacity="0.3"
+                            ShadowDepth="2" />
+                    </Image.Effect>
+                    <Image.Style>
+                        <Style TargetType="Image">
+                            <Setter Property="Opacity" Value="1" />
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Opacity" Value="0.8" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
 
-        <!--  Login Button  -->
-        <Button
-            Grid.Row="3"
-            Height="40"
-            Margin="0,0,0,15"
-            Background="{DynamicResource ColorBlueOne}"
-            BorderThickness="0"
-            Click="LoginButton_Click"
-            Content="Đăng nhập"
-            Cursor="Hand"
-            FontSize="16"
-            Foreground="White">
-            <Button.Effect>
-                <DropShadowEffect
-                    BlurRadius="5"
-                    Opacity="0.3"
-                    ShadowDepth="2" />
-            </Button.Effect>
-            <Button.Style>
-                <Style TargetType="Button">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="Button">
-                                <Border Background="{TemplateBinding Background}" CornerRadius="8">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Opacity" Value="0.9" />
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="RenderTransform">
+                <!--  Phone Number  -->
+                <TextBox
+                    x:Name="PhoneNumberTextBox"
+                    Height="40"
+                    Margin="0,115,0,0"
+                    Padding="12,0"
+                    VerticalContentAlignment="Center"
+                    BorderBrush="{DynamicResource ColorBlueOne}"
+                    BorderThickness="1"
+                    FontSize="14"
+                    Tag="Nhập Email">
+                    <TextBox.Effect>
+                        <DropShadowEffect
+                            BlurRadius="4"
+                            Opacity="0.2"
+                            ShadowDepth="1" />
+                    </TextBox.Effect>
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Setter Property="Template">
                                 <Setter.Value>
-                                    <ScaleTransform ScaleX="0.98" ScaleY="0.98" />
+                                    <ControlTemplate TargetType="TextBox">
+                                        <Grid>
+                                            <Border
+                                                Background="White"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                CornerRadius="8">
+                                                <ScrollViewer
+                                                    x:Name="PART_ContentHost"
+                                                    Margin="0"
+                                                    VerticalAlignment="Center" />
+                                            </Border>
+                                            <TextBlock
+                                                Margin="12,0,0,0"
+                                                VerticalAlignment="Center"
+                                                FontStyle="Italic"
+                                                Foreground="Gray"
+                                                IsHitTestVisible="False"
+                                                Text="{TemplateBinding Tag}">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource TemplatedParent}}" Value="">
+                                                                <Setter Property="Visibility" Value="Visible" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </Grid>
+                                    </ControlTemplate>
                                 </Setter.Value>
                             </Setter>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Button.Style>
-        </Button>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
 
-        <!--  Register Link  -->
-        <TextBlock
-            Grid.Row="4"
-            Height="16"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Top"
-            Cursor="Hand"
-            FontSize="12"
-            Foreground="{DynamicResource ColorBlueOne}"
-            MouseLeftButtonDown="RegisterTextBlock_MouseLeftButtonDown"
-            Text="Chưa có tài khoản? Đăng ký"
-            TextDecorations="Underline">
-            <TextBlock.Effect>
-                <DropShadowEffect
-                    BlurRadius="3"
-                    Opacity="0.2"
-                    ShadowDepth="1" />
-            </TextBlock.Effect>
-            <TextBlock.Style>
-                <Style TargetType="TextBlock">
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Opacity" Value="0.7" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </TextBlock.Style>
-        </TextBlock>
-        <!--  Forgot Password Link  -->
-        <TextBlock
-            Grid.Row="5"
-            Height="16"
-            Margin="0,10,0,0"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Top"
-            Cursor="Hand"
-            FontSize="12"
-            Foreground="{DynamicResource ColorBlueOne}"
-            MouseLeftButtonDown="ForgotPasswordTextBlock_MouseLeftButtonDown"
-            RenderTransformOrigin="0.468,3.44"
-            Text="Quên mật khẩu"
-            TextDecorations="Underline">
-            <TextBlock.Effect>
-                <DropShadowEffect
-                    BlurRadius="3"
-                    Opacity="0.2"
-                    ShadowDepth="1" />
-            </TextBlock.Effect>
-            <TextBlock.Style>
-                <Style TargetType="TextBlock">
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Opacity" Value="0.7" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </TextBlock.Style>
-        </TextBlock>
-    </Grid>
+                <!--  Password  -->
+                <PasswordBox
+                    x:Name="PasswordBox"
+                    Grid.Row="2"
+                    Height="40"
+                    Margin="0,10,0,10"
+                    Padding="12,0"
+                    VerticalContentAlignment="Center"
+                    BorderBrush="{DynamicResource ColorBlueOne}"
+                    BorderThickness="1"
+                    FontSize="14"
+                    Tag="Mật khẩu">
+                    <PasswordBox.Effect>
+                        <DropShadowEffect
+                            BlurRadius="4"
+                            Opacity="0.2"
+                            ShadowDepth="1" />
+                    </PasswordBox.Effect>
+                    <PasswordBox.Style>
+                        <Style TargetType="PasswordBox">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="PasswordBox">
+                                        <Grid>
+                                            <Border
+                                                Background="White"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                CornerRadius="8">
+                                                <ScrollViewer
+                                                    x:Name="PART_ContentHost"
+                                                    Margin="0"
+                                                    VerticalAlignment="Center" />
+                                            </Border>
+                                            <TextBlock
+                                                Margin="12,0,0,0"
+                                                VerticalAlignment="Center"
+                                                FontStyle="Italic"
+                                                Foreground="Gray"
+                                                IsHitTestVisible="False"
+                                                Text="{TemplateBinding Tag}">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Password, RelativeSource={RelativeSource TemplatedParent}}" Value="">
+                                                                <Setter Property="Visibility" Value="Visible" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </PasswordBox.Style>
+                </PasswordBox>
+
+                <!--  Login Button  -->
+                <Button
+                    Grid.Row="3"
+                    Height="40"
+                    Margin="0,0,0,15"
+                    Background="{DynamicResource ColorBlueOne}"
+                    BorderThickness="0"
+                    Click="LoginButton_Click"
+                    Content="Đăng nhập"
+                    Cursor="Hand"
+                    FontSize="16"
+                    Foreground="White">
+                    <Button.Effect>
+                        <DropShadowEffect
+                            BlurRadius="5"
+                            Opacity="0.3"
+                            ShadowDepth="2" />
+                    </Button.Effect>
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}" CornerRadius="8">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Opacity" Value="0.9" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="RenderTransform">
+                                        <Setter.Value>
+                                            <ScaleTransform ScaleX="0.98" ScaleY="0.98" />
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <!--  Register Link  -->
+                <TextBlock
+                    Grid.Row="4"
+                    Height="16"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Cursor="Hand"
+                    FontSize="12"
+                    Foreground="{DynamicResource ColorBlueOne}"
+                    MouseLeftButtonDown="RegisterTextBlock_MouseLeftButtonDown"
+                    Text="Chưa có tài khoản? Đăng ký"
+                    TextDecorations="Underline">
+
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Opacity" Value="0.7" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <!--  Forgot Password Link  -->
+                <TextBlock
+                    Grid.Row="5"
+                    Height="16"
+                    Margin="0,10,0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Cursor="Hand"
+                    FontSize="12"
+                    Foreground="{DynamicResource ColorBlueOne}"
+                    MouseLeftButtonDown="ForgotPasswordTextBlock_MouseLeftButtonDown"
+                    RenderTransformOrigin="0.468,3.44"
+                    Text="Quên mật khẩu"
+                    TextDecorations="Underline">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Opacity" Value="0.7" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Grid>
+        </Grid>
+
+    </Border>
 </Window>

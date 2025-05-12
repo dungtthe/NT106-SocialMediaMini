@@ -27,23 +27,24 @@ namespace Client.Views
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             var mainWindowView = new MainWindow();
-            mainWindowView.Show();
-            this.Close();
+            mainWindowView.ShowDialog();
         }
 
         private void RegisterTextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var registerWindow = new RegisterWindowView();
-            registerWindow.Show();
-            this.Close();
+            registerWindow.ShowDialog();
         }
 
         private void ForgotPasswordTextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var forgotPasswordWindow = new ForgotPasswordWindowView();
-            forgotPasswordWindow.Show();
-            this.Close();
+            forgotPasswordWindow.ShowDialog();
         }
 
+        private void btnClose_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }
