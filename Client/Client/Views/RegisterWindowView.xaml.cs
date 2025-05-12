@@ -35,5 +35,10 @@ namespace Client.Views
         {
             this.Close();
         }
+
+        private void btnRegister_Click(object sender, RoutedEventArgs e)
+        {
+            (new MessageBox.Error("test")).ShowDialog();
+        }
     }
 }

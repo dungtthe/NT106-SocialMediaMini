@@ -245,11 +245,13 @@
 
                 <!--  Register Button  -->
                 <Button
+                    x:Name="btnRegister"
                     Grid.Row="3"
                     Height="40"
                     Margin="0,0,0,46"
                     Background="{DynamicResource ColorBlueOne}"
                     BorderThickness="0"
+                    Click="btnRegister_Click"
                     Content="Đăng ký"
                     Cursor="Hand"
                     FontSize="16"
