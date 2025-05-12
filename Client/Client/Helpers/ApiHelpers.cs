@@ -52,7 +52,7 @@ namespace Client.Helpers
         {
             if (isUseToken)
             {
-                httpRequest.Headers.Add("Authorization", "Bearer " + TokenStore.GetToken()); 
+                httpRequest.Headers.Add("Authorization", "Bearer " + UserStore.Token); 
             }
         }
 

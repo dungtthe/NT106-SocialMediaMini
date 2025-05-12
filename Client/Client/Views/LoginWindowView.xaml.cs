@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Client.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,8 +25,13 @@ namespace Client.Views
             InitializeComponent();
         }
 
-        private void LoginButton_Click(object sender, RoutedEventArgs e)
+        private async void LoginButton_Click(object sender, RoutedEventArgs e)
         {
+            var rs = await UserService.LoginAsync(PhoneNumberTextBox.Text, PasswordBox.Password);
+            if (!rs)
+            {
+                return;
+            }
             var mainWindowView = new MainWindow();
             mainWindowView.ShowDialog();
         }

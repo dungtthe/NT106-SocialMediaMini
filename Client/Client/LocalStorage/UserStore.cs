@@ -8,6 +8,18 @@ namespace Client.LocalStorage
 {
     public static class UserStore
     {
-        public static string Avatar { get; set; }
+        public static long UserIdCur = -1;
+        public static string Avatar = null;
+        public static string FullName = null;
+        public static string Token = null;
+
+
+        public static void Reset()
+        {
+            UserIdCur = -1;
+            Avatar = null;
+            FullName = null;
+            Token = null;
+        }
     }
 }

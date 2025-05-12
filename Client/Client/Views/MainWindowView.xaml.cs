@@ -1,4 +1,6 @@
-﻿using Client.Views.Chats.Pages;
+﻿using Client.ViewModels;
+using Client.ViewModels.Posts;
+using Client.Views.Chats.Pages;
 using Client.Views.Posts.Pages;
 using System.Text;
 using System.Windows;
@@ -19,13 +21,19 @@ namespace Client.Views
     public partial class MainWindow : Window
     {
 
-        public static long UserIdCur = 1;//test
-
-
+        private static bool isFirst = true;
         public MainWindow()
         {
             InitializeComponent();
+            if (!isFirst)
+            {
+                this.DataContext = new MainWindowViewModel();
+                MainFrame.Navigate(new ChatPageView());
+                return;
+            }
+            isFirst = false;
             MainFrame.Navigate(new ChatPageView());
+
         }
         private void ChatButton_Click(object sender, RoutedEventArgs e)
         {

@@ -1,5 +1,6 @@
 ﻿using Client.Const;
 using Client.Helpers;
+using Client.LocalStorage;
 using Client.Models.Respone;
 using Client.ViewModels.Chats;
 using Client.ViewModels.Posts;
@@ -98,7 +99,7 @@ namespace Client.Services
                                 Avatar = msg.Sender.Avatar
                             };
 
-                            var isMine = msg.Sender.Id == MainWindow.UserIdCur;
+                            var isMine = msg.Sender.Id == UserStore.UserIdCur;
                             var hasParent = msg.Parrent != null;
 
                             if (isMine && hasParent)
