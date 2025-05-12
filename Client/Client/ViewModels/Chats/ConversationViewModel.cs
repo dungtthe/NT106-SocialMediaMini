@@ -268,7 +268,7 @@ namespace Client.ViewModels.Chats
             {
                 while (true)
                 {
-                    await CallData();
+                    ChatRooms = await ChatRoomService.GetConversationsAsync();
                     await Task.Delay(5000);
                 }
             });
@@ -281,53 +281,6 @@ namespace Client.ViewModels.Chats
         }
 
 
-        private async Task CallData()
-        {
-            try
-            {
-                var response = await ApiHelpers.GetAsync(new ApiRequestGet("/api/chat-room/conversations", true));
-                if (response.StatusCode == HttpStatusCode.Ok)
-                {
-                    var conversations = JsonConvert.DeserializeObject<List<Respone_GetConversations.ConversationDTO>>(response.ResponseBody);
-                    if (conversations != null)
-                    {
-                        ChatRooms = new ObservableCollection<ItemChatRoomViewModel>();
-                        foreach (var conversation in conversations)
-                        {
-                            var item = new ItemChatRoomViewModel
-                            {
-                                ChatRoomId = conversation.ChatRoomId,
-                                RoomName = conversation.RoomName,
-                                Avatar = conversation.Avatar,
-                                LastMessage = conversation.LastMessage,
-                                LastTime = TimeHelpers.CalculateTimeDifference(conversation.LastTime),
-                            };
-                            if (conversation.UnReadMessageCount > 9)
-                            {
-                                item.UnReadMessageCount = "9+";
-                            }
-                            else
-                            {
-                                item.UnReadMessageCount = conversation.UnReadMessageCount.ToString();
-                            }
-                            if (item.Avatar == "no_img_user.png" || item.Avatar == "no_img_group.png")
-                            {
-                                item.Avatar = "/Resources/Images/" + item.Avatar;
-                            }
-
-                            ChatRooms.Add(item);
-                            ////test scroll
-                            //Items.Add(item);
-                            //Items.Add(item);
-                            //Items.Add(item);
-                            //Items.Add(item);
-                        }
-                    }
-
-                }
-            }
-            catch { }
-        }
 
     }
 }

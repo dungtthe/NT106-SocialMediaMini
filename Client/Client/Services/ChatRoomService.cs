@@ -11,12 +11,14 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Client.ViewModels.Chats.ConversationViewModel;
 using static Client.ViewModels.Chats.ConversationViewModel.ItemChatRoomDetailViewModel;
 
 namespace Client.Services
 {
     public static class ChatRoomService
     {
+
         public static async Task<ConversationViewModel.ItemChatRoomDetailViewModel> GetChatRoomDetailAsync(long chatRoomId)
         {
             try
@@ -117,7 +119,7 @@ namespace Client.Services
                             if (msg.Parrent != null)
                             {
                                 var msgVM = viewModel.Messages.Where(x => x.Id == msg.Id).FirstOrDefault();
-                                msgVM.Parent= viewModel.Messages.Where(x => x.Id == msg.Parrent.Id).FirstOrDefault();
+                                msgVM.Parent = viewModel.Messages.Where(x => x.Id == msg.Parrent.Id).FirstOrDefault();
                             }
                         }
 
@@ -130,6 +132,55 @@ namespace Client.Services
             }
 
             return null;
+        }
+
+
+        public static async Task<ObservableCollection<ConversationViewModel.ItemChatRoomViewModel>> GetConversationsAsync()
+        {
+
+            ObservableCollection<ItemChatRoomViewModel> ChatRooms = new ObservableCollection<ItemChatRoomViewModel>();
+
+            try
+            {
+
+                var response = await ApiHelpers.GetAsync(new ApiRequestGet("/api/chat-room/conversations", true));
+                if (response.StatusCode == HttpStatusCode.Ok)
+                {
+                    var conversations = JsonConvert.DeserializeObject<List<Respone_GetConversations.ConversationDTO>>(response.ResponseBody);
+                    if (conversations != null)
+                    {
+                        ChatRooms = new ObservableCollection<ItemChatRoomViewModel>();
+                        foreach (var conversation in conversations)
+                        {
+                            var item = new ItemChatRoomViewModel
+                            {
+                                ChatRoomId = conversation.ChatRoomId,
+                                RoomName = conversation.RoomName,
+                                Avatar = conversation.Avatar,
+                                LastMessage = conversation.LastMessage,
+                                LastTime = TimeHelpers.CalculateTimeDifference(conversation.LastTime),
+                            };
+                            if (conversation.UnReadMessageCount > 9)
+                            {
+                                item.UnReadMessageCount = "9+";
+                            }
+                            else
+                            {
+                                item.UnReadMessageCount = conversation.UnReadMessageCount.ToString();
+                            }
+                            if (item.Avatar == "no_img_user.png" || item.Avatar == "no_img_group.png")
+                            {
+                                item.Avatar = "/Resources/Images/" + item.Avatar;
+                            }
+
+                            ChatRooms.Add(item);
+                        }
+                    }
+
+                }
+            }
+            catch { }
+            return ChatRooms;
         }
     }
 }
