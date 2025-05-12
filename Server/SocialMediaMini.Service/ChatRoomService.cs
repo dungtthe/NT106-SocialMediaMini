@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SocialMediaMini.Common.Const.Type;
+using SocialMediaMini.Common.DTOs.Request;
 using SocialMediaMini.Common.DTOs.Respone;
 using SocialMediaMini.DataAccess.Infrastructure;
 using SocialMediaMini.DataAccess.Models;
@@ -12,8 +13,6 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
-using static SocialMediaMini.Common.DTOs.Respone.Respone_GetFriendPosts;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SocialMediaMini.Service
 {
@@ -21,6 +20,7 @@ namespace SocialMediaMini.Service
     {
         Task<List<Respone_GetConversations.Conversation>> GetConversationsAsync(long userId);
         Task<Respone_ChatRoomDetail> GetChatRoomDetailAsync(long userId, long chatRoomId);
+        Task<List<long>> AddMessageAsync(Request_AddMessageDTO data);
     }
     public class ChatRoomService : IChatRoomService
     {
@@ -38,6 +38,62 @@ namespace SocialMediaMini.Service
             _notificationRepository = notificationRepository;
             _chatRoomRepository = chatRoomRepository;
             _unitOfWork = unitOfWork;
+        }
+
+        public async Task<List<long>> AddMessageAsync(Request_AddMessageDTO data)
+        {
+            var results = new List<long>();
+            results.Add(data.UserId);
+
+            if(string.IsNullOrEmpty(data.Content)) return null;
+
+            var fSender = await _appUserRepository.GetSingleByIdAsync(data.UserId);
+            if (fSender == null)
+            {
+                return null;
+            }
+            var chatRoom = await _chatRoomRepository.GetSingleByIdAsync(data.ChatRoomId);
+            if (chatRoom == null || chatRoom.IsDelete)
+            {
+                return null;
+            }
+            if (chatRoom.IsGroupChat && !chatRoom.CanSendMessage)
+            {
+                return null;
+            }
+            await _messageRepository.AddAsync(new Message()
+            {
+                Content = data.Content,
+                IsLink = false,
+                CreateAt = DateTime.Now,
+                UserId = data.UserId,
+                ParrentMessageId = data.ParrentMessageId,
+                ChatRoomId = chatRoom.Id,
+                IsRevoked= false,
+                ReactionType_UserId_Ids="[]",
+                ReadByUserIds = $"[{data.UserId}]"
+            });
+
+
+            var userIds = JsonConvert.DeserializeObject<List<long>>(chatRoom.UserIds);
+            foreach (var userId in userIds)
+            {
+                if (userId != data.UserId)
+                {
+                    await _notificationRepository.AddAsync(new Notification()
+                    {
+                        UserId=userId,
+                        Type= Type_Notification.MESSAGE,
+                        ReferenceId=chatRoom.Id,
+                        Content="Tin nhắn từ "+fSender.FullName,
+                        IsRead=false,
+                        CreateAt= DateTime.Now,
+                    });
+                    results.Add(data.UserId);
+                }
+            }
+            await _unitOfWork.CommitAsync();
+            return results;
         }
 
         public async Task<Respone_ChatRoomDetail> GetChatRoomDetailAsync(long userId, long chatRoomId)

@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using SocialMediaMini.API.Realtimes;
 using SocialMediaMini.DataAccess;
 using SocialMediaMini.DataAccess.Infrastructure;
 using SocialMediaMini.DataAccess.Repositories;
@@ -43,6 +45,21 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IChatRoomService, ChatRoomService>();
 builder.Services.AddScoped<IPostService, PostService>();
 
+// Đăng ký BackgroundService
+builder.Services.AddHostedService<NotifyService>();
+
+//SignalR
+builder.Services.AddSignalR();
+
+// Change to use Name as the user identifier for SignalR
+// WARNING: This requires that the source of your JWT token 
+// ensures that the Name claim is unique!
+// If the Name claim isn't unique, users could receive messages 
+// intended for a different user!
+builder.Services.AddSingleton<IUserIdProvider, NameUserIdProvider>();
+
+
+
 //add jwt
 builder.Services.AddAuthentication(options =>
 {
@@ -70,6 +87,19 @@ builder.Services.AddAuthentication(options =>
             if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
             {
                 //context.Response.Headers.Add("Token-Expired", "true");
+            }
+            return Task.CompletedTask;
+        }
+        ,
+        OnMessageReceived = context =>
+        {
+            var accessToken = context.Request.Query["jwt"];
+
+            var path = context.HttpContext.Request.Path;
+            if (!string.IsNullOrEmpty(accessToken) &&
+                (path.StartsWithSegments("/realtime")))
+            {
+                context.Token = accessToken;
             }
             return Task.CompletedTask;
         }
@@ -135,6 +165,11 @@ app.UseCors(); // Áp dụng CORS
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+//signalR
+app.MapHub<RealtimeHub>("/realtime");
+
+
 
 
 //Area
