@@ -28,6 +28,6 @@ namespace Client.Views.Chats.Pages
             DataContext = conversationViewModel;
         }
 
-        
+     
     }
 }

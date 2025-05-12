@@ -18,6 +18,10 @@ namespace Client.Views
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        public static long UserIdCur = 1;//test
+
+
         public MainWindow()
         {
             InitializeComponent();
