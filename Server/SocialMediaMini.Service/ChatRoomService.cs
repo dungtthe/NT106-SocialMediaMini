@@ -224,7 +224,7 @@ namespace SocialMediaMini.Service
                 if (user_chatRoom.ChatRoom.IsGroupChat)
                 {
                     rspItem.RoomName = user_chatRoom.ChatRoom.Name;
-                    rspItem.Avatar = "no_img_group.png";
+                    rspItem.Avatar = user_chatRoom.ChatRoom.Avatar;
                 }
                 else
                 {
