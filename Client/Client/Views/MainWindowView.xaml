@@ -16,177 +16,38 @@
     WindowStyle="None"
     mc:Ignorable="d">
     <Grid>
-        <!-- Title bar -->
+        <!--  Title bar  -->
         <Border
-    Width="1629"
-    Height="29"
-    HorizontalAlignment="Right"
-    VerticalAlignment="Top"
-    Background="{DynamicResource ColorGreyOne}"
-    CornerRadius="0,5,0,0">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-
-                <!-- Minimize Button -->
-                <Button
-            x:Name="MinimizeButton"
-            Grid.Column="1"
-            Width="40"
+            Width="1629"
             Height="29"
-            Background="Transparent"
-            BorderThickness="0"
-            Cursor="Hand"
-            Click="MinimizeButton_Click">
-                    <Button.Template>
-                        <ControlTemplate TargetType="Button">
-                            <Border Background="{TemplateBinding Background}">
-                                <Image
-                            Width="24"
-                            Height="24"
-                            Source="/Resources/Icons/minimize.png"
-                            Stretch="Uniform"
-                            RenderTransformOrigin="0.5,0.5">
-                                    <Image.RenderTransform>
-                                        <ScaleTransform ScaleX="1" ScaleY="1" />
-                                    </Image.RenderTransform>
-                                </Image>
-                            </Border>
-                        </ControlTemplate>
-                    </Button.Template>
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="{DynamicResource ColorBlueOne}" />
-                                    <Setter Property="RenderTransform">
-                                        <Setter.Value>
-                                            <ScaleTransform ScaleX="1.1" ScaleY="1.1" />
-                                        </Setter.Value>
-                                    </Setter>
-                                </Trigger>
-                                <!-- Smooth transition -->
-                                <Trigger Property="IsMouseOver" Value="False">
-                                    <Setter Property="RenderTransform">
-                                        <Setter.Value>
-                                            <ScaleTransform ScaleX="1" ScaleY="1" />
-                                        </Setter.Value>
-                                    </Setter>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Background="{DynamicResource ColorGreyOne}"
+            CornerRadius="0,5,0,0">
+
+            <StackPanel FlowDirection="RightToLeft" Orientation="Horizontal">
+                <Button Background="Transparent" BorderThickness="0">
+                    <Image
+                        Width="13"
+                        Height="13"
+                        Source="/Resources/Icons/iconclose.png" />
+                </Button>
+                <Button Background="Transparent" BorderThickness="0">
+                    <Image
+                        Width="13"
+                        Height="13"
+                        Source="/Resources/Icons/iconmaxsize.png" />
                 </Button>
 
-                <!-- Maximize/Restore Button -->
-                <Button
-            x:Name="MaximizeButton"
-            Grid.Column="2"
-            Width="40"
-            Height="29"
-            Background="Transparent"
-            BorderThickness="0"
-            Cursor="Hand"
-            Click="MaximizeButton_Click">
-                    <Button.Template>
-                        <ControlTemplate TargetType="Button">
-                            <Border Background="{TemplateBinding Background}">
-                                <Border
-                            Margin="2">
-                                    <Image
-                                Width="24"
-                                Height="24"
-                                Source="/Resources/Icons/maximize.png"
-                                Stretch="Uniform"
-                                RenderTransformOrigin="0.5,0.5">
-                                        <Image.RenderTransform>
-                                            <ScaleTransform ScaleX="1" ScaleY="1" />
-                                        </Image.RenderTransform>
-                                    </Image>
-                                </Border>
-                            </Border>
-                        </ControlTemplate>
-                    </Button.Template>
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="{DynamicResource ColorBlueOne}" />
-                                    <Setter Property="RenderTransform">
-                                        <Setter.Value>
-                                            <ScaleTransform ScaleX="1.1" ScaleY="1.1" />
-                                        </Setter.Value>
-                                    </Setter>
-                                </Trigger>
-                                <!-- Smooth transition -->
-                                <Trigger Property="IsMouseOver" Value="False">
-                                    <Setter Property="RenderTransform">
-                                        <Setter.Value>
-                                            <ScaleTransform ScaleX="1" ScaleY="1" />
-                                        </Setter.Value>
-                                    </Setter>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
+                <Button Background="Transparent" BorderThickness="0">
+                    <Image
+                        Width="13"
+                        Height="13"
+                        Source="/Resources/Icons/iconmsize.png" />
                 </Button>
-
-                <!-- Close Button -->
-                <Button
-            x:Name="CloseButton"
-            Grid.Column="3"
-            Width="40"
-            Height="29"
-            Background="Transparent"
-            BorderThickness="0"
-            Cursor="Hand"
-            Click="CloseButton_Click">
-                    <Button.Template>
-                        <ControlTemplate TargetType="Button">
-                            <Border Background="{TemplateBinding Background}">
-                                <Image
-                            Width="24"
-                            Height="24"
-                            Source="/Resources/Icons/close.png"
-                            Stretch="Uniform"
-                            RenderTransformOrigin="0.5,0.5">
-                                    <Image.RenderTransform>
-                                        <ScaleTransform ScaleX="1" ScaleY="1" />
-                                    </Image.RenderTransform>
-                                </Image>
-                            </Border>
-                        </ControlTemplate>
-                    </Button.Template>
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="{DynamicResource ColorBlueOne}" />
-                                    <Setter Property="RenderTransform">
-                                        <Setter.Value>
-                                            <ScaleTransform ScaleX="1.1" ScaleY="1.1" />
-                                        </Setter.Value>
-                                    </Setter>
-                                </Trigger>
-                                <!-- Smooth transition -->
-                                <Trigger Property="IsMouseOver" Value="False">
-                                    <Setter Property="RenderTransform">
-                                        <Setter.Value>
-                                            <ScaleTransform ScaleX="1" ScaleY="1" />
-                                        </Setter.Value>
-                                    </Setter>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                </Button>
-            </Grid>
+            </StackPanel>
         </Border>
-        <!-- Slider bar -->
+        <!--  Slider bar  -->
         <Border
             Width="72"
             Height="1020"
@@ -195,31 +56,32 @@
             Background="{DynamicResource ColorBlueOne}"
             CornerRadius="5,0,0,5">
             <StackPanel>
-                <!-- Avatar -->
+                <!--  Avatar  -->
                 <Image
-                    Source="/Resources/Images/meolag.jpg"
                     Width="50"
                     Height="50"
                     Margin="11,20,11,30"
-                    RenderOptions.BitmapScalingMode="HighQuality">
+                    RenderOptions.BitmapScalingMode="HighQuality"
+                    Source="/Resources/Images/meolag.jpg">
                     <Image.Effect>
-                        <DropShadowEffect ShadowDepth="2" 
-                                         BlurRadius="5" 
-                                         Opacity="0.3"/>
+                        <DropShadowEffect
+                            BlurRadius="5"
+                            Opacity="0.3"
+                            ShadowDepth="2" />
                     </Image.Effect>
                     <Image.Style>
                         <Style TargetType="Image">
-                            <Setter Property="Opacity" Value="1"/>
+                            <Setter Property="Opacity" Value="1" />
                             <Style.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Opacity" Value="0.8"/>
+                                    <Setter Property="Opacity" Value="0.8" />
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
                     </Image.Style>
                 </Image>
 
-                <!-- Chat Button -->
+                <!--  Chat Button  -->
                 <Button
                     x:Name="ChatButton"
                     Width="50"
@@ -227,16 +89,16 @@
                     Margin="11,0,11,10"
                     Background="Transparent"
                     BorderThickness="0"
-                    Cursor="Hand"
-                    Click="ChatButton_Click">
+                    Click="ChatButton_Click"
+                    Cursor="Hand">
                     <Button.Content>
-                        <!-- Chat Icon (Speech Bubble) -->
+                        <!--  Chat Icon (Speech Bubble)  -->
                         <Image
                             Width="24"
                             Height="24"
+                            RenderTransformOrigin="0.5,0.5"
                             Source="/Resources/Icons/chat.png"
-                            Stretch="Uniform"
-                            RenderTransformOrigin="0.5,0.5">
+                            Stretch="Uniform">
                             <Image.RenderTransform>
                                 <ScaleTransform ScaleX="1" ScaleY="1" />
                             </Image.RenderTransform>
@@ -247,23 +109,23 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="Button">
-                                        <Border Background="{TemplateBinding Background}"
-                                                BorderBrush="{TemplateBinding BorderBrush}"
-                                                BorderThickness="{TemplateBinding BorderThickness}">
-                                            <ContentPresenter HorizontalAlignment="Center" 
-                                                              VerticalAlignment="Center"/>
+                                        <Border
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                                         </Border>
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>
                             <Style.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="#1AFFFFFF"/>
+                                    <Setter Property="Background" Value="#1AFFFFFF" />
                                 </Trigger>
                                 <Trigger Property="IsPressed" Value="True">
                                     <Setter Property="RenderTransform">
                                         <Setter.Value>
-                                            <ScaleTransform ScaleX="0.95" ScaleY="0.95"/>
+                                            <ScaleTransform ScaleX="0.95" ScaleY="0.95" />
                                         </Setter.Value>
                                     </Setter>
                                 </Trigger>
@@ -272,7 +134,7 @@
                     </Button.Style>
                 </Button>
 
-                <!-- Blog Button -->
+                <!--  Blog Button  -->
                 <Button
                     x:Name="BlogButton"
                     Width="50"
@@ -280,16 +142,16 @@
                     Margin="11,0,11,10"
                     Background="Transparent"
                     BorderThickness="0"
-                    Cursor="Hand"
-                    Click="BlogButton_Click">
+                    Click="BlogButton_Click"
+                    Cursor="Hand">
                     <Button.Content>
-                        <!-- Blog Icon (Document) -->
+                        <!--  Blog Icon (Document)  -->
                         <Image
                             Width="24"
                             Height="24"
+                            RenderTransformOrigin="0.5,0.5"
                             Source="/Resources/Icons/post.png"
-                            Stretch="Uniform"
-                            RenderTransformOrigin="0.5,0.5">        
+                            Stretch="Uniform">
                             <Image.RenderTransform>
                                 <ScaleTransform ScaleX="1" ScaleY="1" />
                             </Image.RenderTransform>
@@ -300,23 +162,23 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="Button">
-                                        <Border Background="{TemplateBinding Background}"
-                                                BorderBrush="{TemplateBinding BorderBrush}"
-                                                BorderThickness="{TemplateBinding BorderThickness}">
-                                            <ContentPresenter HorizontalAlignment="Center" 
-                                                              VerticalAlignment="Center"/>
+                                        <Border
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                                         </Border>
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>
                             <Style.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="#1AFFFFFF"/>
+                                    <Setter Property="Background" Value="#1AFFFFFF" />
                                 </Trigger>
                                 <Trigger Property="IsPressed" Value="True">
                                     <Setter Property="RenderTransform">
                                         <Setter.Value>
-                                            <ScaleTransform ScaleX="0.95" ScaleY="0.95"/>
+                                            <ScaleTransform ScaleX="0.95" ScaleY="0.95" />
                                         </Setter.Value>
                                     </Setter>
                                 </Trigger>
@@ -327,7 +189,7 @@
             </StackPanel>
         </Border>
 
-        <!-- Page-content -->
+        <!--  Page-content  -->
         <Border
             Width="1628"
             Height="991"

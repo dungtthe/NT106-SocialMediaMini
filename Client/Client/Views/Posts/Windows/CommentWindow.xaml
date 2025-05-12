@@ -1,186 +1,209 @@
-﻿<Window x:Class="Client.Views.Posts.Windows.CommentWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-        mc:Ignorable="d" 
-        Title="Comments"
-        Height="700" 
-        Width="600"
-        WindowStartupLocation="CenterScreen"
-        Background="{DynamicResource ColorWhiteOne}"
-        ResizeMode="CanResize">
+﻿<Window
+    x:Class="Client.Views.Posts.Windows.CommentWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Comments"
+    Width="600"
+    Height="700"
+    Background="{DynamicResource ColorWhiteOne}"
+    ResizeMode="CanResize"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
     <Grid Margin="20">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <!-- Post Content -->
-        <Border Grid.Row="0" 
-                Background="White"
-                CornerRadius="8"
-                BorderThickness="1"
-                BorderBrush="{DynamicResource ColorBlueOne}"
-                Margin="0,0,0,15">
+        <!--  Post Content  -->
+        <Border
+            Grid.Row="0"
+            Margin="0,0,0,15"
+            Background="White"
+            BorderBrush="{DynamicResource ColorBlueOne}"
+            BorderThickness="1"
+            CornerRadius="8">
             <Border.Effect>
-                <DropShadowEffect ShadowDepth="2" 
-                                 BlurRadius="5" 
-                                 Opacity="0.2"/>
+                <DropShadowEffect
+                    BlurRadius="5"
+                    Opacity="0.2"
+                    ShadowDepth="2" />
             </Border.Effect>
             <Grid Margin="15">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <!-- Header: Avatar, Username, Timestamp -->
+                <!--  Header: Avatar, Username, Timestamp  -->
                 <Grid Grid.Row="0" Margin="0,0,0,10">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Image Source="/Resources/Images/meolag.jpg" 
-                           Width="40" 
-                           Height="40" 
-                           Margin="0,0,10,0"
-                           RenderOptions.BitmapScalingMode="HighQuality"/>
+                    <Image
+                        Width="40"
+                        Height="40"
+                        Margin="0,0,10,0"
+                        RenderOptions.BitmapScalingMode="HighQuality"
+                        Source="/Resources/Images/meolag.jpg" />
                     <StackPanel Grid.Column="1">
-                        <TextBlock Text="{Binding Username, RelativeSource={RelativeSource AncestorType=Window}}" 
-                                   FontSize="16" 
-                                   FontWeight="Bold"/>
-                        <TextBlock Text="{Binding Timestamp, RelativeSource={RelativeSource AncestorType=Window}}" 
-                                   FontSize="12" 
-                                   Foreground="Gray"/>
+                        <TextBlock
+                            FontSize="16"
+                            FontWeight="Bold"
+                            Text="{Binding Username, RelativeSource={RelativeSource AncestorType=Window}}" />
+                        <TextBlock
+                            FontSize="12"
+                            Foreground="Gray"
+                            Text="{Binding Timestamp, RelativeSource={RelativeSource AncestorType=Window}}" />
                     </StackPanel>
                 </Grid>
 
-                <!-- Post Content -->
-                <TextBlock Grid.Row="1" 
-                           Text="{Binding Content, RelativeSource={RelativeSource AncestorType=Window}}" 
-                           FontSize="14"
-                           TextWrapping="Wrap"
-                           Margin="0,0,0,10"/>
+                <!--  Post Content  -->
+                <TextBlock
+                    Grid.Row="1"
+                    Margin="0,0,0,10"
+                    FontSize="14"
+                    Text="{Binding Content, RelativeSource={RelativeSource AncestorType=Window}}"
+                    TextWrapping="Wrap" />
             </Grid>
         </Border>
 
-        <!-- Comments List -->
-        <ScrollViewer Grid.Row="1" 
-                      VerticalScrollBarVisibility="Auto"
-                      HorizontalScrollBarVisibility="Disabled"
-                      Margin="0,0,0,15">
+        <!--  Comments List  -->
+        <ScrollViewer
+            Grid.Row="1"
+            Margin="0,0,0,15"
+            HorizontalScrollBarVisibility="Disabled"
+            VerticalScrollBarVisibility="Auto">
             <StackPanel x:Name="CommentsPanel">
-                <!-- Sample Comment 1 -->
-                <Border Background="White"
-                        CornerRadius="8"
-                        BorderThickness="1"
-                        BorderBrush="{DynamicResource ColorBlueOne}"
-                        Margin="0,0,0,10"
-                        Padding="10">
+                <!--  Sample Comment 1  -->
+                <Border
+                    Margin="0,0,0,10"
+                    Padding="10"
+                    Background="White"
+                    BorderBrush="{DynamicResource ColorBlueOne}"
+                    BorderThickness="1"
+                    CornerRadius="8">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <Image Source="/Resources/Images/meolag.jpg" 
-                               Width="30" 
-                               Height="30" 
-                               Margin="0,0,10,0"
-                               RenderOptions.BitmapScalingMode="HighQuality"/>
+                        <Image
+                            Width="30"
+                            Height="30"
+                            Margin="0,0,10,0"
+                            RenderOptions.BitmapScalingMode="HighQuality"
+                            Source="/Resources/Images/meolag.jpg" />
                         <StackPanel Grid.Column="1">
-                            <TextBlock Text="Jane Smith" 
-                                       FontSize="14" 
-                                       FontWeight="Bold"/>
-                            <TextBlock Text="Great post! Thanks for sharing." 
-                                       FontSize="12"
-                                       TextWrapping="Wrap"/>
-                            <TextBlock Text="12/05/2025 10:45" 
-                                       FontSize="10" 
-                                       Foreground="Gray"/>
+                            <TextBlock
+                                FontSize="14"
+                                FontWeight="Bold"
+                                Text="Jane Smith" />
+                            <TextBlock
+                                FontSize="12"
+                                Text="Great post! Thanks for sharing."
+                                TextWrapping="Wrap" />
+                            <TextBlock
+                                FontSize="10"
+                                Foreground="Gray"
+                                Text="12/05/2025 10:45" />
                         </StackPanel>
                     </Grid>
                 </Border>
-                <!-- Sample Comment 2 -->
-                <Border Background="White"
-                        CornerRadius="8"
-                        BorderThickness="1"
-                        BorderBrush="{DynamicResource ColorBlueOne}"
-                        Margin="0,0,0,10"
-                        Padding="10">
+                <!--  Sample Comment 2  -->
+                <Border
+                    Margin="0,0,0,10"
+                    Padding="10"
+                    Background="White"
+                    BorderBrush="{DynamicResource ColorBlueOne}"
+                    BorderThickness="1"
+                    CornerRadius="8">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <Image Source="/Resources/Images/meolag.jpg" 
-                               Width="30" 
-                               Height="30" 
-                               Margin="0,0,10,0"
-                               RenderOptions.BitmapScalingMode="HighQuality"/>
+                        <Image
+                            Width="30"
+                            Height="30"
+                            Margin="0,0,10,0"
+                            RenderOptions.BitmapScalingMode="HighQuality"
+                            Source="/Resources/Images/meolag.jpg" />
                         <StackPanel Grid.Column="1">
-                            <TextBlock Text="Alex Johnson" 
-                                       FontSize="14" 
-                                       FontWeight="Bold"/>
-                            <TextBlock Text="Really interesting thoughts!" 
-                                       FontSize="12"
-                                       TextWrapping="Wrap"/>
-                            <TextBlock Text="12/05/2025 11:00" 
-                                       FontSize="10" 
-                                       Foreground="Gray"/>
+                            <TextBlock
+                                FontSize="14"
+                                FontWeight="Bold"
+                                Text="Alex Johnson" />
+                            <TextBlock
+                                FontSize="12"
+                                Text="Really interesting thoughts!"
+                                TextWrapping="Wrap" />
+                            <TextBlock
+                                FontSize="10"
+                                Foreground="Gray"
+                                Text="12/05/2025 11:00" />
                         </StackPanel>
                     </Grid>
                 </Border>
             </StackPanel>
         </ScrollViewer>
 
-        <!-- Comment Input -->
-        <Border Grid.Row="2" 
-                Background="White"
-                CornerRadius="8"
-                BorderThickness="1"
-                BorderBrush="{DynamicResource ColorBlueOne}">
+        <!--  Comment Input  -->
+        <Border
+            Grid.Row="2"
+            Background="White"
+            BorderBrush="{DynamicResource ColorBlueOne}"
+            BorderThickness="1"
+            CornerRadius="8">
             <Border.Effect>
-                <DropShadowEffect ShadowDepth="2" 
-                                 BlurRadius="5" 
-                                 Opacity="0.2"/>
+                <DropShadowEffect
+                    BlurRadius="5"
+                    Opacity="0.2"
+                    ShadowDepth="2" />
             </Border.Effect>
             <Grid Margin="10">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <TextBox x:Name="CommentTextBox"
-                         Grid.Column="0"
-                         MinHeight="40"
-                         AcceptsReturn="True"
-                         TextWrapping="Wrap"
-                         VerticalScrollBarVisibility="Auto"
-                         FontSize="14"
-                         Padding="10"
-                         BorderThickness="0"
-                         Tag="Write a comment...">
+                <TextBox
+                    x:Name="CommentTextBox"
+                    Grid.Column="0"
+                    MinHeight="40"
+                    Padding="10"
+                    AcceptsReturn="True"
+                    BorderThickness="0"
+                    FontSize="14"
+                    Tag="Write a comment..."
+                    TextWrapping="Wrap"
+                    VerticalScrollBarVisibility="Auto">
                     <TextBox.Style>
                         <Style TargetType="TextBox">
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="TextBox">
                                         <Grid>
-                                            <ScrollViewer x:Name="PART_ContentHost" 
-                                                          VerticalAlignment="Top" 
-                                                          Margin="0"/>
-                                            <TextBlock Text="{TemplateBinding Tag}" 
-                                                       FontStyle="Italic" 
-                                                       Foreground="Gray" 
-                                                       Margin="10,10,0,0" 
-                                                       VerticalAlignment="Top" 
-                                                       IsHitTestVisible="False">
+                                            <ScrollViewer
+                                                x:Name="PART_ContentHost"
+                                                Margin="0"
+                                                VerticalAlignment="Top" />
+                                            <TextBlock
+                                                Margin="10,10,0,0"
+                                                VerticalAlignment="Top"
+                                                FontStyle="Italic"
+                                                Foreground="Gray"
+                                                IsHitTestVisible="False"
+                                                Text="{TemplateBinding Tag}">
                                                 <TextBlock.Style>
                                                     <Style TargetType="TextBlock">
-                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                        <Setter Property="Visibility" Value="Collapsed" />
                                                         <Style.Triggers>
                                                             <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource TemplatedParent}}" Value="">
-                                                                <Setter Property="Visibility" Value="Visible"/>
+                                                                <Setter Property="Visibility" Value="Visible" />
                                                             </DataTrigger>
                                                         </Style.Triggers>
                                                     </Style>
@@ -193,43 +216,43 @@
                         </Style>
                     </TextBox.Style>
                 </TextBox>
-                <Button Grid.Column="1"
-                        Content="Send"
-                        Width="80"
-                        Height="40"
-                        FontSize="14"
-                        Background="{DynamicResource ColorBlueOne}"
-                        Foreground="White"
-                        BorderThickness="0"
-                        Cursor="Hand"
-                        Margin="10,0,0,0"
-                        Click="SendCommentButton_Click">
+                <Button
+                    Grid.Column="1"
+                    Width="80"
+                    Height="40"
+                    Margin="10,0,0,0"
+                    Background="{DynamicResource ColorBlueOne}"
+                    BorderThickness="0"
+                    Click="SendCommentButton_Click"
+                    Content="Send"
+                    Cursor="Hand"
+                    FontSize="14"
+                    Foreground="White">
                     <Button.Effect>
-                        <DropShadowEffect ShadowDepth="2" 
-                                         BlurRadius="5" 
-                                         Opacity="0.3"/>
+                        <DropShadowEffect
+                            BlurRadius="5"
+                            Opacity="0.3"
+                            ShadowDepth="2" />
                     </Button.Effect>
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="Button">
-                                        <Border CornerRadius="8" 
-                                                Background="{TemplateBinding Background}">
-                                            <ContentPresenter HorizontalAlignment="Center" 
-                                                              VerticalAlignment="Center"/>
+                                        <Border Background="{TemplateBinding Background}" CornerRadius="8">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                                         </Border>
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>
                             <Style.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Opacity" Value="0.9"/>
+                                    <Setter Property="Opacity" Value="0.9" />
                                 </Trigger>
                                 <Trigger Property="IsPressed" Value="True">
                                     <Setter Property="RenderTransform">
                                         <Setter.Value>
-                                            <ScaleTransform ScaleX="0.98" ScaleY="0.98"/>
+                                            <ScaleTransform ScaleX="0.98" ScaleY="0.98" />
                                         </Setter.Value>
                                     </Setter>
                                 </Trigger>

@@ -11,10 +11,11 @@
     Height="991"
     d:DesignHeight="991"
     d:DesignWidth="1628"
+    DataContext="{StaticResource PostViewModel}"
     mc:Ignorable="d">
 
     <Page.Resources>
-        <!-- Style cho ScrollBar -->
+        <!--  Style cho ScrollBar  -->
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/ResourcesXAML/ScrollBar.xaml" />
@@ -22,13 +23,16 @@
         </ResourceDictionary>
     </Page.Resources>
 
+
+
+
     <Grid Background="{DynamicResource ColorWhiteOne}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <!-- Post Posting Area -->
+        <!--  Blog Posting Area  -->
         <Border
             Grid.Row="0"
             Margin="20,20,20,10"
@@ -48,7 +52,7 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <!-- Avatar and TextBox -->
+                <!--  Avatar and TextBox  -->
                 <Grid Grid.Row="0" Margin="0,0,0,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -61,7 +65,7 @@
                         RenderOptions.BitmapScalingMode="HighQuality"
                         Source="/Resources/Images/meolag.jpg" />
                     <TextBox
-                        x:Name="PostContentTextBox"
+                        x:Name="BlogContentTextBox"
                         Grid.Column="1"
                         MinHeight="60"
                         MaxHeight="200"
@@ -111,7 +115,7 @@
                     </TextBox>
                 </Grid>
 
-                <!-- Post Button -->
+                <!--  Post Button  -->
                 <Button
                     Grid.Row="1"
                     Width="100"
@@ -157,35 +161,19 @@
                 </Button>
             </Grid>
         </Border>
-
-        <!-- Post List -->
+        <!--  Post List  -->
         <ScrollViewer
             Grid.Row="1"
             HorizontalScrollBarVisibility="Disabled"
             Style="{StaticResource ModernScrollViewerStyle}"
             VerticalScrollBarVisibility="Auto">
-            <StackPanel Margin="20,0,20,20">
-                <!-- Post Item 1 -->
-                <components:PostItem
-                    User="{Binding Source={StaticResource User1}}"
-                    CreateAt="2025-05-11T10:30:00"
-                    Content="This is my first post on this platform! I'm excited to share my thoughts about technology and innovation."
-                    CommentCount="2" />
-
-                <!-- Post Item 2 -->
-                <components:PostItem
-                    User="{Binding Source={StaticResource User2}}"
-                    CreateAt="2025-05-11T09:15:00"
-                    Content="Just got back from a trip to the mountains! The scenery was breathtaking, and I took so many photos."
-                    CommentCount="1" />
-
-                <!-- Post Item 3 -->
-                <components:PostItem
-                    User="{Binding Source={StaticResource User3}}"
-                    CreateAt="2025-05-11T08:00:00"
-                    Content="Started learning a new programming language today! It's challenging but fun."
-                    CommentCount="0" />
-            </StackPanel>
+            <ItemsControl Margin="20,0,20,20" ItemsSource="{Binding Items}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <components:PostItem Margin="0,0,0,20" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </ScrollViewer>
     </Grid>
 </Page>

@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:Client.Views"
     xmlns:models="clr-namespace:Client.Models"
-    StartupUri="Views\LoginWindowView.xaml">
+    StartupUri="Views\MainWindowView.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -13,7 +13,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
                 <ResourceDictionary>
-                    <!-- Color Resources -->
+                    <!--  Color Resources  -->
                     <SolidColorBrush x:Key="ColorBlueOne" Color="#005AE0" />
                     <SolidColorBrush x:Key="ColorBlueTwo" Color="#004DBF" />
                     <SolidColorBrush x:Key="ColorBlueThree" Color="#DBEBFF" />
@@ -31,10 +31,19 @@
                 <ResourceDictionary Source="/ResourcesXAML/MainResource.xaml" />
                 <ResourceDictionary Source="/ResourcesXAML/ScrollBar.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <!-- User Resources -->
-            <models:UserModel x:Key="User1" FullName="John Doe" Avatar="/Resources/Images/meolag.jpg" />
-            <models:UserModel x:Key="User2" FullName="Jane Smith" Avatar="/Resources/Images/meolag.jpg" />
-            <models:UserModel x:Key="User3" FullName="Alex Johnson" Avatar="/Resources/Images/meolag.jpg" />
+            <!--  User Resources  -->
+            <models:UserModel
+                x:Key="User1"
+                Avatar="/Resources/Images/meolag.jpg"
+                FullName="John Doe" />
+            <models:UserModel
+                x:Key="User2"
+                Avatar="/Resources/Images/meolag.jpg"
+                FullName="Jane Smith" />
+            <models:UserModel
+                x:Key="User3"
+                Avatar="/Resources/Images/meolag.jpg"
+                FullName="Alex Johnson" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>
