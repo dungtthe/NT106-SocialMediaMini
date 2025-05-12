@@ -10,6 +10,7 @@ namespace SocialMediaMini.Common.DTOs.Respone
     {
         public int HttpStatusCode { get; set; }
         public string Message { get; set; }
+        public long UserId { get; set; }
         public string FullName { get; set; }
         public string Image { get; set; }
         public string Token { get; set; }

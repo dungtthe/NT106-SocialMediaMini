@@ -52,6 +52,7 @@ namespace SocialMediaMini.Service
             : new string[] { "no_img_user.png" };
             var rsp = new Respone_LoginDTO
             {
+                UserId = fUser.Id,
                 HttpStatusCode = HttpStatusCode.Ok,
                 FullName = fUser.FullName,
                 Image = imgs[0],

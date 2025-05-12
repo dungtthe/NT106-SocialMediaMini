@@ -53,6 +53,7 @@ namespace SocialMediaMini.API.Areas.User
                 {
                     return Ok(new
                     {
+                        userId = rsp.UserId,
                         token = rsp.Token,
                         fullName = rsp.FullName,
                         image = rsp.Image
