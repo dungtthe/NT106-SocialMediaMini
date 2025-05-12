@@ -41,5 +41,26 @@ namespace SocialMediaMini.API.Areas.User
                 return this.InternalServerError();
             }
         }
+
+        [HttpGet("detail/{id}")]
+        public async Task<IActionResult> GetChatRoomDetailAsync(long id)
+        {
+            try
+            {
+                var suserId = this.HttpContext.User.FindFirst("UserId")?.Value;
+                long userId = 0;
+                if(suserId==null || !long.TryParse(suserId, out userId))
+                {
+                    return Unauthorized();
+                }
+                var rsp = await _chatRoomService.GetChatRoomDetailAsync(userId,id);
+                return Ok(rsp);
+            }
+            catch (Exception ex)
+            {
+                await LoggerHelper.LogMsgAsync("GetConversationsAsync()", "", ex);
+                return this.InternalServerError();
+            }
+        }
     }
 }

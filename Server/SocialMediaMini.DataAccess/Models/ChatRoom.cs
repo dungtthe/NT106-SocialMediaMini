@@ -15,6 +15,7 @@ namespace SocialMediaMini.DataAccess.Models
         [Required]
         public string UserIds {  get; set; }
         public string Name { get; set; }//nếu không là nhóm thì để null
+        public string Avatar { get; set; }
         public bool IsGroupChat {  get; set; }
         public bool IsDelete {  get; set; }
         public bool CanAddMember { get; set; }
