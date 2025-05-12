@@ -172,6 +172,7 @@
                             Background="Transparent"
                             BorderThickness="0"
                             ItemsSource="{Binding ChatRooms}"
+                            SelectedItem="{Binding SelectedChatRoom}"
                             Style="{StaticResource ModernListBoxStyle}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>

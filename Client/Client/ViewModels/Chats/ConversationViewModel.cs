@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -71,6 +72,23 @@ namespace Client.ViewModels.Chats
             get { return _chatRooms; }
             set { SetProperty(ref _chatRooms, value, nameof(ChatRooms)); }
         }
+
+
+        private ItemChatRoomViewModel _selectedChatRoom;
+        public ItemChatRoomViewModel SelectedChatRoom
+        {
+            get { return _selectedChatRoom; }
+            set
+            {
+                SetProperty(ref _selectedChatRoom, value, nameof(SelectedChatRoom));
+
+                if (value != null)
+                {
+                    LoadChatRoomDetail(value.ChatRoomId);
+                }
+            }
+        }
+
         #endregion
 
         #region detail chatroom
@@ -264,22 +282,33 @@ namespace Client.ViewModels.Chats
         public ConversationViewModel()
         {
             ChatRooms = new ObservableCollection<ItemChatRoomViewModel>();
-            Task.Run(async () =>
-            {
-                while (true)
-                {
-                    ChatRooms = await ChatRoomService.GetConversationsAsync();
-                    await Task.Delay(5000);
-                }
-            });
 
             Task.Run(async () =>
             {
-                ChatRoomDetail = await ChatRoomService.GetChatRoomDetailAsync(1);
-                
+                ChatRooms = await ChatRoomService.GetConversationsAsync();
+
+                //while (true)
+                //{
+
+                //    await Task.Delay(5000);
+                //}
             });
+
+            //Task.Run(async () =>
+            //{
+            //    ChatRoomDetail = await ChatRoomService.GetChatRoomDetailAsync(1);
+                
+            //});
         }
 
+
+        private void LoadChatRoomDetail(long chatRoomId)
+        {
+            Task.Run(async () =>
+            {
+                ChatRoomDetail = await ChatRoomService.GetChatRoomDetailAsync(chatRoomId);
+            });
+        }
 
 
     }
