@@ -35,5 +35,10 @@ namespace Client.Views
             BacktoLogin.Show();
             this.Close();
         }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
