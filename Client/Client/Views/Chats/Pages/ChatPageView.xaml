@@ -13,9 +13,8 @@
     Height="991"
     d:DesignHeight="991"
     d:DesignWidth="1628"
-    DataContext="{StaticResource ConversationViewModel}"
     mc:Ignorable="d">
-
+    <!--  DataContext="{StaticResource ConversationViewModel}" nếu dùng code behine set datacontext nữa là nó phá vỡ liên kết nên nhiều khi lỗi nhiều lắm nên là bỏ cái này đi  -->
 
     <Page.Resources>
         <converters:ZeroToCollapsedConverter x:Key="ZeroToCollapsedConverter" />
@@ -282,6 +281,7 @@
                     <!--  message  -->
                     <StackPanel Height="798" Background="{DynamicResource ColorGreyFour}">
                         <ListBox
+                            x:Name="lstMessages"
                             Height="798"
                             Background="Transparent"
                             BorderThickness="0"
@@ -521,6 +521,7 @@
                         <!--  inputtext  -->
                         <Grid Height="70">
                             <TextBox
+                                x:Name="txtMessageInput"
                                 Margin="20,0,0,0"
                                 VerticalContentAlignment="Center"
                                 materialDesign:HintAssist.Hint="Nhập tin nhắn"
@@ -528,20 +529,24 @@
                                 BorderThickness="0"
                                 FontSize="16"
                                 Foreground="{DynamicResource ColorBlackOne}"
-                                Text="{Binding MessageInput}">
+                                KeyDown="txtMessageInput_KeyDown"
+                                TextChanged="txtMessageInput_TextChanged">
+                                <!--Text="{Binding MessageInput}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="TextChanged">
                                         <i:InvokeCommandAction Command="{Binding Search}" CommandParameter="{Binding ElementName=searchBox}" />
                                     </i:EventTrigger>
-                                </i:Interaction.Triggers>
+                                </i:Interaction.Triggers>-->
                             </TextBox>
 
                             <Button
+                                x:Name="btnSendMsg"
                                 Height="40"
                                 Margin="0,0,20,0"
                                 HorizontalAlignment="Right"
                                 Background="Transparent"
-                                BorderBrush="Transparent">
+                                BorderBrush="Transparent"
+                                Click="btnSendMsg_Click">
                                 <Image
                                     Height="34"
                                     Margin="0,0,20,0"

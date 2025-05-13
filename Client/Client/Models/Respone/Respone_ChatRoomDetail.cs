@@ -32,6 +32,7 @@ namespace Client.Models.Respone
             public List<Reaction> Reactions { get; set; }
 
         }
+        public long ChatRoomId { get; set; }
         public long LeaderId { get; set; }
         public string Avatar { get; set; }
         public string RoomName { get; set; }//neu la 2 nguoi thi dung ten nguoi do

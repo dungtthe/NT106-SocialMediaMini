@@ -9,6 +9,18 @@ namespace Client.ViewModels
 {
     public class MainWindowViewModel:BaseViewModel
     {
+
+        private static MainWindowViewModel ins;
+        public static MainWindowViewModel GI()
+        {
+            if(ins == null)
+            {
+                ins = new MainWindowViewModel();
+            }
+            return ins;
+        }
+
+
         private string _fullName;
         public string FullName
         {

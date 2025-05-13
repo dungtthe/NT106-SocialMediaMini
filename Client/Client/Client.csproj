@@ -9,6 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Icons\addFile.png" />
+    <None Remove="Resources\Icons\addSticker.png" />
     <None Remove="Resources\Icons\Caution_Brown_Icon.png" />
     <None Remove="Resources\Icons\chat.png" />
     <None Remove="Resources\Icons\CircleTick.png" />
@@ -44,6 +46,7 @@
     <None Remove="Resources\Icons\post.png" />
     <None Remove="Resources\Icons\Remove.png" />
     <None Remove="Resources\Icons\Remove_NoBackground.png" />
+    <None Remove="Resources\Icons\sendmsg.png" />
     <None Remove="Resources\Icons\SuCoIcon.png" />
     <None Remove="Resources\Icons\SuCo_Brown_Icon.png" />
     <None Remove="Resources\Icons\SuCo_White_Icon.png" />
@@ -59,10 +62,13 @@
   <ItemGroup>
     <PackageReference Include="MaterialDesignColors" Version="2.1.4" />
     <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.15" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Icons\addFile.png" />
+    <Resource Include="Resources\Icons\addSticker.png" />
     <Resource Include="Resources\Icons\Caution_Brown_Icon.png" />
     <Resource Include="Resources\Icons\chat.png" />
     <Resource Include="Resources\Icons\CircleTick.png" />
@@ -100,6 +106,7 @@
     <Resource Include="Resources\Icons\post.png" />
     <Resource Include="Resources\Icons\Remove.png" />
     <Resource Include="Resources\Icons\Remove_NoBackground.png" />
+    <Resource Include="Resources\Icons\sendmsg.png" />
     <Resource Include="Resources\Icons\SuCoIcon.png" />
     <Resource Include="Resources\Icons\SuCo_Brown_Icon.png" />
     <Resource Include="Resources\Icons\SuCo_White_Icon.png" />

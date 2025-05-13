@@ -1,10 +1,14 @@
 ﻿using Client.Const;
 using Client.Const.Type;
 using Client.Helpers;
+using Client.LocalStorage;
 using Client.Models.Respone;
 using Client.Services;
+using Client.Services.RealTimes;
+using Client.Views;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -12,11 +16,26 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using static Client.ViewModels.Chats.ConversationViewModel.ItemChatRoomDetailViewModel;
+using System.Windows.Threading;
+using Client.Models.Request;
 
 namespace Client.ViewModels.Chats
 {
     public class ConversationViewModel : BaseViewModel
     {
+        private static ConversationViewModel ins;
+        public static ConversationViewModel GI()
+        {
+            if (ins == null)
+            {
+                ins = new ConversationViewModel();
+            }
+            return ins;
+        }
+
+
 
         #region chatroom list
         public class ItemChatRoomViewModel : BaseItemViewModel
@@ -85,6 +104,10 @@ namespace Client.ViewModels.Chats
                 if (value != null)
                 {
                     LoadChatRoomDetail(value.ChatRoomId);
+                }
+                else
+                {
+                    ChatRoomDetail = null;
                 }
             }
         }
@@ -201,7 +224,7 @@ namespace Client.ViewModels.Chats
             }
 
 
-
+            private long _chatRoomId;
             private long _leaderId;
             private string _avatar;
             private string _roomName;
@@ -212,6 +235,12 @@ namespace Client.ViewModels.Chats
 
             private ObservableCollection<ItemMessageViewModel> _messages;
             private ObservableCollection<string> _avatarReads;
+
+            public long ChatRoomId
+            {
+                get => _chatRoomId;
+                set => SetProperty(ref _chatRoomId, value, nameof(ChatRoomId));
+            }
 
             public long LeaderId
             {
@@ -282,34 +311,276 @@ namespace Client.ViewModels.Chats
         public ConversationViewModel()
         {
             ChatRooms = new ObservableCollection<ItemChatRoomViewModel>();
-
-            Task.Run(async () =>
-            {
-                ChatRooms = await ChatRoomService.GetConversationsAsync();
-
-                //while (true)
-                //{
-
-                //    await Task.Delay(5000);
-                //}
-            });
-
-            //Task.Run(async () =>
-            //{
-            //    ChatRoomDetail = await ChatRoomService.GetChatRoomDetailAsync(1);
-                
-            //});
+            SendLoop();
+            ReceiveLoop();
         }
 
 
-        private void LoadChatRoomDetail(long chatRoomId)
+        public void Init()
+        {
+            LoadChatRooms();
+        }
+
+
+        private void LoadChatRooms()
         {
             Task.Run(async () =>
             {
-                ChatRoomDetail = await ChatRoomService.GetChatRoomDetailAsync(chatRoomId);
+                try
+                {
+                    var data = await ChatRoomService.GetConversationsAsync();
+                    if (data != null)
+                    {
+                        InvokeDispatcherUI(async () =>
+                        {
+                            //ChatRooms = data;
+                            var selectedTemp = SelectedChatRoom;
+                            ChatRooms.Clear();
+                            foreach (var item in data)
+                                ChatRooms.Add(item);
+                            if (selectedTemp != null)
+                            {
+                                SelectedChatRoom = ChatRooms.Where(c => c.ChatRoomId == selectedTemp.ChatRoomId).FirstOrDefault();
+                            }
+
+                        });
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
             });
         }
 
+        //private void InvokeDispatcherUI(Action action)
+        //{
+
+        //    Application.Current.Dispatcher.BeginInvoke(action);
+        //}
+        private void InvokeDispatcherUI(Action action)
+        {
+            if (Application.Current != null && Application.Current.Dispatcher != null)
+            {
+                Application.Current.Dispatcher.BeginInvoke(action);
+            }
+            else
+            {
+                Debug.WriteLine("Dispatcher is not available.");
+            }
+        }
+
+        private void LoadChatRoomDetail(long chatRoomId)
+        {
+            ChatRoomDetail = null;
+            Task.Run(async () =>
+            {
+                try
+                {
+
+                    var data = await ChatRoomService.GetChatRoomDetailAsync(chatRoomId);
+
+                    if (data != null)
+                    {
+                        InvokeDispatcherUI(() =>
+                        {
+                            ChatRoomDetail = data;
+                            if (IsValidChatRoom())
+                            {
+                                SelectedChatRoom.UnReadMessageCount = "0";
+                            }
+                        });
+                    }
+                    else
+                    {
+                        ChatRoomDetail = null;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
+            });
+        }
+
+        #region notification
+        public static ConcurrentQueue<Tuple<long, string>> MessagesSend = new ConcurrentQueue<Tuple<long, string>>();//hàng đợi message gửi lên server(chatroomid-msg)
+        public static ConcurrentQueue<string> MessagesReceive = new ConcurrentQueue<string>();//hàng đợi nhận từ server
+
+        private void SendLoop()
+        {
+            Task.Run(async () =>
+            {
+                while (true)
+                {
+                    if (MainWindow.TypePage == MainWindow.TYPE_PAGE.CHAT_PAGE_VIEW)
+                    {
+                        try
+                        {
+                            if (MessagesSend.TryDequeue(out var data))
+                            {
+                                var chatRoomId = data.Item1;
+                                var content = data.Item2;
+
+
+                                var dataSend = new Request_AddNotificationDTO()
+                                {
+                                    NotificationType = Type_Notification.MESSAGE,
+                                    Data = JsonConvert.SerializeObject(new Request_AddNotificationDTO.Message()
+                                    {
+                                        ChatRoomId = chatRoomId,
+                                        Content = content,
+                                        ParrentMessageId = null//nao nho lam cai tra loi tin nhan
+                                    })
+                                };
+
+                                await NotifyService.SendMessage(dataSend.NotificationType, dataSend.Data);
+                            }
+                        }
+                        catch (Exception ex)//nao lam thong bao exception
+                        {
+
+                        }
+                    }
+                    else if (MainWindow.TypePage == MainWindow.TYPE_PAGE.NONE)
+                    {
+                        MessagesSend.Clear();
+                    }
+                    await Task.Delay(10);
+                }
+            });
+        }
+
+
+        public bool IsValidChatRoom()
+        {
+            if (ChatRoomDetail == null || SelectedChatRoom == null || ChatRoomDetail.ChatRoomId != SelectedChatRoom.ChatRoomId)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        private void ReceiveLoop()
+        {
+            Task.Run(async () =>
+            {
+                //tam thoi de nhu nay di
+                while (true)
+                {
+                    if (MainWindow.TypePage == MainWindow.TYPE_PAGE.CHAT_PAGE_VIEW)
+                    {
+                        try
+                        {
+                            if (MessagesReceive.TryDequeue(out var data))
+                            {
+                                var dataRecive = JsonConvert.DeserializeObject<Respone_NotificationDTO.Respone_NotificationMessage>(data);
+                                if (dataRecive != null && IsValidChatRoom())
+                                {
+                                    if (dataRecive.ChatRoomId == ChatRoomDetail.ChatRoomId)
+                                    {
+                                        var msgNew = new ItemChatRoomDetailViewModel.ItemMessageViewModel()
+                                        {
+                                            Id = dataRecive.Id,
+                                            Content = dataRecive.Content,
+                                            CreatedAt = dataRecive.CreatedAt,
+                                            Sender = new ItemChatRoomDetailViewModel.ItemUserViewModel()
+                                            {
+                                                Id = dataRecive.Sender.Id,
+                                                FullName = dataRecive.Sender.FullName,
+                                                Avatar = dataRecive.Sender.Avatar
+                                            },
+                                            Reactions = new ObservableCollection<ItemChatRoomDetailViewModel.ItemReactionViewModel>()
+                                        };
+
+                                        if (dataRecive.Parrent != null)
+                                        {
+                                            msgNew.Parent = ChatRoomDetail.Messages.Where(m => m.Id == dataRecive.Parrent.Id).FirstOrDefault();
+                                        }
+                                        var isMine = msgNew.Sender.Id == UserStore.UserIdCur;
+                                        var hasParent = msgNew.Parent != null;
+
+                                        if (isMine && hasParent)
+                                            msgNew.TypeMessage = TypeMessage.MineWithReply;
+                                        else if (isMine)
+                                            msgNew.TypeMessage = TypeMessage.Mine;
+                                        else if (hasParent)
+                                            msgNew.TypeMessage = TypeMessage.OtherWithReply;
+                                        else
+                                            msgNew.TypeMessage = TypeMessage.Other;
+
+
+                                        try
+                                        {
+
+                                            InvokeDispatcherUI(() =>
+                                            {
+                                                ChatRoomDetail.Messages.Add(msgNew);
+                                                SelectedChatRoom.LastMessage = msgNew.Content;
+                                                SelectedChatRoom.UnReadMessageCount = "0";
+                                                Debug.WriteLine(msgNew.Content);
+                                            });
+
+
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            Debug.WriteLine(e.Message);
+                                        }
+
+                                        if (dataRecive.Sender.Id != UserStore.UserIdCur)
+                                        {
+                                            ChatRoomService.ReadMessages(dataRecive.ChatRoomId);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        LoadChatRooms();
+                                        Debug.WriteLine("dataRecive.ChatRoomId-" + dataRecive.ChatRoomId + "ChatRoomDetail.ChatRoomId-" + ChatRoomDetail.ChatRoomId);
+                                    }
+                                }
+                                else
+                                {
+                                    if (ChatRoomDetail == null)
+                                    {
+                                        Debug.WriteLine("ChatRoomDetail == null");
+                                    }
+                                    if (SelectedChatRoom == null)
+                                    {
+                                        Debug.WriteLine("SelectedChatRoom==null");
+
+                                    }
+                                    LoadChatRooms();
+                                }
+                            }
+
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
+                    }
+                    else if (MainWindow.TypePage == MainWindow.TYPE_PAGE.NONE)
+                    {
+                        MessagesReceive.Clear();
+                    }
+                    await Task.Delay(10);
+                }
+            });
+        }
+
+
+
+        #endregion
+
+        public void Reset()
+        {
+            MessagesReceive.Clear();
+            MessagesSend.Clear();
+            ChatRooms = new ObservableCollection<ItemChatRoomViewModel>();
+            SelectedChatRoom = null;
+            ChatRoomDetail = null;
+        }
 
     }
 }

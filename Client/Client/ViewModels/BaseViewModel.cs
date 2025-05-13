@@ -19,13 +19,16 @@ namespace Client.ViewModels
         }
         protected bool SetProperty<T>(ref T field, T value, string propertyName)
         {
-            if (!EqualityComparer<T>.Default.Equals(field, value))
-            {
-                field = value;
-                OnPropertyChanged(propertyName);
-                return true;
-            }
-            return false;
+            field = value;
+            OnPropertyChanged(propertyName);
+            return true;
+            //if (!EqualityComparer<T>.Default.Equals(field, value))
+            //{
+            //    field = value;
+            //    OnPropertyChanged(propertyName);
+            //    return true;
+            //}
+            //return false;
         }
     }
     class RelayCommand<T> : ICommand

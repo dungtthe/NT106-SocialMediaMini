@@ -1,4 +1,5 @@
 ﻿using Client.Services;
+using Client.ViewModels.Chats;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,7 @@ namespace Client.Views
         public LoginWindowView()
         {
             InitializeComponent();
+            MainWindow.TypePage = MainWindow.TYPE_PAGE.NONE;
         }
 
         private async void LoginButton_Click(object sender, RoutedEventArgs e)
@@ -34,6 +36,7 @@ namespace Client.Views
             }
             var mainWindowView = new MainWindow();
             mainWindowView.ShowDialog();
+            ConversationViewModel.GI().Reset();
         }
 
         private void RegisterTextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

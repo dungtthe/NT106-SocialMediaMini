@@ -32,6 +32,7 @@ namespace Client.Services
                     {
                         var viewModel = new ConversationViewModel.ItemChatRoomDetailViewModel
                         {
+                            ChatRoomId = data.ChatRoomId,
                             LeaderId = data.LeaderId,
                             Avatar = data.Avatar,
                             RoomName = data.RoomName,
@@ -182,6 +183,26 @@ namespace Client.Services
             }
             catch { }
             return ChatRooms;
+        }
+
+
+
+        public static void ReadMessages(long chatRoomId)
+        {
+            Task.Run(async () =>
+            {
+                try
+                {
+                    var response = await ApiHelpers.GetAsync(new ApiRequestGet($"/api/chat-room/readmsgs/{chatRoomId}", true));
+                    if (response.StatusCode == HttpStatusCode.Ok)
+                    {
+                        //k can nao lam unauthorize check sau
+                    }
+                }
+                catch
+                {
+                }
+            });
         }
     }
 }

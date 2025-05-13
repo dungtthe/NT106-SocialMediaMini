@@ -22,6 +22,7 @@ namespace Client.Views
         public RegisterWindowView()
         {
             InitializeComponent();
+            MainWindow.TypePage = MainWindow.TYPE_PAGE.NONE;
         }
 
         private void LogInTextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

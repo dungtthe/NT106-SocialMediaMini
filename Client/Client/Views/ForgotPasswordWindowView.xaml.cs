@@ -22,6 +22,7 @@ namespace Client.Views
         public ForgotPasswordWindowView()
         {
             InitializeComponent();
+            MainWindow.TypePage = MainWindow.TYPE_PAGE.NONE;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
