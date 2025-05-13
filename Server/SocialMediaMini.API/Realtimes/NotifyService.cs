@@ -43,27 +43,28 @@ namespace SocialMediaMini.API.Realtimes
                                 var msg = JsonConvert.DeserializeObject<Request_AddNotificationDTO.Message>(data.Item2.Data);
                                 using var scope = _scopeFactory.CreateScope();
                                 var _chatRoomService = scope.ServiceProvider.GetRequiredService<IChatRoomService>();
-                                var userIds = await _chatRoomService.AddMessageAsync(new Request_AddMessageDTO()
+                                var resultAdd = await _chatRoomService.AddMessageAsync(new Request_AddMessageDTO()
                                 {
                                     UserId = senderId,
-                                    ChatRoomId= msg.ChatRoomId,
-                                    Content= msg.Content,
-                                    ParrentMessageId=msg.ParrentMessageId
+                                    ChatRoomId = msg.ChatRoomId,
+                                    Content = msg.Content,
+                                    ParrentMessageId = msg.ParrentMessageId
                                 });
-                                if (userIds==null)
+
+                                var userIds = resultAdd.Item1;
+                                if (userIds == null)
                                 {
                                     continue;
                                 }
-
                                 var useridsTemp = new List<string>();
                                 foreach (var userId in userIds)
                                 {
                                     if (RealtimeHub.UserOnlineIds.Contains(userId))
                                     {
-                                        useridsTemp.Add(userId+"");
+                                        useridsTemp.Add(userId + "");
                                     }
                                 }
-                                await _hubContext.Clients.Users(useridsTemp).SendAsync("ReceiveMessage",JsonConvert.SerializeObject(new Respone_NotificationDTO() { NotificationType= Type_Notification.MESSAGE,Message=msg.Content}));
+                                await _hubContext.Clients.Users(useridsTemp).SendAsync("ReceiveMessage", Type_Notification.MESSAGE, JsonConvert.SerializeObject(resultAdd.Item2));
                             }
                             catch { }
                         }

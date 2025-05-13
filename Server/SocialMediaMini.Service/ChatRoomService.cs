@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations.Operations;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SocialMediaMini.Common.Const.Type;
@@ -20,7 +21,8 @@ namespace SocialMediaMini.Service
     {
         Task<List<Respone_GetConversations.Conversation>> GetConversationsAsync(long userId);
         Task<Respone_ChatRoomDetail> GetChatRoomDetailAsync(long userId, long chatRoomId);
-        Task<List<long>> AddMessageAsync(Request_AddMessageDTO data);
+        Task<Tuple<List<long>, Respone_NotificationDTO.Respone_NotificationMessage>> AddMessageAsync(Request_AddMessageDTO data);
+        Task ReadMessages(long userId, long chatRoomId);
     }
     public class ChatRoomService : IChatRoomService
     {
@@ -30,7 +32,7 @@ namespace SocialMediaMini.Service
         private readonly INotificationRepository _notificationRepository;
         private readonly IChatRoomRepository _chatRoomRepository;
         private readonly IUnitOfWork _unitOfWork;
-        public ChatRoomService(IMessageRepository messageRepository, IAppUserRepository appUserRepository, IUser_ChatRoomRepository user_ChatRoomRepository, INotificationRepository notificationRepository, IChatRoomRepository chatRoomRepository,IUnitOfWork unitOfWork)
+        public ChatRoomService(IMessageRepository messageRepository, IAppUserRepository appUserRepository, IUser_ChatRoomRepository user_ChatRoomRepository, INotificationRepository notificationRepository, IChatRoomRepository chatRoomRepository, IUnitOfWork unitOfWork)
         {
             _messageRepository = messageRepository;
             _appUserRepository = appUserRepository;
@@ -40,12 +42,19 @@ namespace SocialMediaMini.Service
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<List<long>> AddMessageAsync(Request_AddMessageDTO data)
-        {
-            var results = new List<long>();
-            results.Add(data.UserId);
 
-            if(string.IsNullOrEmpty(data.Content)) return null;
+
+        public async Task<Tuple<List<long>, Respone_NotificationDTO.Respone_NotificationMessage>> AddMessageAsync(Request_AddMessageDTO data)
+        {
+
+            var result = new Tuple<List<long>, Respone_NotificationDTO.Respone_NotificationMessage>(
+                new List<long>(),
+                new Respone_NotificationDTO.Respone_NotificationMessage()
+            );
+
+            result.Item1.Add(data.UserId);
+
+            if (string.IsNullOrEmpty(data.Content)) return null;
 
             var fSender = await _appUserRepository.GetSingleByIdAsync(data.UserId);
             if (fSender == null)
@@ -61,7 +70,7 @@ namespace SocialMediaMini.Service
             {
                 return null;
             }
-            await _messageRepository.AddAsync(new Message()
+            var msg = await _messageRepository.AddAsync(new Message()
             {
                 Content = data.Content,
                 IsLink = false,
@@ -69,8 +78,8 @@ namespace SocialMediaMini.Service
                 UserId = data.UserId,
                 ParrentMessageId = data.ParrentMessageId,
                 ChatRoomId = chatRoom.Id,
-                IsRevoked= false,
-                ReactionType_UserId_Ids="[]",
+                IsRevoked = false,
+                ReactionType_UserId_Ids = "[]",
                 ReadByUserIds = $"[{data.UserId}]"
             });
 
@@ -82,23 +91,90 @@ namespace SocialMediaMini.Service
                 {
                     await _notificationRepository.AddAsync(new Notification()
                     {
-                        UserId=userId,
-                        Type= Type_Notification.MESSAGE,
-                        ReferenceId=chatRoom.Id,
-                        Content="Tin nhắn từ "+fSender.FullName,
-                        IsRead=false,
-                        CreateAt= DateTime.Now,
+                        UserId = userId,
+                        Type = Type_Notification.MESSAGE,
+                        ReferenceId = chatRoom.Id,
+                        Content = "Tin nhắn từ " + fSender.FullName,
+                        IsRead = false,
+                        CreateAt = DateTime.Now,
                     });
-                    results.Add(data.UserId);
+                    result.Item1.Add(userId);
                 }
             }
+
+
+            DataAccess.Models.Message parrentMsg = null;
+            DataAccess.Models.AppUser parrentMsgSender = null;
+            if (msg.ParrentMessageId != null)
+            {
+                parrentMsg = await _messageRepository.GetSingleByIdAsync(msg.ParrentMessageId ?? -1);
+                if (parrentMsg == null)
+                {
+                    return null;
+                }
+
+                parrentMsgSender = await _appUserRepository.GetSingleByIdAsync(parrentMsg.UserId);
+                if (parrentMsgSender == null)
+                {
+                    return null;
+                }
+            }
+
+
             await _unitOfWork.CommitAsync();
-            return results;
+
+            var nUser = new Respone_NotificationDTO.Respone_NotificationMessage.User()
+            {
+                Id = fSender.Id,
+                Avatar = fSender.Images != null ? JsonConvert.DeserializeObject<string[]>(fSender.Images)[0] : "no_img_user.png",
+                FullName = fSender.FullName
+            };
+
+
+
+            var nNotiMessage = new Respone_NotificationDTO.Respone_NotificationMessage()
+            {
+                ChatRoomId = chatRoom.Id,
+                Id = msg.Id,
+                Content = msg.Content,
+                CreatedAt = msg.CreateAt.ToString("dd/MM/yyyy HH:mm:ss"),
+                Sender = nUser,
+            };
+            if (parrentMsg == null)
+            {
+                nNotiMessage.Parrent = null;
+            }
+            else
+            {
+                nNotiMessage.Parrent = new Respone_NotificationDTO.Respone_NotificationMessage()
+                {
+                    ChatRoomId = chatRoom.Id,
+                    Id = parrentMsg.Id,
+                    Content = parrentMsg.Content,
+                    CreatedAt = parrentMsg.CreateAt.ToString("dd/MM/yyyy HH:mm:ss"),
+                    Sender = new Respone_NotificationDTO.Respone_NotificationMessage.User()
+                    {
+                        Id = parrentMsgSender.Id,
+                        FullName = parrentMsgSender.FullName,
+                        Avatar = parrentMsgSender.Images != null ? JsonConvert.DeserializeObject<string[]>(parrentMsgSender.Images)[0] : "no_img_user.png"
+                    }
+                };
+            }
+
+
+            nNotiMessage.NotificationType = Type_Notification.MESSAGE;
+            nNotiMessage.Message = "Tin nhắn mới";
+            result = new Tuple<List<long>, Respone_NotificationDTO.Respone_NotificationMessage>(
+                result.Item1,
+                nNotiMessage
+            );
+            return result;
         }
 
         public async Task<Respone_ChatRoomDetail> GetChatRoomDetailAsync(long userId, long chatRoomId)
         {
             var rsp = new Respone_ChatRoomDetail();
+            rsp.ChatRoomId = chatRoomId;
             var fChatRoom = (await _chatRoomRepository.FindAsync(c => c.Id == chatRoomId && !c.IsDelete)).FirstOrDefault();
             if (fChatRoom == null)
                 return null;
@@ -258,9 +334,9 @@ namespace SocialMediaMini.Service
             }
 
             //notification
-            foreach(var msg in fMessages)
+            foreach (var msg in fMessages)
             {
-                var findNotice = await _notificationRepository.FindAsync(x => x.UserId == userId && !x.IsRead && x.Type == Type_Notification.MESSAGE && x.ReferenceId == msg.Id);
+                var findNotice = await _notificationRepository.FindAsync(x => x.UserId == userId && !x.IsRead && x.Type == Type_Notification.MESSAGE && x.ReferenceId == chatRoomId);
                 if (findNotice != null)
                 {
                     foreach (var notice in findNotice)
@@ -350,6 +426,30 @@ namespace SocialMediaMini.Service
             }
             return result;
 
+        }
+
+        public async Task ReadMessages(long userId, long chatRoomId)
+        {
+            var lastMsg = await _messageRepository.GetLastMessage(chatRoomId);
+            if (lastMsg == null)
+            {
+                return;
+            }
+
+            var userReads = JsonConvert.DeserializeObject<List<long>>(lastMsg.ReadByUserIds);
+            if (!userReads.Contains(userId))
+            {
+                userReads.Add(userId);
+            }
+
+            lastMsg.ReadByUserIds = JsonConvert.SerializeObject(userReads);
+
+            var fNotices = await _notificationRepository.FindAsync(n => n.Type == Type_Notification.MESSAGE && !n.IsRead && n.UserId == userId);
+            foreach (var notification in fNotices)
+            {
+                notification.IsRead = true;
+            }
+            await _unitOfWork.CommitAsync();
         }
     }
 }
