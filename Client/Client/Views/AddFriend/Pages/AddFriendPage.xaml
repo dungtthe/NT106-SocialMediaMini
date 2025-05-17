@@ -1,0 +1,207 @@
+﻿<Page
+    x:Class="Client.Views.AddFriend.Pages.AddFriendPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Client.Views.AddFriend.Pages"
+    xmlns:models="clr-namespace:Client.Models"
+    mc:Ignorable="d"
+    Width="500"
+    Height="700"
+    d:DesignWidth="500"
+    d:DesignHeight="550"
+
+    Background="{DynamicResource ColorWhiteOne}">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/ResourcesXAML/ScrollBar.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <!-- Sample Temporary User Data -->
+            <models:UserModel x:Key="TempUser1" FullName="Temp User 1" Avatar="/Resources/Images/meolag.jpg" />
+            <models:UserModel x:Key="TempUser2" FullName="Temp User 2" Avatar="/Resources/Images/meolag.jpg" />
+            <models:UserModel x:Key="TempUser3" FullName="Temp User 3" Avatar="/Resources/Images/meolag.jpg" />
+            <!-- Sample Temporary User List -->
+            <x:Array x:Key="SuggestedUsers" Type="models:UserModel">
+                <StaticResource ResourceKey="TempUser1" />
+                <StaticResource ResourceKey="TempUser2" />
+                <StaticResource ResourceKey="TempUser3" />
+            </x:Array>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Search Bar -->
+        <Border
+            Grid.Row="0"
+            Background="White"
+            BorderBrush="{DynamicResource ColorBlueOne}"
+            BorderThickness="1"
+            CornerRadius="8"
+            Margin="0,0,0,15">
+            <Border.Effect>
+                <DropShadowEffect
+                    BlurRadius="5"
+                    Opacity="0.2"
+                    ShadowDepth="2" />
+            </Border.Effect>
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Image
+                    Source="/Resources/Icons/icon-search.png"
+                    Width="20"
+                    Height="20"
+                    Margin="0,0,10,0"
+                    VerticalAlignment="Center" />
+                <TextBox
+                    Grid.Column="1"
+                    FontSize="14"
+                    BorderThickness="0"
+                    VerticalAlignment="Center"
+                    Tag="tìm bạn bè...">
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="TextBox">
+                                        <Grid>
+                                            <ScrollViewer
+                                                x:Name="PART_ContentHost"
+                                                Margin="0"
+                                                VerticalAlignment="Center" />
+                                            <TextBlock
+                                                Text="{TemplateBinding Tag}"
+                                                FontStyle="Italic"
+                                                Foreground="Gray"
+                                                Margin="0,0,0,0"
+                                                VerticalAlignment="Center"
+                                                IsHitTestVisible="False">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource TemplatedParent}}" Value="">
+                                                                <Setter Property="Visibility" Value="Visible" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+            </Grid>
+        </Border>
+
+        <!-- Suggested Friends List -->
+        <ScrollViewer
+            Grid.Row="1"
+            VerticalScrollBarVisibility="Auto"
+            HorizontalScrollBarVisibility="Disabled"
+            Style="{StaticResource ModernScrollViewerStyle}">
+            <ItemsControl
+                ItemsSource="{StaticResource SuggestedUsers}"
+                Margin="0,0,0,20">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border
+                            Background="White"
+                            BorderBrush="{DynamicResource ColorBlueOne}"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Margin="0,0,0,10">
+                            <Border.Effect>
+                                <DropShadowEffect
+                                    BlurRadius="5"
+                                    Opacity="0.2"
+                                    ShadowDepth="2" />
+                            </Border.Effect>
+                            <Grid Margin="15">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <!-- Avatar -->
+                                <Ellipse
+                                    Width="40"
+                                    Height="40"
+                                    Margin="0,0,10,0">
+                                    <Ellipse.Fill>
+                                        <!-- <ImageBrush ImageSource="{Binding Avatar}" /> -->
+                                        <ImageBrush ImageSource="/Resources/Images/meolag.jpg"/>
+                                    </Ellipse.Fill>
+                                </Ellipse>
+                                <!-- Username -->
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Text="{Binding FullName}"
+                                    FontSize="16"
+                                    FontWeight="Bold"
+                                    VerticalAlignment="Center" />
+                                <!-- Add Friend Button -->
+                                <Button
+                                    Grid.Column="2"
+                                    Width="120"
+                                    Height="30"
+                                    Background="Transparent"
+                                    BorderBrush="{DynamicResource ColorBlueOne}"
+                                    BorderThickness="1"
+                                    Cursor="Hand">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border
+                                                Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                CornerRadius="4">
+                                                <StackPanel
+                                                    Orientation="Horizontal"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center">
+                                                    <Image
+                                                        Source="/Resources/Icons/icon-add-friend.png"
+                                                        Width="16"
+                                                        Height="16"
+                                                        Margin="0,0,5,0" />
+                                                    <TextBlock
+                                                        Text="kết bạn"
+                                                        FontSize="12"
+                                                        VerticalAlignment="Center" />
+                                                </StackPanel>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="{DynamicResource ColorBlueOne}" />
+                                                    <Setter Property="Foreground" Value="White" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</Page>
