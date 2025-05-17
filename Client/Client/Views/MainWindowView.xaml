@@ -175,6 +175,59 @@
                         </Style>
                     </Button.Style>
                 </Button>
+
+                <!--  Contact Button  -->
+                <Button
+                    x:Name="Contact"
+                    Width="50"
+                    Height="50"
+                    Margin="11,0,11,10"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Click="BlogButton_Click"
+                    Cursor="Hand">  
+                    <Button.Content>
+                        <!--  Contact Icon  -->
+                        <Image
+                        Width="26"
+                        Height="26"
+                        RenderTransformOrigin="0.5,0.5"
+                        Source="/Resources/Icons/Contact.png"
+                        Stretch="Uniform">
+                            <Image.RenderTransform>
+                                <ScaleTransform ScaleX="1" ScaleY="1" />
+                            </Image.RenderTransform>
+                        </Image>
+                    </Button.Content>
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#1AFFFFFF" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="RenderTransform">
+                                        <Setter.Value>
+                                            <ScaleTransform ScaleX="0.95" ScaleY="0.95" />
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
             </StackPanel>
         </Border>
 
