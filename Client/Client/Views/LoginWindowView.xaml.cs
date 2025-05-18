@@ -31,7 +31,7 @@ namespace Client.Views
 
         private async void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            var rs = await UserService.LoginAsync(PhoneNumberTextBox.Text, PasswordBox.Password);
+            var rs = await UserService.LoginAsync(PhoneNumberTextBox.Text, realPassword);
             if (!rs)
             {
                 return;
@@ -57,6 +57,44 @@ namespace Client.Views
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private string realPassword = string.Empty;
+        private bool isUpdatingPassword = false;
+        private void txtPassword_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (isUpdatingPassword)
+                return;
+
+            var txtBox = sender as TextBox;
+
+            int caretIndex = txtBox.CaretIndex;
+            int changeLength = txtBox.Text.Length - realPassword.Length;
+
+            if (changeLength > 0)
+            {
+                // User typed something new
+                string added = txtBox.Text.Substring(caretIndex - changeLength, changeLength);
+                realPassword = realPassword.Insert(caretIndex - changeLength, added);
+            }
+            else if (changeLength < 0)
+            {
+                // User deleted
+                int removeStart = caretIndex;
+                int removeCount = Math.Abs(changeLength);
+                if (removeStart < realPassword.Length)
+                    realPassword = realPassword.Remove(removeStart, removeCount);
+            }
+
+            isUpdatingPassword = true;
+            txtBox.Text = new string('•', realPassword.Length);
+            txtBox.CaretIndex = caretIndex;
+            isUpdatingPassword = false;
         }
     }
 }
