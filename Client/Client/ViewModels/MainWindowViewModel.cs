@@ -13,6 +13,7 @@ namespace Client.ViewModels
         private static MainWindowViewModel ins;
         public static MainWindowViewModel GI()
         {
+
             if(ins == null)
             {
                 ins = new MainWindowViewModel();
@@ -21,25 +22,27 @@ namespace Client.ViewModels
         }
 
 
-        private string _fullName;
-        public string FullName
-        {
-            get => _fullName;
-            set => SetProperty(ref _fullName, value, nameof(FullName));
-        }
 
-        private string _avatar;
-        public string Avatar
-        {
-            get => _avatar;
-            set => SetProperty(ref _avatar, value, nameof(Avatar));
-        }
+        //dùng ở code behine
+        //private string _fullName;
+        //public string FullName
+        //{
+        //    get => _fullName;
+        //    set => SetProperty(ref _fullName, value, nameof(FullName));
+        //}
+
+        //private string _avatar;
+        //public string Avatar
+        //{
+        //    get => _avatar;
+        //    set => SetProperty(ref _avatar, value, nameof(Avatar));
+        //}
 
 
         public MainWindowViewModel()
         {
-            FullName = UserStore.FullName;
-            Avatar = UserStore.Avatar;
+            //FullName = UserStore.FullName;
+            //Avatar = UserStore.Avatar;
         }
     }
 }

@@ -33,6 +33,7 @@
     <None Remove="Resources\Icons\icon-add-group.png" />
     <None Remove="Resources\Icons\icon-search.png" />
     <None Remove="Resources\Icons\iconclose.png" />
+    <None Remove="Resources\Icons\iconimg.png" />
     <None Remove="Resources\Icons\iconmaxsize.png" />
     <None Remove="Resources\Icons\Info_Icon.png" />
     <None Remove="Resources\Icons\Logout_Icon.png" />
@@ -91,6 +92,7 @@
     <Resource Include="Resources\Icons\icon-add-group.png" />
     <Resource Include="Resources\Icons\icon-search.png" />
     <Resource Include="Resources\Icons\iconclose.png" />
+    <Resource Include="Resources\Icons\iconimg.png" />
     <Resource Include="Resources\Icons\iconmaxsize.png" />
     <Resource Include="Resources\Icons\iconmsize.png" />
     <Resource Include="Resources\Icons\Info_Icon.png" />

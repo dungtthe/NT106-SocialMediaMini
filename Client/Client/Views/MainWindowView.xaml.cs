@@ -1,4 +1,5 @@
-﻿using Client.Services.RealTimes;
+﻿using Client.LocalStorage;
+using Client.Services.RealTimes;
 using Client.ViewModels;
 using Client.ViewModels.Posts;
 using Client.Views.Chats.Pages;
@@ -46,6 +47,8 @@ namespace Client.Views
             }
             isFirst = false;
             MainFrame.Navigate(new ChatPageView());
+
+            imgAvatar.ImageSource = new BitmapImage(new Uri(UserStore.Avatar, UriKind.RelativeOrAbsolute));
 
         }
         private void ChatButton_Click(object sender, RoutedEventArgs e)

@@ -1,5 +1,6 @@
 ﻿using Client.Const.Type;
 using Client.Services;
+using Client.ViewModels.Chats;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,6 +13,19 @@ namespace Client.ViewModels.Posts
 {
     public class PostViewModel : BaseViewModel
     {
+
+        private static PostViewModel ins;
+        public static PostViewModel GI()
+        {
+            if (ins == null)
+            {
+                ins = new PostViewModel();
+            }
+            return ins;
+        }
+
+        
+
 
         public class ItemUserViewModel : BaseViewModel
         {

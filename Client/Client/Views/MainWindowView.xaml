@@ -67,7 +67,7 @@
                     Height="45"
                     Margin="11,20,11,30">
                     <Ellipse.Fill>
-                        <ImageBrush ImageSource="{Binding Avatar}" />
+                        <ImageBrush x:Name="imgAvatar" />
                     </Ellipse.Fill>
                 </Ellipse>
                 <!--  Chat Button  -->
@@ -185,15 +185,15 @@
                     Background="Transparent"
                     BorderThickness="0"
                     Click="BlogButton_Click"
-                    Cursor="Hand">  
+                    Cursor="Hand">
                     <Button.Content>
                         <!--  Contact Icon  -->
                         <Image
-                        Width="26"
-                        Height="26"
-                        RenderTransformOrigin="0.5,0.5"
-                        Source="/Resources/Icons/Contact.png"
-                        Stretch="Uniform">
+                            Width="26"
+                            Height="26"
+                            RenderTransformOrigin="0.5,0.5"
+                            Source="/Resources/Icons/Contact.png"
+                            Stretch="Uniform">
                             <Image.RenderTransform>
                                 <ScaleTransform ScaleX="1" ScaleY="1" />
                             </Image.RenderTransform>
@@ -205,9 +205,9 @@
                                 <Setter.Value>
                                     <ControlTemplate TargetType="Button">
                                         <Border
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}">
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}">
                                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                                         </Border>
                                     </ControlTemplate>
