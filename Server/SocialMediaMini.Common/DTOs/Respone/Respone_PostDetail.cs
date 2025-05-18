@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SocialMediaMini.Common.DTOs.Respone
 {
-    public class Respone_GetFriendPosts
+    public class Respone_PostDetail
     {
         public class User
         {

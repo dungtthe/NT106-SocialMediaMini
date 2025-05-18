@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SocialMediaMini.API.Extensions;
+using SocialMediaMini.Common.DTOs.Request;
 using SocialMediaMini.Common.Helpers;
 using SocialMediaMini.Service;
 
@@ -40,5 +41,84 @@ namespace SocialMediaMini.API.Areas.User
                 return this.InternalServerError();
             }
         }
+
+
+
+        [HttpGet("detail/{id}")]
+        public async Task<IActionResult> GetPostDetailAsync(long id)
+        {
+            try
+            {
+                var suserId = this.HttpContext.User.FindFirst("UserId")?.Value;
+                long userId = 0;
+                if (suserId == null || !long.TryParse(suserId, out userId))
+                {
+                    return Unauthorized();
+                }
+                var rsp = await _postService.GetPostDetailAsync(userId,id);
+                if (rsp == null)
+                {
+                    return NotFound();
+                }
+                return Ok(rsp);
+            }
+            catch (Exception ex)
+            {
+                await LoggerHelper.LogMsgAsync("GetPostDetailAsync()", "", ex);
+                return this.InternalServerError();
+            }
+        }
+
+
+        [HttpGet("myposts")]
+        public async Task<IActionResult> GetMyPostsAsync()
+        {
+            try
+            {
+                var suserId = this.HttpContext.User.FindFirst("UserId")?.Value;
+                long userId = 0;
+                if (suserId == null || !long.TryParse(suserId, out userId))
+                {
+                    return Unauthorized();
+                }
+                var rsp = await _postService.GetMyPostsAsync(userId);
+                if (rsp == null)
+                {
+                    return NotFound();
+                }
+                return Ok(rsp);
+            }
+            catch (Exception ex)
+            {
+                await LoggerHelper.LogMsgAsync("GetMyPostsAsync()", "", ex);
+                return this.InternalServerError();
+            }
+        }
+
+        [HttpPost("add")]
+        public async Task<IActionResult> AddPostAsync(Request_AddPostDTO data)
+        {
+            try
+            {
+                var suserId = this.HttpContext.User.FindFirst("UserId")?.Value;
+                long userId = 0;
+                if (suserId == null || !long.TryParse(suserId, out userId))
+                {
+                    return Unauthorized();
+                }
+                var rsp = await _postService.AddPostAsync(userId,data);
+                return Ok(rsp);
+            }
+            catch (Exception ex)
+            {
+                await LoggerHelper.LogMsgAsync("AddPostAsync()", "", ex);
+                return this.InternalServerError();
+            }
+        }
+
+
+
+
+
     }
 }
