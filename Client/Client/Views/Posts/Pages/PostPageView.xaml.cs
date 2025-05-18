@@ -1,6 +1,11 @@
-﻿using Client.LocalStorage;
+﻿using Client.Const.Type;
+using Client.Helpers;
+using Client.LocalStorage;
+using Client.Models.Request;
+using Client.Services;
 using Client.ViewModels.Posts;
 using Microsoft.Win32;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -137,5 +142,50 @@ namespace Client.Views.Posts.Pages
                 }
             }
         }
+
+        private async void btnDang_Click(object sender, RoutedEventArgs e)
+        {
+            btnDang.IsEnabled = false;
+
+            var data = new Request_AddPostDTO()
+            {
+                Content = txtContentPost.Text,
+                Images = JsonConvert.SerializeObject(GetAllImagesBase64()),
+                PostVisibility = (byte)Type_PostVisibility.Friends
+            };
+
+            var rs = await PostService.AddPostAsync(data);
+
+            btnHuyPost.Visibility = Visibility.Hidden;
+            txtContentPost.Text = "";
+            listImgSelect.Children.Clear();
+
+            if (rs != null)
+            {
+                PostViewModel.NewPostQueue.Enqueue(rs.Value);
+            }
+            else
+            {
+                Debug.WriteLine("Post fail");
+            }
+        }
+
+        private List<string> GetAllImagesBase64()
+        {
+            var result = new List<string>();
+            foreach (var child in listImgSelect.Children)
+            {
+                if (child is Border border && border.Child is Image image && image.Source != null)
+                {
+                    var base64 = ImageHelpers.ImageSourceToBase64(image.Source);
+                    if (!string.IsNullOrEmpty(base64))
+                    {
+                        result.Add(base64);
+                    }
+                }
+            }
+            return result;
+        }
+
     }
 }

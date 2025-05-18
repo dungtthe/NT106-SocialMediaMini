@@ -158,6 +158,7 @@
                         HorizontalAlignment="Right"
                         Background="{DynamicResource ColorBlueOne}"
                         BorderThickness="0"
+                        Click="btnDang_Click"
                         Content="Đăng"
                         Cursor="Hand"
                         FontSize="14"

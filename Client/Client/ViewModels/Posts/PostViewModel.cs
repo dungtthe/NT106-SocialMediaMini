@@ -1,12 +1,18 @@
 ﻿using Client.Const.Type;
+using Client.Helpers;
+using Client.Models.Respone;
 using Client.Services;
 using Client.ViewModels.Chats;
+using Client.Views;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls.Primitives;
 using static Client.ViewModels.Chats.ConversationViewModel;
 
 namespace Client.ViewModels.Posts
@@ -24,7 +30,12 @@ namespace Client.ViewModels.Posts
             return ins;
         }
 
-        
+        public static void Reset()
+        {
+            ins?.Items?.Clear();
+            NewPostQueue?.Clear();
+        }
+
 
 
         public class ItemUserViewModel : BaseViewModel
@@ -135,11 +146,114 @@ namespace Client.ViewModels.Posts
                 var data = await PostService.GetFriendPostsAsync();
                 if (data != null)
                 {
-                    Items = data;
+                    foreach (var item in data)
+                    {
+                        AddItemPostViewModel(item, false, true);
+                    }
+                }
+                data = await PostService.GetMyPostsAsync();
+                if (data != null)
+                {
+                    foreach (var item in data)
+                    {
+                        AddItemPostViewModel(item, true, false);
+                    }
+                }
+            });
+
+
+
+            Task.Run(async () =>
+            {
+
+                while (true)
+                {
+                    try
+                    {
+                        if (MainWindow.TypePage == MainWindow.TYPE_PAGE.POST_PAGE_VIEW)
+                        {
+                            if (NewPostQueue.TryDequeue(out var postId))
+                            {
+                                var postDetail = await PostService.GetPostDetailAsync(postId);
+                                if (postDetail != null)
+                                {
+                                    AddItemPostViewModel(postDetail, true);
+                                }
+                            }
+                        }
+
+
+                        await Task.Delay(20);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine(e.Message);
+                    }
                 }
 
             });
         }
+
+        private void AddItemPostViewModel(PostViewModel.ItemPostViewModel data)
+        {
+            UIHelpers.InvokeDispatcherUI(() => { Items.Add(data); });
+        }
+
+
+        private void AddItemPostViewModel(Respone_PostDetail.PostDTO dto, bool isAddFirst, bool isReRandom = false)
+        {
+            UIHelpers.InvokeDispatcherUI(() =>
+            {
+                var itemAdd = new PostViewModel.ItemPostViewModel
+                {
+                    PostId = dto.PostId,
+                    Content = dto.Content,
+                    Images = new ObservableCollection<string>(dto.Images ?? new List<string>()),
+                    CreateAt = dto.CreateAt,
+                    UpdateAt = dto.UpdateAt,
+                    CommentCount = dto.CommentCount,
+                    User = new PostViewModel.ItemUserViewModel
+                    {
+                        FullName = dto.User?.FullName,
+                        Avatar = dto.User?.Avatar
+                    },
+                    Reactions = new ObservableCollection<PostViewModel.ItemReactionViewModel>(
+                            dto.Reactions?.Select(r => new PostViewModel.ItemReactionViewModel
+                            {
+                                TypeReaction = r.TypeReaction,
+                                User = new PostViewModel.ItemUserViewModel
+                                {
+                                    FullName = r.User?.FullName,
+                                    Avatar = r.User?.Avatar
+                                }
+                            }) ?? new List<PostViewModel.ItemReactionViewModel>())
+                };
+
+                if (isAddFirst)
+                {
+                    Items.Insert(0, itemAdd);
+                }
+                else
+                {
+                    Items.Add(itemAdd);
+                }
+
+                if (isReRandom)
+                {
+                    var rnd = new Random();
+                    var shuffled = Items.OrderBy(_ => rnd.Next()).ToList();
+                    Items.Clear();
+                    foreach (var item in shuffled)
+                    {
+                        Items.Add(item);
+                    }
+                }
+            });
+        }
+
+
+
+        public static ConcurrentQueue<long> NewPostQueue = new ConcurrentQueue<long>();//id post
 
     }
 }

@@ -331,7 +331,7 @@ namespace Client.ViewModels.Chats
                     var data = await ChatRoomService.GetConversationsAsync();
                     if (data != null)
                     {
-                        InvokeDispatcherUI(async () =>
+                        UIHelpers.InvokeDispatcherUI(async () =>
                         {
                             //ChatRooms = data;
                             var selectedTemp = SelectedChatRoom;
@@ -358,17 +358,7 @@ namespace Client.ViewModels.Chats
 
         //    Application.Current.Dispatcher.BeginInvoke(action);
         //}
-        private void InvokeDispatcherUI(Action action)
-        {
-            if (Application.Current != null && Application.Current.Dispatcher != null)
-            {
-                Application.Current.Dispatcher.BeginInvoke(action);
-            }
-            else
-            {
-                Debug.WriteLine("Dispatcher is not available.");
-            }
-        }
+      
 
         private void LoadChatRoomDetail(long chatRoomId)
         {
@@ -382,7 +372,7 @@ namespace Client.ViewModels.Chats
 
                     if (data != null)
                     {
-                        InvokeDispatcherUI(() =>
+                        UIHelpers.InvokeDispatcherUI(() =>
                         {
                             ChatRoomDetail = data;
                             if (IsValidChatRoom())
@@ -513,7 +503,7 @@ namespace Client.ViewModels.Chats
                                         try
                                         {
 
-                                            InvokeDispatcherUI(() =>
+                                            UIHelpers.InvokeDispatcherUI(() =>
                                             {
                                                 ChatRoomDetail.Messages.Add(msgNew);
                                                 SelectedChatRoom.LastMessage = msgNew.Content;

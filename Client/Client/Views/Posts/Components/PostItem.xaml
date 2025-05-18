@@ -2,11 +2,16 @@
     x:Class="Client.Views.Posts.Components.PostItem"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:Client.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="300"
     d:DesignWidth="1588"
     mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <converters:StringToImageSourceConverter x:Key="StringToImageSourceConverter" />
+    </UserControl.Resources>
 
     <Border
         Margin="0,0,0,15"
@@ -84,10 +89,22 @@
                                 Background="Transparent"
                                 ClipToBounds="True"
                                 CornerRadius="15">
-                                <Image
+                                <!--<Image
                                     Width="200"
                                     Height="200"
                                     Source="{Binding}"
+                                    Stretch="UniformToFill">
+                                    <Image.Clip>
+                                        <RectangleGeometry
+                                            RadiusX="15"
+                                            RadiusY="15"
+                                            Rect="0,0,200,200" />
+                                    </Image.Clip>
+                                </Image>-->
+                                <Image
+                                    Width="200"
+                                    Height="200"
+                                    Source="{Binding Converter={StaticResource StringToImageSourceConverter}}"
                                     Stretch="UniformToFill">
                                     <Image.Clip>
                                         <RectangleGeometry

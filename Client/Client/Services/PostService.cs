@@ -1,5 +1,7 @@
 ﻿using Client.Const;
 using Client.Helpers;
+using Client.LocalStorage;
+using Client.Models.Request;
 using Client.Models.Respone;
 using Client.ViewModels.Posts;
 using MaterialDesignThemes.Wpf;
@@ -16,43 +18,34 @@ namespace Client.Services
 {
     public static class PostService
     {
-        public static async Task<ObservableCollection<PostViewModel.ItemPostViewModel>> GetFriendPostsAsync()
+        public static async Task<List<Respone_PostDetail.PostDTO>> GetFriendPostsAsync()
         {
             try
             {
                 var response = await ApiHelpers.GetAsync(new ApiRequestGet("/api/post/friend-post", true));
                 if (response.StatusCode == HttpStatusCode.Ok)
                 {
-                    var list = JsonConvert.DeserializeObject<List<Respone_GetFriendPosts.PostDTO>>(response.ResponseBody);
-                    if (list != null)
-                    {
-                        var result = list.Select(dto => new PostViewModel.ItemPostViewModel
-                        {
-                            PostId = dto.PostId,
-                            Content = dto.Content,
-                            Images = new ObservableCollection<string>(dto.Images ?? new List<string>()),
-                            CreateAt = dto.CreateAt,
-                            UpdateAt = dto.UpdateAt,
-                            CommentCount = dto.CommentCount,
-                            User = new PostViewModel.ItemUserViewModel
-                            {
-                                FullName = dto.User?.FullName,
-                                Avatar = dto.User?.Avatar
-                            },
-                            Reactions = new ObservableCollection<PostViewModel.ItemReactionViewModel>(
-                                dto.Reactions?.Select(r => new PostViewModel.ItemReactionViewModel
-                                {
-                                    TypeReaction = r.TypeReaction,
-                                    User = new PostViewModel.ItemUserViewModel
-                                    {
-                                        FullName = r.User?.FullName,
-                                        Avatar = r.User?.Avatar
-                                    }
-                                }) ?? new List<PostViewModel.ItemReactionViewModel>())
-                        });
+                    var list = JsonConvert.DeserializeObject<List<Respone_PostDetail.PostDTO>>(response.ResponseBody);
+                    return list;
+                }
+            }
+            catch
+            {
+                // Log nếu cần
+            }
 
-                        return new ObservableCollection<PostViewModel.ItemPostViewModel>(result); // ✅ fix lỗi ở đây
-                    }
+            return null;
+        }
+         
+        public static async Task<List<Respone_PostDetail.PostDTO>> GetMyPostsAsync()
+        {
+            try
+            {
+                var response = await ApiHelpers.GetAsync(new ApiRequestGet("/api/post/myposts", true));
+                if (response.StatusCode == HttpStatusCode.Ok)
+                {
+                    var list = JsonConvert.DeserializeObject<List<Respone_PostDetail.PostDTO>>(response.ResponseBody);
+                    return list;
                 }
             }
             catch
@@ -63,5 +56,43 @@ namespace Client.Services
             return null;
         }
 
+
+        public static async Task<long?> AddPostAsync(Request_AddPostDTO data)
+        {
+            try
+            {
+                var response = await ApiHelpers.PostAsync(new ApiRequest("/api/post/add", JsonConvert.SerializeObject(data), true));
+                if (response.StatusCode == HttpStatusCode.Ok)
+                {
+                    var idPostNew = JsonConvert.DeserializeObject<long?>(response.ResponseBody);
+                    if (idPostNew != null)
+                    {
+                        return idPostNew;
+                    }
+                }
+            }
+            catch { }
+
+            return null;
+        }
+
+        public static async Task<Respone_PostDetail.PostDTO> GetPostDetailAsync(long postId)
+        {
+            try
+            {
+                var response = await ApiHelpers.GetAsync(new ApiRequestGet("/api/post/detail/" + postId, true));
+                if (response.StatusCode == HttpStatusCode.Ok)
+                {
+                    var data = JsonConvert.DeserializeObject<Respone_PostDetail.PostDTO>(response.ResponseBody);
+                    return data;
+                }
+            }
+            catch
+            {
+                // Log nếu cần
+            }
+
+            return null;
+        }
     }
 }

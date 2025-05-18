@@ -1,5 +1,7 @@
 ﻿using Client.Services;
 using Client.ViewModels.Chats;
+using Client.ViewModels.Posts;
+using Client.Views.Posts.Pages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +39,7 @@ namespace Client.Views
             var mainWindowView = new MainWindow();
             mainWindowView.ShowDialog();
             ConversationViewModel.GI().Reset();
+            PostViewModel.Reset();
         }
 
         private void RegisterTextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
