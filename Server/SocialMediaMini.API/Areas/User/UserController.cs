@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SocialMediaMini.API.Extensions;
-using SocialMediaMini.Common.Const;
-using SocialMediaMini.Common.DTOs.Request;
 using SocialMediaMini.Common.Helpers;
 using SocialMediaMini.Service;
+using SocialMediaMini.Shared.Const;
+using SocialMediaMini.Shared.Dto.Request;
 
 namespace SocialMediaMini.API.Areas.User
 {

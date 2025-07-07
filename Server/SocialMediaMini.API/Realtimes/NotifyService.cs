@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
-using SocialMediaMini.Common.Const.Type;
-using SocialMediaMini.Common.DTOs.Request;
-using SocialMediaMini.Common.DTOs.Respone;
 using SocialMediaMini.DataAccess.Repositories;
 using SocialMediaMini.Service;
+using SocialMediaMini.Shared.Const.Type;
+using SocialMediaMini.Shared.Dto.Request;
 using System.Collections.Concurrent;
 using System.Linq.Expressions;
 
@@ -36,7 +35,7 @@ namespace SocialMediaMini.API.Realtimes
 
 
                         #region message
-                        if (data.Item2.NotificationType == Type_Notification.MESSAGE)
+                        if (data.Item2.NotificationType == NotificationType.MESSAGE)
                         {
                             try
                             {
@@ -64,7 +63,7 @@ namespace SocialMediaMini.API.Realtimes
                                         useridsTemp.Add(userId + "");
                                     }
                                 }
-                                await _hubContext.Clients.Users(useridsTemp).SendAsync("ReceiveMessage", Type_Notification.MESSAGE, JsonConvert.SerializeObject(resultAdd.Item2));
+                                await _hubContext.Clients.Users(useridsTemp).SendAsync("ReceiveMessage", NotificationType.MESSAGE, JsonConvert.SerializeObject(resultAdd.Item2));
                             }
                             catch { }
                         }

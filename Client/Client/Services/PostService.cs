@@ -1,11 +1,12 @@
 ﻿using Client.Const;
 using Client.Helpers;
 using Client.LocalStorage;
-using Client.Models.Request;
-using Client.Models.Respone;
 using Client.ViewModels.Posts;
 using MaterialDesignThemes.Wpf;
 using Newtonsoft.Json;
+using SocialMediaMini.Shared.Const;
+using SocialMediaMini.Shared.Dto.Request;
+using SocialMediaMini.Shared.Dto.Respone;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -18,14 +19,14 @@ namespace Client.Services
 {
     public static class PostService
     {
-        public static async Task<List<Respone_PostDetail.PostDTO>> GetFriendPostsAsync()
+        public static async Task<List<Respone_PostDetail.Post>> GetFriendPostsAsync()
         {
             try
             {
                 var response = await ApiHelpers.GetAsync(new ApiRequestGet("/api/post/friend-post", true));
                 if (response.StatusCode == HttpStatusCode.Ok)
                 {
-                    var list = JsonConvert.DeserializeObject<List<Respone_PostDetail.PostDTO>>(response.ResponseBody);
+                    var list = JsonConvert.DeserializeObject<List<Respone_PostDetail.Post>>(response.ResponseBody);
                     return list;
                 }
             }
@@ -37,14 +38,14 @@ namespace Client.Services
             return null;
         }
          
-        public static async Task<List<Respone_PostDetail.PostDTO>> GetMyPostsAsync()
+        public static async Task<List<Respone_PostDetail.Post>> GetMyPostsAsync()
         {
             try
             {
                 var response = await ApiHelpers.GetAsync(new ApiRequestGet("/api/post/myposts", true));
                 if (response.StatusCode == HttpStatusCode.Ok)
                 {
-                    var list = JsonConvert.DeserializeObject<List<Respone_PostDetail.PostDTO>>(response.ResponseBody);
+                    var list = JsonConvert.DeserializeObject<List<Respone_PostDetail.Post>>(response.ResponseBody);
                     return list;
                 }
             }
@@ -76,14 +77,14 @@ namespace Client.Services
             return null;
         }
 
-        public static async Task<Respone_PostDetail.PostDTO> GetPostDetailAsync(long postId)
+        public static async Task<Respone_PostDetail.Post> GetPostDetailAsync(long postId)
         {
             try
             {
                 var response = await ApiHelpers.GetAsync(new ApiRequestGet("/api/post/detail/" + postId, true));
                 if (response.StatusCode == HttpStatusCode.Ok)
                 {
-                    var data = JsonConvert.DeserializeObject<Respone_PostDetail.PostDTO>(response.ResponseBody);
+                    var data = JsonConvert.DeserializeObject<Respone_PostDetail.Post>(response.ResponseBody);
                     return data;
                 }
             }

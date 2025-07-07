@@ -1,9 +1,9 @@
-﻿using Client.Const.Type;
-using Client.Helpers;
-using Client.Models.Respone;
+﻿using Client.Helpers;
 using Client.Services;
 using Client.ViewModels.Chats;
 using Client.Views;
+using SocialMediaMini.Shared.Const.Type;
+using SocialMediaMini.Shared.Dto.Respone;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -64,11 +64,11 @@ namespace Client.ViewModels.Posts
                 set => SetProperty(ref _user, value, nameof(User));
             }
 
-            private Type_Reaction _typeReaction;
-            public Type_Reaction TypeReaction
+            private ReactionType _reactionType;
+            public ReactionType ReactionType
             {
-                get => _typeReaction;
-                set => SetProperty(ref _typeReaction, value, nameof(TypeReaction));
+                get => _reactionType;
+                set => SetProperty(ref _reactionType, value, nameof(ReactionType));
             }
         }
 
@@ -200,7 +200,7 @@ namespace Client.ViewModels.Posts
         }
 
 
-        private void AddItemPostViewModel(Respone_PostDetail.PostDTO dto, bool isAddFirst, bool isReRandom = false)
+        private void AddItemPostViewModel(Respone_PostDetail.Post dto, bool isAddFirst, bool isReRandom = false)
         {
             UIHelpers.InvokeDispatcherUI(() =>
             {
@@ -220,7 +220,7 @@ namespace Client.ViewModels.Posts
                     Reactions = new ObservableCollection<PostViewModel.ItemReactionViewModel>(
                             dto.Reactions?.Select(r => new PostViewModel.ItemReactionViewModel
                             {
-                                TypeReaction = r.TypeReaction,
+                                ReactionType = r.ReactionType,
                                 User = new PostViewModel.ItemUserViewModel
                                 {
                                     FullName = r.User?.FullName,

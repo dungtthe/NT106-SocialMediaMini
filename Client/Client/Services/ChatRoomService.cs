@@ -1,11 +1,12 @@
 ﻿using Client.Const;
 using Client.Helpers;
 using Client.LocalStorage;
-using Client.Models.Respone;
 using Client.ViewModels.Chats;
 using Client.ViewModels.Posts;
 using Client.Views;
 using Newtonsoft.Json;
+using SocialMediaMini.Shared.Const;
+using SocialMediaMini.Shared.Dto.Respone;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -82,7 +83,7 @@ namespace Client.Services
 
                                     messageVM.Reactions.Add(new ItemReactionViewModel
                                     {
-                                        TypeReaction = react.TypeReaction,
+                                        ReactionType = react.ReactionType,
                                         User = new ItemUserViewModel
                                         {
                                             Id = react.User.Id,
@@ -148,7 +149,7 @@ namespace Client.Services
                 var response = await ApiHelpers.GetAsync(new ApiRequestGet("/api/chat-room/conversations", true));
                 if (response.StatusCode == HttpStatusCode.Ok)
                 {
-                    var conversations = JsonConvert.DeserializeObject<List<Respone_GetConversations.ConversationDTO>>(response.ResponseBody);
+                    var conversations = JsonConvert.DeserializeObject<List<Respone_GetConversations.Conversation>>(response.ResponseBody);
                     if (conversations != null)
                     {
                         ChatRooms = new ObservableCollection<ItemChatRoomViewModel>();

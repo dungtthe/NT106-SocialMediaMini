@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
-using SocialMediaMini.Common.DTOs.Request;
 using SocialMediaMini.Common.MyCollections;
+using SocialMediaMini.Shared.Const.Type;
+using SocialMediaMini.Shared.Dto.Request;
 using System.Diagnostics;
 
 namespace SocialMediaMini.API.Realtimes
@@ -12,7 +13,7 @@ namespace SocialMediaMini.API.Realtimes
     {
         public static MyHashSet<long> UserOnlineIds = new MyHashSet<long>();
 
-        public async Task SendMessage(byte notificationType, string data)
+        public async Task SendMessage(NotificationType notificationType, string data)
         {
             try
             {

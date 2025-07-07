@@ -1,18 +1,18 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using SocialMediaMini.Common.Const.Type;
-using SocialMediaMini.Common.DTOs.Request;
-using SocialMediaMini.Common.DTOs.Respone;
+
 using SocialMediaMini.DataAccess.Infrastructure;
 using SocialMediaMini.DataAccess.Models;
 using SocialMediaMini.DataAccess.Repositories;
+using SocialMediaMini.Shared.Const.Type;
+using SocialMediaMini.Shared.Dto.Request;
+using SocialMediaMini.Shared.Dto.Respone;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
-using static SocialMediaMini.Common.DTOs.Respone.Respone_PostDetail;
 
 namespace SocialMediaMini.Service
 {
@@ -51,7 +51,7 @@ namespace SocialMediaMini.Service
                 if (fFriend == null)
                     continue;
                 //lấy bài viết của bạn bè
-                var fPosts = await _postRepository.FindAsync(p => p.UserId == friendId && !p.IsDeleted && p.PostType == Type_Post.BAI_VIET && p.PostVisibility != (byte)Type_PostVisibility.Private);
+                var fPosts = await _postRepository.FindAsync(p => p.UserId == friendId && !p.IsDeleted && p.PostType == PostType.BAI_VIET && p.PostVisibilityType != PostVisibilityType.Private);
                 foreach (var post in fPosts)
                 {
                     var imgsFriend = JsonConvert.DeserializeObject<JArray>(fFriend.Images).ToObject<List<string>>();
@@ -81,7 +81,7 @@ namespace SocialMediaMini.Service
                                 FullName = fuserReact.FullName,
                                 Avatar = imgsfuserReact[0]
                             },
-                            TypeReaction = (Type_Reaction)int.Parse(ss[0])
+                            ReactionType = (ReactionType)byte.Parse(ss[0])
                         });
                     }
 
@@ -111,8 +111,8 @@ namespace SocialMediaMini.Service
                 CreateAt = DateTime.Now,
                 UpdateAt = DateTime.Now,
                 UserId = userId,
-                PostType = Type_Post.BAI_VIET,
-                PostVisibility = data.PostVisibility
+                PostType = PostType.BAI_VIET,
+                PostVisibilityType = data.PostVisibilityType
             };
 
             await _postRepository.AddAsync(post);
@@ -125,13 +125,13 @@ namespace SocialMediaMini.Service
             var fUser = await _userRepository.GetSingleByIdAsync(userRequestId);
             if (fUser == null)
                 return null;
-            var fPost = (await _postRepository.FindAsync(p => p.Id == postId && !p.IsDeleted && p.PostType == Type_Post.BAI_VIET)).FirstOrDefault();
+            var fPost = (await _postRepository.FindAsync(p => p.Id == postId && !p.IsDeleted && p.PostType == PostType.BAI_VIET)).FirstOrDefault();
             if (fPost == null)
             {
                 return null;
             }
 
-            if (userRequestId != fPost.UserId && fPost.PostVisibility == (byte)Type_PostVisibility.Private)
+            if (userRequestId != fPost.UserId && fPost.PostVisibilityType == PostVisibilityType.Private)
             {
                 return null;
             }
@@ -181,7 +181,7 @@ namespace SocialMediaMini.Service
                         FullName = fuserReact.FullName,
                         Avatar = imgsfuserReact[0]
                     },
-                    TypeReaction = (Type_Reaction)int.Parse(ss[0])
+                    ReactionType = (ReactionType)byte.Parse(ss[0])
                 });
             }
 
@@ -207,7 +207,7 @@ namespace SocialMediaMini.Service
             var fUser = await _userRepository.GetSingleByIdAsync(userId);
             if (fUser == null)
                 return null;
-            var fPosts = await _postRepository.FindAsync(p => p.UserId == userId && !p.IsDeleted && p.PostType == Type_Post.BAI_VIET);
+            var fPosts = await _postRepository.FindAsync(p => p.UserId == userId && !p.IsDeleted && p.PostType == PostType.BAI_VIET);
 
             var imgsUserPost = JsonConvert.DeserializeObject<List<string>>(fUser.Images);
 
@@ -240,7 +240,7 @@ namespace SocialMediaMini.Service
                             FullName = fuserReact.FullName,
                             Avatar = imgsfuserReact[0]
                         },
-                        TypeReaction = (Type_Reaction)int.Parse(ss[0])
+                        ReactionType = (ReactionType)byte.Parse(ss[0])
                     });
                 }
 

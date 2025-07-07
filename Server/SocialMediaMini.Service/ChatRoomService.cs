@@ -2,12 +2,12 @@
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using SocialMediaMini.Common.Const.Type;
-using SocialMediaMini.Common.DTOs.Request;
-using SocialMediaMini.Common.DTOs.Respone;
 using SocialMediaMini.DataAccess.Infrastructure;
 using SocialMediaMini.DataAccess.Models;
 using SocialMediaMini.DataAccess.Repositories;
+using SocialMediaMini.Shared.Const.Type;
+using SocialMediaMini.Shared.Dto.Request;
+using SocialMediaMini.Shared.Dto.Respone;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -92,7 +92,7 @@ namespace SocialMediaMini.Service
                     await _notificationRepository.AddAsync(new Notification()
                     {
                         UserId = userId,
-                        Type = Type_Notification.MESSAGE,
+                        NotificationType = SocialMediaMini.Shared.Const.Type.NotificationType.MESSAGE,
                         ReferenceId = chatRoom.Id,
                         Content = "Tin nhắn từ " + fSender.FullName,
                         IsRead = false,
@@ -162,7 +162,7 @@ namespace SocialMediaMini.Service
             }
 
 
-            nNotiMessage.NotificationType = Type_Notification.MESSAGE;
+            nNotiMessage.NotificationType = NotificationType.MESSAGE;
             nNotiMessage.Message = "Tin nhắn mới";
             result = new Tuple<List<long>, Respone_NotificationDTO.Respone_NotificationMessage>(
                 result.Item1,
@@ -251,7 +251,7 @@ namespace SocialMediaMini.Service
                     reactions.Add(new Respone_ChatRoomDetail.Reaction()
                     {
                         User = userReact,
-                        TypeReaction = (Type_Reaction)int.Parse(ss[0])
+                        ReactionType = (ReactionType)byte.Parse(ss[0])
                     });
                 }
                 msgRsp.Reactions = reactions;
@@ -336,7 +336,7 @@ namespace SocialMediaMini.Service
             //notification
             foreach (var msg in fMessages)
             {
-                var findNotice = await _notificationRepository.FindAsync(x => x.UserId == userId && !x.IsRead && x.Type == Type_Notification.MESSAGE && x.ReferenceId == chatRoomId);
+                var findNotice = await _notificationRepository.FindAsync(x => x.UserId == userId && !x.IsRead && x.NotificationType == NotificationType.MESSAGE && x.ReferenceId == chatRoomId);
                 if (findNotice != null)
                 {
                     foreach (var notice in findNotice)
@@ -420,7 +420,7 @@ namespace SocialMediaMini.Service
                 }
 
                 rspItem.LastTime = lastMesg.CreateAt;
-                var findNotice = await _notificationRepository.FindAsync(x => x.UserId == userId && !x.IsRead && x.Type == Type_Notification.MESSAGE && x.ReferenceId == user_chatRoom.ChatRoomId);
+                var findNotice = await _notificationRepository.FindAsync(x => x.UserId == userId && !x.IsRead && x.NotificationType == NotificationType.MESSAGE && x.ReferenceId == user_chatRoom.ChatRoomId);
                 rspItem.UnReadMessageCount = findNotice.Count();
                 result.Add(rspItem);
             }
@@ -444,7 +444,7 @@ namespace SocialMediaMini.Service
 
             lastMsg.ReadByUserIds = JsonConvert.SerializeObject(userReads);
 
-            var fNotices = await _notificationRepository.FindAsync(n => n.Type == Type_Notification.MESSAGE && !n.IsRead && n.UserId == userId);
+            var fNotices = await _notificationRepository.FindAsync(n => n.NotificationType == NotificationType.MESSAGE && !n.IsRead && n.UserId == userId);
             foreach (var notification in fNotices)
             {
                 notification.IsRead = true;

@@ -1,13 +1,13 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
-using SocialMediaMini.Common.Const;
-using SocialMediaMini.Common.DTOs.Request;
-using SocialMediaMini.Common.DTOs.Respone;
 using SocialMediaMini.Common.Helpers;
 using SocialMediaMini.DataAccess.Infrastructure;
 using SocialMediaMini.DataAccess.Models;
 using SocialMediaMini.DataAccess.Repositories;
+using SocialMediaMini.Shared.Const;
+using SocialMediaMini.Shared.Dto.Request;
+using SocialMediaMini.Shared.Dto.Respone;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;

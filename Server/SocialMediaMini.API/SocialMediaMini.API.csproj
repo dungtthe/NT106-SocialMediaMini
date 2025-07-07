@@ -24,4 +24,10 @@
 	  <ProjectReference Include="..\SocialMediaMini.Service\SocialMediaMini.Service.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Reference Include="SocialMediaMini.Shared">
+	    <HintPath>..\..\SocialMediaMini.Shared\SocialMediaMini.Shared\bin\Release\net8.0\SocialMediaMini.Shared.dll</HintPath>
+	  </Reference>
+	</ItemGroup>
+
 </Project>

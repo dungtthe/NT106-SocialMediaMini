@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SocialMediaMini.Common.Const;
-using SocialMediaMini.Common.DTOs.Respone;
+using SocialMediaMini.Shared.Const;
+using SocialMediaMini.Shared.Dto.Respone;
 
 namespace SocialMediaMini.API.Extensions
 {
@@ -16,7 +16,7 @@ namespace SocialMediaMini.API.Extensions
 
         public static IActionResult InternalServerError(this ControllerBase controller)
         {
-            return controller.StatusCode(HttpStatusCode.InternalServerError, HttpStatusCode.HeThongGapSuCo);
+            return controller.StatusCode(HttpStatusCode.InternalServerError, new { message = "Hệ thống đang gặp sự cố. Vui lòng thử lại sau!" });
         }
     }
 }

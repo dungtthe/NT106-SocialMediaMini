@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SocialMediaMini.Shared.Const.Type;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -19,10 +20,9 @@ namespace SocialMediaMini.DataAccess.Models
         public long UserId {  get; set; }
         [ForeignKey(nameof(UserId))]
         public virtual AppUser User { get; set; }
-        public byte PostType {  get; set; }//0 là ảnh đại diện, 1 là ảnh bìa, 2 là bài đăng thông thường
-        public byte PostStatus { get; set; }
+        public PostType PostType {  get; set; }//0 là ảnh đại diện, 1 là ảnh bìa, 2 là bài đăng thông thường
         public string ReactionType_UserId_Ids { get; set; }
         public bool IsDeleted { get; set; }
-        public byte PostVisibility {  get; set; }//0 là riêng tư, 1 là bạn bè, 2 là công khai
+        public PostVisibilityType PostVisibilityType {  get; set; }//0 là riêng tư, 1 là bạn bè, 2 là công khai
     }
 }

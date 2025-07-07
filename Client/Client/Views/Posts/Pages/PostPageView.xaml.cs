@@ -1,11 +1,11 @@
-﻿using Client.Const.Type;
-using Client.Helpers;
+﻿using Client.Helpers;
 using Client.LocalStorage;
-using Client.Models.Request;
 using Client.Services;
 using Client.ViewModels.Posts;
 using Microsoft.Win32;
 using Newtonsoft.Json;
+using SocialMediaMini.Shared.Const.Type;
+using SocialMediaMini.Shared.Dto.Request;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -151,7 +151,7 @@ namespace Client.Views.Posts.Pages
             {
                 Content = txtContentPost.Text,
                 Images = JsonConvert.SerializeObject(GetAllImagesBase64()),
-                PostVisibility = (byte)Type_PostVisibility.Friends
+                PostVisibilityType = PostVisibilityType.Friend
             };
 
             var rs = await PostService.AddPostAsync(data);

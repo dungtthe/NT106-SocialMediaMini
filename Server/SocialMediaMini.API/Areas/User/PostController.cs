@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SocialMediaMini.API.Extensions;
-using SocialMediaMini.Common.DTOs.Request;
 using SocialMediaMini.Common.Helpers;
 using SocialMediaMini.Service;
+using SocialMediaMini.Shared.Dto.Request;
 
 namespace SocialMediaMini.API.Areas.User
 {

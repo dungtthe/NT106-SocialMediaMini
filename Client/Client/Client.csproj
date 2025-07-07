@@ -68,6 +68,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="SocialMediaMini.Shared">
+      <HintPath>..\..\SocialMediaMini.Shared\SocialMediaMini.Shared\bin\Release\net8.0\SocialMediaMini.Shared.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Resources\Icons\addFile.png" />
     <Resource Include="Resources\Icons\addSticker.png" />
     <Resource Include="Resources\Icons\Caution_Brown_Icon.png" />

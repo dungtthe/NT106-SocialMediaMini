@@ -1,9 +1,10 @@
 ﻿using Client.Const;
 using Client.Helpers;
 using Client.LocalStorage;
-using Client.Models.Request;
-using Client.Models.Respone;
 using Newtonsoft.Json;
+using SocialMediaMini.Shared.Const;
+using SocialMediaMini.Shared.Dto.Request;
+using SocialMediaMini.Shared.Dto.Respone;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

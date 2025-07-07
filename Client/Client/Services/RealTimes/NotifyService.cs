@@ -1,11 +1,10 @@
-﻿using Client.Const.Type;
-using Client.LocalStorage;
-using Client.Models.Respone;
+﻿using Client.LocalStorage;
 using Client.ViewModels;
 using Client.ViewModels.Chats;
 using Client.Views;
 using Microsoft.AspNetCore.SignalR.Client;
 using Newtonsoft.Json;
+using SocialMediaMini.Shared.Const.Type;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -37,11 +36,11 @@ namespace Client.Services.RealTimes
             };
 
 
-            connection.On<byte, string>("ReceiveMessage", (type, data) =>
+            connection.On<NotificationType, string>("ReceiveMessage", (type, data) =>
             {
                 try
                 {
-                    if (type == Type_Notification.MESSAGE)
+                    if (type == NotificationType.MESSAGE)
                     {
 
                         ConversationViewModel.MessagesReceive.Enqueue(data);
@@ -91,7 +90,7 @@ namespace Client.Services.RealTimes
         }
 
 
-        public static async Task SendMessage(byte notificationType, string data)
+        public static async Task SendMessage(NotificationType notificationType, string data)
         {
             if (connection.State == HubConnectionState.Connected)
             {

@@ -1,8 +1,6 @@
 ﻿using Client.Const;
-using Client.Const.Type;
 using Client.Helpers;
 using Client.LocalStorage;
-using Client.Models.Respone;
 using Client.Services;
 using Client.Services.RealTimes;
 using Client.Views;
@@ -19,7 +17,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using static Client.ViewModels.Chats.ConversationViewModel.ItemChatRoomDetailViewModel;
 using System.Windows.Threading;
-using Client.Models.Request;
+using SocialMediaMini.Shared.Const.Type;
+using SocialMediaMini.Shared.Dto.Request;
+using SocialMediaMini.Shared.Dto.Respone;
 
 namespace Client.ViewModels.Chats
 {
@@ -156,7 +156,7 @@ namespace Client.ViewModels.Chats
             public class ItemReactionViewModel : BaseItemViewModel
             {
                 private ItemUserViewModel _user;
-                private Type_Reaction _typeReaction;
+                private ReactionType _reactionType;
 
                 public ItemUserViewModel User
                 {
@@ -164,10 +164,10 @@ namespace Client.ViewModels.Chats
                     set => SetProperty(ref _user, value, nameof(User));
                 }
 
-                public Type_Reaction TypeReaction
+                public ReactionType ReactionType
                 {
-                    get => _typeReaction;
-                    set => SetProperty(ref _typeReaction, value, nameof(TypeReaction));
+                    get => _reactionType;
+                    set => SetProperty(ref _reactionType, value, nameof(ReactionType));
                 }
             }
 
@@ -415,7 +415,7 @@ namespace Client.ViewModels.Chats
 
                                 var dataSend = new Request_AddNotificationDTO()
                                 {
-                                    NotificationType = Type_Notification.MESSAGE,
+                                    NotificationType = NotificationType.MESSAGE,
                                     Data = JsonConvert.SerializeObject(new Request_AddNotificationDTO.Message()
                                     {
                                         ChatRoomId = chatRoomId,
