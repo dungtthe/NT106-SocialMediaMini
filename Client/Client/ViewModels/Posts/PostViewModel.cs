@@ -170,7 +170,7 @@ namespace Client.ViewModels.Posts
                 {
                     try
                     {
-                        if (MainWindow.TypePage == MainWindow.TYPE_PAGE.POST_PAGE_VIEW)
+                        if (MainWindow.PageViewType == PageViewType.POST_PAGE_VIEW)
                         {
                             if (NewPostQueue.TryDequeue(out var postId))
                             {

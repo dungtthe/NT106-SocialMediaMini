@@ -1,4 +1,5 @@
-﻿using Client.LocalStorage;
+﻿using Client.Helpers;
+using Client.LocalStorage;
 using Client.Services.RealTimes;
 using Client.ViewModels;
 using Client.ViewModels.Posts;
@@ -22,20 +23,12 @@ namespace Client.Views
     /// </summary>
     public partial class MainWindow : Window
     {
-
-        public enum TYPE_PAGE
-        {
-            NONE,//vi du o window login thì la none
-            CHAT_PAGE_VIEW,
-            POST_PAGE_VIEW
-        }
-
-        public static TYPE_PAGE TypePage = TYPE_PAGE.NONE;
+        public static PageViewType PageViewType = PageViewType.NONE;
 
         private static bool isFirst = true;
         public MainWindow()
         {
-            TypePage = TYPE_PAGE.CHAT_PAGE_VIEW;
+            PageViewType = PageViewType.CHAT_PAGE_VIEW;
 
             InitializeComponent();
             NotifyService.Init();
@@ -53,13 +46,13 @@ namespace Client.Views
         }
         private void ChatButton_Click(object sender, RoutedEventArgs e)
         {
-            TypePage = TYPE_PAGE.CHAT_PAGE_VIEW;
+            PageViewType = PageViewType.CHAT_PAGE_VIEW;
             MainFrame.Navigate(new ChatPageView());
         }
 
         private void BlogButton_Click(object sender, RoutedEventArgs e)
         {
-            TypePage = TYPE_PAGE.POST_PAGE_VIEW;
+            PageViewType = PageViewType.POST_PAGE_VIEW;
             MainFrame.Navigate(new PostPageView());
         }
 

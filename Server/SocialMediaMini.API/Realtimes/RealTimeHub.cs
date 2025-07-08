@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
-using SocialMediaMini.Common.MyCollections;
 using SocialMediaMini.Shared.Const.Type;
 using SocialMediaMini.Shared.Dto.Request;
 using System.Diagnostics;
@@ -11,8 +10,8 @@ namespace SocialMediaMini.API.Realtimes
     [Authorize]
     public class RealtimeHub : Hub
     {
-        public static MyHashSet<long> UserOnlineIds = new MyHashSet<long>();
 
+        public static HashSet<long> UserOnlineIds = new HashSet<long>();
         public async Task SendMessage(NotificationType notificationType, string data)
         {
             try
@@ -22,12 +21,7 @@ namespace SocialMediaMini.API.Realtimes
                 {
                     return;
                 }
-                var notification = new Request_AddNotificationDTO
-                {
-                    NotificationType = notificationType,
-                    Data = data
-                };
-                NotifyService.Datas.Enqueue(new Tuple<long, Request_AddNotificationDTO>(userId, notification));
+                NotifyService.Datas.Enqueue(new Tuple<long, NotificationType,string>(userId, notificationType,data));
                 await Task.CompletedTask;
             }
             catch (Exception e)

@@ -11,7 +11,8 @@ namespace SocialMediaMini.API.Realtimes
 {
     public class NotifyService : BackgroundService
     {
-        public static ConcurrentQueue<Tuple<long, Request_AddNotificationDTO>> Datas = new ConcurrentQueue<Tuple<long, Request_AddNotificationDTO>>();
+        //userId, notificationType, data
+        public static ConcurrentQueue<Tuple<long, NotificationType, string>> Datas = new ConcurrentQueue<Tuple<long, NotificationType, string>>();
 
 
         private readonly IHubContext<RealtimeHub> _hubContext;
@@ -35,20 +36,15 @@ namespace SocialMediaMini.API.Realtimes
 
 
                         #region message
-                        if (data.Item2.NotificationType == NotificationType.MESSAGE)
+                        if (data.Item2 == NotificationType.MESSAGE)
                         {
                             try
                             {
-                                var msg = JsonConvert.DeserializeObject<Request_AddNotificationDTO.Message>(data.Item2.Data);
+                                var msg = JsonConvert.DeserializeObject<Request_AddMessageDTO>(data.Item3);
+                                msg.UserId = senderId;
                                 using var scope = _scopeFactory.CreateScope();
                                 var _chatRoomService = scope.ServiceProvider.GetRequiredService<IChatRoomService>();
-                                var resultAdd = await _chatRoomService.AddMessageAsync(new Request_AddMessageDTO()
-                                {
-                                    UserId = senderId,
-                                    ChatRoomId = msg.ChatRoomId,
-                                    Content = msg.Content,
-                                    ParrentMessageId = msg.ParrentMessageId
-                                });
+                                var resultAdd = await _chatRoomService.AddMessageAsync(msg);
 
                                 var userIds = resultAdd.Item1;
                                 if (userIds == null)

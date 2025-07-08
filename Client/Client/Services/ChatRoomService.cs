@@ -105,13 +105,13 @@ namespace Client.Services
                             var hasParent = msg.Parrent != null;
 
                             if (isMine && hasParent)
-                                messageVM.TypeMessage = TypeMessage.MineWithReply;
+                                messageVM.MessageType = MessageType.MineWithReply;
                             else if (isMine)
-                                messageVM.TypeMessage = TypeMessage.Mine;
+                                messageVM.MessageType = MessageType.Mine;
                             else if (hasParent)
-                                messageVM.TypeMessage = TypeMessage.OtherWithReply;
+                                messageVM.MessageType = MessageType.OtherWithReply;
                             else
-                                messageVM.TypeMessage = TypeMessage.Other;
+                                messageVM.MessageType = MessageType.Other;
 
 
                             viewModel.Messages.Add(messageVM);

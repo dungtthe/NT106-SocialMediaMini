@@ -15,7 +15,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using static Client.ViewModels.Chats.ConversationViewModel.ItemChatRoomDetailViewModel;
 using System.Windows.Threading;
 using SocialMediaMini.Shared.Const.Type;
 using SocialMediaMini.Shared.Dto.Request;
@@ -117,17 +116,6 @@ namespace Client.ViewModels.Chats
         #region detail chatroom
         public class ItemChatRoomDetailViewModel : BaseItemViewModel
         {
-
-            public enum TypeMessage
-            {
-                Other,               // Người khác gửi không reply
-                OtherWithReply,      // Người khác gửi có reply
-                Mine,                // Mình gửi không reply
-                MineWithReply        // Mình gửi có reply
-            }
-
-
-
             public class ItemUserViewModel : BaseItemViewModel
             {
                 private long _id;
@@ -180,11 +168,11 @@ namespace Client.ViewModels.Chats
                 private ItemUserViewModel _sender;
                 private ItemMessageViewModel _parent;
                 private ObservableCollection<ItemReactionViewModel> _reactions;
-                private TypeMessage _typeMessage;
-                public TypeMessage TypeMessage
+                private MessageType _messageType;
+                public MessageType MessageType
                 {
-                    get => _typeMessage;
-                    set => SetProperty(ref _typeMessage, value, nameof(TypeMessage));
+                    get => _messageType;
+                    set => SetProperty(ref _messageType, value, nameof(MessageType));
                 }
                 public ItemUserViewModel Sender
                 {
@@ -403,7 +391,7 @@ namespace Client.ViewModels.Chats
             {
                 while (true)
                 {
-                    if (MainWindow.TypePage == MainWindow.TYPE_PAGE.CHAT_PAGE_VIEW)
+                    if (MainWindow.PageViewType == PageViewType.CHAT_PAGE_VIEW)
                     {
                         try
                         {
@@ -412,19 +400,14 @@ namespace Client.ViewModels.Chats
                                 var chatRoomId = data.Item1;
                                 var content = data.Item2;
 
-
-                                var dataSend = new Request_AddNotificationDTO()
+                                var dataSend = new Request_AddMessageDTO()
                                 {
-                                    NotificationType = NotificationType.MESSAGE,
-                                    Data = JsonConvert.SerializeObject(new Request_AddNotificationDTO.Message()
-                                    {
-                                        ChatRoomId = chatRoomId,
-                                        Content = content,
-                                        ParrentMessageId = null//nao nho lam cai tra loi tin nhan
-                                    })
+                                    ChatRoomId=chatRoomId,
+                                    Content = content,
+                                    ParrentMessageId =null
                                 };
 
-                                await NotifyService.SendMessage(dataSend.NotificationType, dataSend.Data);
+                                await NotifyService.SendMessage(NotificationType.MESSAGE, JsonConvert.SerializeObject(dataSend));
                             }
                         }
                         catch (Exception ex)//nao lam thong bao exception
@@ -432,7 +415,7 @@ namespace Client.ViewModels.Chats
 
                         }
                     }
-                    else if (MainWindow.TypePage == MainWindow.TYPE_PAGE.NONE)
+                    else if (MainWindow.PageViewType == PageViewType.NONE)
                     {
                         MessagesSend.Clear();
                     }
@@ -458,7 +441,7 @@ namespace Client.ViewModels.Chats
                 //tam thoi de nhu nay di
                 while (true)
                 {
-                    if (MainWindow.TypePage == MainWindow.TYPE_PAGE.CHAT_PAGE_VIEW)
+                    if (MainWindow.PageViewType == PageViewType.CHAT_PAGE_VIEW)
                     {
                         try
                         {
@@ -491,13 +474,13 @@ namespace Client.ViewModels.Chats
                                         var hasParent = msgNew.Parent != null;
 
                                         if (isMine && hasParent)
-                                            msgNew.TypeMessage = TypeMessage.MineWithReply;
+                                            msgNew.MessageType = MessageType.MineWithReply;
                                         else if (isMine)
-                                            msgNew.TypeMessage = TypeMessage.Mine;
+                                            msgNew.MessageType = MessageType.Mine;
                                         else if (hasParent)
-                                            msgNew.TypeMessage = TypeMessage.OtherWithReply;
+                                            msgNew.MessageType = MessageType.OtherWithReply;
                                         else
-                                            msgNew.TypeMessage = TypeMessage.Other;
+                                            msgNew.MessageType = MessageType.Other;
 
 
                                         try
@@ -550,7 +533,7 @@ namespace Client.ViewModels.Chats
 
                         }
                     }
-                    else if (MainWindow.TypePage == MainWindow.TYPE_PAGE.NONE)
+                    else if (MainWindow.PageViewType == PageViewType.NONE)
                     {
                         MessagesReceive.Clear();
                     }

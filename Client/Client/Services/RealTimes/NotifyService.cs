@@ -1,4 +1,5 @@
-﻿using Client.LocalStorage;
+﻿using Client.Helpers;
+using Client.LocalStorage;
 using Client.ViewModels;
 using Client.ViewModels.Chats;
 using Client.Views;
@@ -28,7 +29,7 @@ namespace Client.Services.RealTimes
 
             connection.Closed += async (error) =>
             {
-                if (MainWindow.TypePage == MainWindow.TYPE_PAGE.NONE)
+                if (MainWindow.PageViewType == PageViewType.NONE)
                 {
                     return;
                 }
@@ -66,7 +67,7 @@ namespace Client.Services.RealTimes
                 {
                     try
                     {
-                        if (MainWindow.TypePage == MainWindow.TYPE_PAGE.NONE)
+                        if (MainWindow.PageViewType == PageViewType.NONE)
                         {
                             DisConnect();
                             return;

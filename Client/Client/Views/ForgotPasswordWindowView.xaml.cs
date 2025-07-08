@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Client.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,7 +23,7 @@ namespace Client.Views
         public ForgotPasswordWindowView()
         {
             InitializeComponent();
-            MainWindow.TypePage = MainWindow.TYPE_PAGE.NONE;
+            MainWindow.PageViewType = PageViewType.NONE;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

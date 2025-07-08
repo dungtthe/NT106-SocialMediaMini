@@ -294,7 +294,7 @@
                                         <StackPanel
                                             Margin="0,10,0,10"
                                             Orientation="Horizontal"
-                                            Visibility="{Binding TypeMessage, Converter={StaticResource ShowOther}}">
+                                            Visibility="{Binding MessageType, Converter={StaticResource ShowOther}}">
 
                                             <StackPanel>
                                                 <!--  Avatar  -->
@@ -347,7 +347,7 @@
                                             Margin="0,10,0,10"
                                             HorizontalAlignment="Right"
                                             Orientation="Horizontal"
-                                            Visibility="{Binding TypeMessage, Converter={StaticResource ShowMine}}">
+                                            Visibility="{Binding MessageType, Converter={StaticResource ShowMine}}">
                                             <Border
                                                 MaxWidth="1000"
                                                 Padding="8"
@@ -375,7 +375,7 @@
                                             Margin="0,10,0,10"
                                             HorizontalAlignment="Right"
                                             Orientation="Horizontal"
-                                            Visibility="{Binding TypeMessage, Converter={StaticResource ShowMineWithReply}}">
+                                            Visibility="{Binding MessageType, Converter={StaticResource ShowMineWithReply}}">
                                             <Border
                                                 MaxWidth="1000"
                                                 Padding="8"
@@ -424,7 +424,7 @@
                                         <StackPanel
                                             Margin="0,10,0,10"
                                             Orientation="Horizontal"
-                                            Visibility="{Binding TypeMessage, Converter={StaticResource ShowOtherWithReply}}">
+                                            Visibility="{Binding MessageType, Converter={StaticResource ShowOtherWithReply}}">
                                             <StackPanel>
                                                 <!--  Avatar  -->
                                                 <Ellipse

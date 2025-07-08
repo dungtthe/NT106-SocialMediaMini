@@ -1,4 +1,5 @@
-﻿using Client.Services;
+﻿using Client.Helpers;
+using Client.Services;
 using Client.ViewModels.Chats;
 using Client.ViewModels.Posts;
 using Client.Views.Posts.Pages;
@@ -26,7 +27,7 @@ namespace Client.Views
         public LoginWindowView()
         {
             InitializeComponent();
-            MainWindow.TypePage = MainWindow.TYPE_PAGE.NONE;
+            MainWindow.PageViewType = PageViewType.NONE;
         }
 
         private async void LoginButton_Click(object sender, RoutedEventArgs e)
