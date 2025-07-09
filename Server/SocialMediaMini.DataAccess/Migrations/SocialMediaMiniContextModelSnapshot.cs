@@ -82,9 +82,6 @@ namespace SocialMediaMini.DataAccess.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<byte>("UserStatus")
-                        .HasColumnType("tinyint");
-
                     b.HasKey("Id");
 
                     b.ToTable("Users");
@@ -222,11 +219,8 @@ namespace SocialMediaMini.DataAccess.Migrations
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsLink")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsRevoked")
-                        .HasColumnType("bit");
+                    b.Property<byte>("MessageType")
+                        .HasColumnType("tinyint");
 
                     b.Property<long?>("ParrentMessageId")
                         .HasColumnType("bigint");

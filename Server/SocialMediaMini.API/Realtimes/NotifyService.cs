@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
-using SocialMediaMini.DataAccess.Repositories;
 using SocialMediaMini.Service;
 using SocialMediaMini.Shared.Const.Type;
 using SocialMediaMini.Shared.Dto.Request;

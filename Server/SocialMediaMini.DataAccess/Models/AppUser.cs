@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -44,9 +45,27 @@ namespace SocialMediaMini.DataAccess.Models
         public DateTime? DateOfBirth { get; set; }
 
         public string Images { get; set; }
-
-        public byte UserStatus {  get; set; }//0 off, 1 online
         public string FriendIds {  get; set; }
         public string BlockIds {  get; set; }
+
+        public AppUser()
+        {
+            FriendIds = "[]";
+            BlockIds = "[]";
+        }
+
+        public string GetFirstImage()
+        {
+            return Images != null ? JsonConvert.DeserializeObject<string[]>(Images)[0] : "no_img_user.png";
+        }
+
+        public List<long> GetFriendIds()
+        {
+            return JsonConvert.DeserializeObject<List<long>>(FriendIds);
+        }
+        public List<long> GetBlockIds()
+        {
+            return JsonConvert.DeserializeObject<List<long>>(BlockIds);
+        }
     }
 }

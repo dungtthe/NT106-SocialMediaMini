@@ -1,10 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using SocialMediaMini.Common.Helpers;
-using SocialMediaMini.DataAccess.Infrastructure;
+using SocialMediaMini.DataAccess;
 using SocialMediaMini.DataAccess.Models;
-using SocialMediaMini.DataAccess.Repositories;
 using SocialMediaMini.Shared.Const;
 using SocialMediaMini.Shared.Dto.Request;
 using SocialMediaMini.Shared.Dto.Respone;
@@ -25,20 +25,19 @@ namespace SocialMediaMini.Service
     }
     public class UserService : IUserService
     {
-        private readonly IAppUserRepository _appUserRepository;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly SocialMediaMiniContext _dbContext;
+
         private readonly IConfiguration _configuration;
-        public UserService(IAppUserRepository appUserRepository, IUnitOfWork unitOfWork,IConfiguration configuration)
+        public UserService(SocialMediaMiniContext dbContext, IConfiguration configuration)
         {
-            _appUserRepository = appUserRepository;
-            _unitOfWork = unitOfWork;
+            _dbContext = dbContext;
             _configuration = configuration;
         }
 
         public async Task<Respone_LoginDTO> LoginAsync(Request_LoginDTO request)
         {
-            var fUser = (await _appUserRepository.FindAsync(x => x.UserName == request.UserName && x.Password == SecurityHelper.HashPassword(request.Password))).FirstOrDefault();
-            if (fUser == null)
+            var fUser = await _dbContext.Users.FirstOrDefaultAsync(x => x.UserName == request.UserName);
+            if (fUser == null || fUser.Password != SecurityHelper.HashPassword(request.Password))
             {
                 return new Respone_LoginDTO
                 {
@@ -67,12 +66,12 @@ namespace SocialMediaMini.Service
             {
                 UserName = request.UserName,
                 Password = SecurityHelper.HashPassword(request.Password),
-                FullName= request.UserName,
+                FullName = request.UserName,
                 Email = request.Email,
                 PhoneNumber = request.PhoneNumber,
             };
-            var checkUserName = await _appUserRepository.FindAsync(x => x.UserName == request.UserName);
-            if(checkUserName.Any())
+            var checkUserName = await _dbContext.Users.FirstOrDefaultAsync(x => x.UserName == request.UserName);
+            if (checkUserName != null)
             {
                 return new ResponeMessage
                 {
@@ -81,8 +80,8 @@ namespace SocialMediaMini.Service
                 };
             }
 
-            var checkEmail = await _appUserRepository.FindAsync(x => x.Email == request.Email);
-            if (checkEmail.Any())
+            var checkEmail = await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == request.Email);
+            if (checkEmail != null)
             {
                 return new ResponeMessage
                 {
@@ -91,8 +90,8 @@ namespace SocialMediaMini.Service
                 };
             }
 
-            var checkPhoneNumber = await _appUserRepository.FindAsync(x => x.PhoneNumber == request.PhoneNumber);
-            if (checkPhoneNumber.Any())
+            var checkPhoneNumber = await _dbContext.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber);
+            if (checkPhoneNumber != null)
             {
                 return new ResponeMessage
                 {
@@ -101,8 +100,8 @@ namespace SocialMediaMini.Service
                 };
             }
 
-            await _appUserRepository.AddAsync(user);
-            await _unitOfWork.CommitAsync();
+            await _dbContext.Users.AddAsync(user);
+            await _dbContext.SaveChangesAsync();
             return new ResponeMessage
             {
                 HttpStatusCode = HttpStatusCode.Ok,
@@ -122,7 +121,7 @@ namespace SocialMediaMini.Service
             // Tạo danh sách claims cơ bản
             var claims = new List<Claim>
             {
-            new Claim("UserId", user.Id.ToString()), 
+            new Claim("UserId", user.Id.ToString()),
             };
             // Tạo JWT token
             var token = new JwtSecurityToken(

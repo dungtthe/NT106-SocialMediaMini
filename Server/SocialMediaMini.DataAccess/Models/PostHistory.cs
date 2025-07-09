@@ -18,5 +18,9 @@ namespace SocialMediaMini.DataAccess.Models
         [ForeignKey(nameof(PostId))]
         public virtual Post Post { get; set; }
 
+        public PostHistory()
+        {
+            Images = "[]";
+        }
     }
 }

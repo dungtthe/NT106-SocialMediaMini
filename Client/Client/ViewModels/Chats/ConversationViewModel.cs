@@ -61,7 +61,18 @@ namespace Client.ViewModels.Chats
 
             public string Avatar
             {
-                get { return _avatar; }
+                get
+                {
+                    if (_avatar == "no_img_user.png")
+                    {
+                        return "pack://application:,,,/Resources/Images/no_img_user.png";
+                    }
+                    else if (string.IsNullOrEmpty(_avatar) || _avatar == "no_img_group.png")
+                    {
+                        return "pack://application:,,,/Resources/Images/no_img_group.png";
+                    }
+                    return _avatar;
+                }
                 set { SetProperty(ref _avatar, value, nameof(Avatar)); }
             }
 
@@ -136,7 +147,18 @@ namespace Client.ViewModels.Chats
 
                 public string Avatar
                 {
-                    get => _avatar;
+                    get
+                    {
+                        if (_avatar == "no_img_user.png")
+                        {
+                            return "pack://application:,,,/Resources/Images/no_img_user.png";
+                        }
+                        else if (string.IsNullOrEmpty(_avatar) || _avatar == "no_img_group.png")
+                        {
+                            return "pack://application:,,,/Resources/Images/no_img_group.png";
+                        }
+                        return _avatar;
+                    }
                     set => SetProperty(ref _avatar, value, nameof(Avatar));
                 }
             }
@@ -346,7 +368,7 @@ namespace Client.ViewModels.Chats
 
         //    Application.Current.Dispatcher.BeginInvoke(action);
         //}
-      
+
 
         private void LoadChatRoomDetail(long chatRoomId)
         {
@@ -402,9 +424,9 @@ namespace Client.ViewModels.Chats
 
                                 var dataSend = new Request_AddMessageDTO()
                                 {
-                                    ChatRoomId=chatRoomId,
+                                    ChatRoomId = chatRoomId,
                                     Content = content,
-                                    ParrentMessageId =null
+                                    ParrentMessageId = null
                                 };
 
                                 await NotifyService.SendMessage(NotificationType.MESSAGE, JsonConvert.SerializeObject(dataSend));

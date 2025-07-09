@@ -12,7 +12,7 @@ using SocialMediaMini.DataAccess;
 namespace SocialMediaMini.DataAccess.Migrations
 {
     [DbContext(typeof(SocialMediaMiniContext))]
-    [Migration("20250707165419_newmigration")]
+    [Migration("20250709162119_newmigration")]
     partial class newmigration
     {
         /// <inheritdoc />
@@ -84,9 +84,6 @@ namespace SocialMediaMini.DataAccess.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
-
-                    b.Property<byte>("UserStatus")
-                        .HasColumnType("tinyint");
 
                     b.HasKey("Id");
 
@@ -225,11 +222,8 @@ namespace SocialMediaMini.DataAccess.Migrations
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsLink")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsRevoked")
-                        .HasColumnType("bit");
+                    b.Property<byte>("MessageType")
+                        .HasColumnType("tinyint");
 
                     b.Property<long?>("ParrentMessageId")
                         .HasColumnType("bigint");

@@ -41,7 +41,16 @@ namespace Client.Views
             isFirst = false;
             MainFrame.Navigate(new ChatPageView());
 
-            imgAvatar.ImageSource = new BitmapImage(new Uri(UserStore.Avatar, UriKind.RelativeOrAbsolute));
+
+            if(UserStore.Avatar== "no_img_user.png")
+            {
+                var uri = new Uri($"pack://application:,,,/Resources/Images/no_img_user.png", UriKind.Absolute);
+                imgAvatar.ImageSource = new BitmapImage(uri);
+            }
+            else
+            {
+                imgAvatar.ImageSource = new BitmapImage(new Uri(UserStore.Avatar, UriKind.RelativeOrAbsolute));
+            }
 
         }
         private void ChatButton_Click(object sender, RoutedEventArgs e)

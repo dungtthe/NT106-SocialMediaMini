@@ -1,9 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-
-using SocialMediaMini.DataAccess.Infrastructure;
-using SocialMediaMini.DataAccess.Models;
-using SocialMediaMini.DataAccess.Repositories;
+using SocialMediaMini.DataAccess;
 using SocialMediaMini.Shared.Const.Type;
 using SocialMediaMini.Shared.Dto.Request;
 using SocialMediaMini.Shared.Dto.Respone;
@@ -25,77 +23,72 @@ namespace SocialMediaMini.Service
     }
     public class PostService : IPostService
     {
-        private readonly IPostRepository _postRepository;
-        private readonly IAppUserRepository _userRepository;
-        private readonly ICommentRepository _commentRepository;
-        private readonly IUnitOfWork _unitOfWork;
-        public PostService(IPostRepository postRepository, IAppUserRepository userRepository, ICommentRepository commentRepository, IUnitOfWork unitOfWork)
+        private readonly SocialMediaMiniContext _dbContext;
+        public PostService(SocialMediaMiniContext dbContext)
         {
-            _postRepository = postRepository;
-            _userRepository = userRepository;
-            _commentRepository = commentRepository;
-            _unitOfWork = unitOfWork;
+            _dbContext = dbContext;
         }
+
+
         public async Task<List<Respone_PostDetail.Post>> GetFriendPostsAsync(long userId)
         {
-            var fUser = await _userRepository.GetSingleByIdAsync(userId);
+            var fUser = await _dbContext.Users.FindAsync(userId);
             if (fUser == null)
                 return null;
             //bạn bè của user
-            var friendIds = JsonConvert.DeserializeObject<JArray>(fUser.FriendIds).ToObject<List<long>>();
+            var friendIds = fUser.GetFriendIds();
             List<Respone_PostDetail.Post> result = new List<Respone_PostDetail.Post>();
             foreach (var friendId in friendIds)
             {
                 //người đăng bài
-                var fFriend = await _userRepository.GetSingleByIdAsync(friendId);
+                var fFriend = await _dbContext.Users.FindAsync(friendId);
                 if (fFriend == null)
                     continue;
                 //lấy bài viết của bạn bè
-                var fPosts = await _postRepository.FindAsync(p => p.UserId == friendId && !p.IsDeleted && p.PostType == PostType.BAI_VIET && p.PostVisibilityType != PostVisibilityType.Private);
+                var fPosts = await _dbContext.Posts.Where(p => p.UserId == friendId && !p.IsDeleted && p.PostType == PostType.BAI_VIET && p.PostVisibilityType != PostVisibilityType.Private).ToListAsync();
                 foreach (var post in fPosts)
                 {
-                    var imgsFriend = JsonConvert.DeserializeObject<JArray>(fFriend.Images).ToObject<List<string>>();
                     var friend = new Respone_PostDetail.User()
                     {
                         FullName = fFriend.FullName,
-                        Avatar = imgsFriend[0]
+                        Avatar = fFriend.GetFirstImage()
                     };
 
                     //reaction
-                    var fReaction_user_ids = JsonConvert.DeserializeObject<JArray>(post.ReactionType_UserId_Ids).ToObject<List<string>>();
                     var reactions = new List<Respone_PostDetail.Reaction>();
+                    var fReaction_user_ids = post.GetReactionAndUserIds();
                     foreach (var item in fReaction_user_ids)
                     {
-                        var ss = item.Split('_');
-                        var fuserReact = await _userRepository.GetSingleByIdAsync(long.Parse(ss[1]));
+                       
+                        var fuserReact = await _dbContext.Users.FindAsync(item.Item2);
                         if (fuserReact == null)
                         {
                             continue;
                         }
-                        var imgsfuserReact = JsonConvert.DeserializeObject<JArray>(fuserReact.Images).ToObject<List<string>>();
 
                         reactions.Add(new Respone_PostDetail.Reaction()
                         {
                             User = new Respone_PostDetail.User()
                             {
                                 FullName = fuserReact.FullName,
-                                Avatar = imgsfuserReact[0]
+                                Avatar = fuserReact.GetFirstImage()
                             },
-                            ReactionType = (ReactionType)byte.Parse(ss[0])
+                            ReactionType = item.Item1
                         });
                     }
+
 
                     //post
                     result.Add(new Respone_PostDetail.Post()
                     {
                         PostId = post.Id,
                         Content = post.Content,
-                        Images = JsonConvert.DeserializeObject<JArray>(post.Images).ToObject<List<string>>(),
+                        Images = post.GetImages(),
                         CreateAt = post.CreateAt,
                         UpdateAt = post.UpdateAt,
                         User = friend,
                         Reactions = reactions,
-                        CommentCount = (await _commentRepository.FindAsync(c => c.PostId == post.Id)).Count()
+                        CommentCount = await _dbContext.Comments.Where(c => c.PostId == post.Id).CountAsync(),
                     });
                 }
             }
@@ -115,17 +108,17 @@ namespace SocialMediaMini.Service
                 PostVisibilityType = data.PostVisibilityType
             };
 
-            await _postRepository.AddAsync(post);
-            await _unitOfWork.CommitAsync();
+            await _dbContext.Posts.AddAsync(post);
+            await _dbContext.SaveChangesAsync();
             return post.Id;
         }
 
         public async Task<Respone_PostDetail.Post> GetPostDetailAsync(long userRequestId, long postId)
         {
-            var fUser = await _userRepository.GetSingleByIdAsync(userRequestId);
+            var fUser = await _dbContext.Users.FindAsync(userRequestId);
             if (fUser == null)
                 return null;
-            var fPost = (await _postRepository.FindAsync(p => p.Id == postId && !p.IsDeleted && p.PostType == PostType.BAI_VIET)).FirstOrDefault();
+            var fPost = (await _dbContext.Posts.FirstOrDefaultAsync(p => p.Id == postId && !p.IsDeleted && p.PostType == PostType.BAI_VIET));
             if (fPost == null)
             {
                 return null;
@@ -141,7 +134,7 @@ namespace SocialMediaMini.Service
             DataAccess.Models.AppUser fUserPost = null;
             if (userRequestId != fPost.UserId)
             {
-                fUserPost = await _userRepository.GetSingleByIdAsync(fPost.UserId);
+                fUserPost = await _dbContext.Users.FindAsync(fPost.UserId);
                 if (fUserPost == null)
                     return null;
             }
@@ -150,38 +143,32 @@ namespace SocialMediaMini.Service
                 fUserPost = fUser;
             }
 
-            imgsUserPost = JsonConvert.DeserializeObject<List<string>>(fUserPost.Images);
-
-
 
             //rsp
             var userRsp = new Respone_PostDetail.User()
             {
                 FullName = fUserPost.FullName,
-                Avatar = imgsUserPost[0]
+                Avatar = fUserPost.GetFirstImage()
             };
 
             //reaction
-            var fReaction_user_ids = JsonConvert.DeserializeObject<List<string>>(fPost.ReactionType_UserId_Ids);
             var reactions = new List<Respone_PostDetail.Reaction>();
+            var fReaction_user_ids = fPost.GetReactionAndUserIds();
             foreach (var item in fReaction_user_ids)
             {
-                var ss = item.Split('_');
-                var fuserReact = await _userRepository.GetSingleByIdAsync(long.Parse(ss[1]));
+                var fuserReact = await _dbContext.Users.FindAsync(item.Item2);
                 if (fuserReact == null)
                 {
                     continue;
                 }
-                var imgsfuserReact = JsonConvert.DeserializeObject<List<string>>(fuserReact.Images);
-
                 reactions.Add(new Respone_PostDetail.Reaction()
                 {
                     User = new Respone_PostDetail.User()
                     {
                         FullName = fuserReact.FullName,
-                        Avatar = imgsfuserReact[0]
+                        Avatar = fuserReact.GetFirstImage()
                     },
-                    ReactionType = (ReactionType)byte.Parse(ss[0])
+                    ReactionType = item.Item1
                 });
             }
 
@@ -190,12 +177,12 @@ namespace SocialMediaMini.Service
             {
                 PostId = fPost.Id,
                 Content = fPost.Content,
-                Images = JsonConvert.DeserializeObject<List<string>>(fPost.Images),
+                Images = fPost.GetImages(),
                 CreateAt = fPost.CreateAt,
                 UpdateAt = fPost.UpdateAt,
                 User = userRsp,
                 Reactions = reactions,
-                CommentCount = (await _commentRepository.FindAsync(c => c.PostId == fPost.Id)).Count()
+                CommentCount = await _dbContext.Comments.Where(c => c.PostId == fPost.Id).CountAsync(),
             };
 
             return postRsp;
@@ -204,57 +191,51 @@ namespace SocialMediaMini.Service
         public async Task<List<Respone_PostDetail.Post>> GetMyPostsAsync(long userId)
         {
             var result = new List<Respone_PostDetail.Post>();
-            var fUser = await _userRepository.GetSingleByIdAsync(userId);
+            var fUser = await _dbContext.Users.FindAsync(userId);
             if (fUser == null)
                 return null;
-            var fPosts = await _postRepository.FindAsync(p => p.UserId == userId && !p.IsDeleted && p.PostType == PostType.BAI_VIET);
-
-            var imgsUserPost = JsonConvert.DeserializeObject<List<string>>(fUser.Images);
-
+            var fPosts = await _dbContext.Posts.Where(p => p.UserId == userId && !p.IsDeleted && p.PostType == PostType.BAI_VIET).ToListAsync();
+            
             //rsp
             var userRsp = new Respone_PostDetail.User()
             {
                 FullName = fUser.FullName,
-                Avatar = imgsUserPost[0]
+                Avatar = fUser.GetFirstImage()
             };
 
             foreach (var post in fPosts)
             {
                 //reaction
-                var fReaction_user_ids = JsonConvert.DeserializeObject<List<string>>(post.ReactionType_UserId_Ids);
+                var fReaction_user_ids = post.GetReactionAndUserIds();
                 var reactions = new List<Respone_PostDetail.Reaction>();
                 foreach (var item in fReaction_user_ids)
                 {
-                    var ss = item.Split('_');
-                    var fuserReact = await _userRepository.GetSingleByIdAsync(long.Parse(ss[1]));
+                    var fuserReact = await _dbContext.Users.FindAsync(item.Item2);
                     if (fuserReact == null)
                     {
                         continue;
                     }
-                    var imgsfuserReact = JsonConvert.DeserializeObject<List<string>>(fuserReact.Images);
-
                     reactions.Add(new Respone_PostDetail.Reaction()
                     {
                         User = new Respone_PostDetail.User()
                         {
                             FullName = fuserReact.FullName,
-                            Avatar = imgsfuserReact[0]
+                            Avatar = fuserReact.GetFirstImage()
                         },
-                        ReactionType = (ReactionType)byte.Parse(ss[0])
+                        ReactionType = item.Item1
                     });
                 }
-
 
                 var postRsp = new Respone_PostDetail.Post()
                 {
                     PostId = post.Id,
                     Content = post.Content,
-                    Images = JsonConvert.DeserializeObject<List<string>>(post.Images),
+                    Images = post.GetImages(),
                     CreateAt = post.CreateAt,
                     UpdateAt = post.UpdateAt,
                     User = userRsp,
                     Reactions = reactions,
-                    CommentCount = (await _commentRepository.FindAsync(c => c.PostId == post.Id)).Count()
+                    CommentCount = await _dbContext.Comments.Where(c => c.PostId == post.Id).CountAsync(),
                 };
 
 

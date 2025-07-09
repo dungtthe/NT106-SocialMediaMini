@@ -5,10 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using SocialMediaMini.API.Realtimes;
 using SocialMediaMini.DataAccess;
-using SocialMediaMini.DataAccess.Infrastructure;
-using SocialMediaMini.DataAccess.Repositories;
 using SocialMediaMini.Service;
-using System.Diagnostics;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,20 +22,20 @@ builder.Services.AddDbContext<SocialMediaMiniContext>(options =>
 });
 
 
-// Đăng ký DbFactory và UnitOfWork
-builder.Services.AddScoped<IDbFactory, DbFactory>();
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+//// Đăng ký DbFactory và UnitOfWork
+//builder.Services.AddScoped<IDbFactory, DbFactory>();
+//builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-// Đăng ký Repository
-builder.Services.AddScoped<IAppUserRepository, AppUserRepository>();
-builder.Services.AddScoped<IChatRoomRepository, ChatRoomRepository>();
-builder.Services.AddScoped<ICommentHistoryRepository, CommentHistoryRepository>();
-builder.Services.AddScoped<ICommentRepository, CommentRepository>();
-builder.Services.AddScoped<IMessageRepository, MessageRepository>();
-builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
-builder.Services.AddScoped<IPostHistoryRepository, PostHistoryRepository>();
-builder.Services.AddScoped<IPostRepository, PostRepository>();
-builder.Services.AddScoped<IUser_ChatRoomRepository, User_ChatRoomRepository>();
+//// Đăng ký Repository
+//builder.Services.AddScoped<IAppUserRepository, AppUserRepository>();
+//builder.Services.AddScoped<IChatRoomRepository, ChatRoomRepository>();
+//builder.Services.AddScoped<ICommentHistoryRepository, CommentHistoryRepository>();
+//builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+//builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+//builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+//builder.Services.AddScoped<IPostHistoryRepository, PostHistoryRepository>();
+//builder.Services.AddScoped<IPostRepository, PostRepository>();
+//builder.Services.AddScoped<IUser_ChatRoomRepository, User_ChatRoomRepository>();
 
 //Đăng ký service
 builder.Services.AddScoped<IUserService, UserService>();

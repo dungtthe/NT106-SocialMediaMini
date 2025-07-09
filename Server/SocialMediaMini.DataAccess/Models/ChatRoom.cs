@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -22,5 +23,17 @@ namespace SocialMediaMini.DataAccess.Models
         public bool CanSendMessage { get; set;}
         public virtual ICollection<Message> Messages { get; set; }
 
+
+        public ChatRoom()
+        {
+            UserIds = "[]";
+        }
+
+        public List<long> GetUserIds()
+        {
+            return JsonConvert.DeserializeObject<List<long>>(UserIds);
+        }
+
+       
     }
 }

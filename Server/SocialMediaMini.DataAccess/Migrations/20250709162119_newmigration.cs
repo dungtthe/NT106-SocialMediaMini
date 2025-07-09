@@ -46,7 +46,6 @@ namespace SocialMediaMini.DataAccess.Migrations
                     Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Images = table.Column<string>(type: "nvarchar(max)", nullable: true, defaultValue: "[\"no_img_user.png\"]"),
-                    UserStatus = table.Column<byte>(type: "tinyint", nullable: false),
                     FriendIds = table.Column<string>(type: "nvarchar(max)", nullable: true, defaultValue: "[]"),
                     BlockIds = table.Column<string>(type: "nvarchar(max)", nullable: true, defaultValue: "[]")
                 },
@@ -62,14 +61,13 @@ namespace SocialMediaMini.DataAccess.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsLink = table.Column<bool>(type: "bit", nullable: false),
                     CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
                     ParrentMessageId = table.Column<long>(type: "bigint", nullable: true),
                     ChatRoomId = table.Column<long>(type: "bigint", nullable: false),
                     ReactionType_UserId_Ids = table.Column<string>(type: "nvarchar(max)", nullable: true, defaultValue: "[]"),
                     ReadByUserIds = table.Column<string>(type: "nvarchar(max)", nullable: true, defaultValue: "[]"),
-                    IsRevoked = table.Column<bool>(type: "bit", nullable: false)
+                    MessageType = table.Column<byte>(type: "tinyint", nullable: false)
                 },
                 constraints: table =>
                 {

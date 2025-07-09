@@ -32,5 +32,11 @@ namespace SocialMediaMini.DataAccess.Models
         public string ReactionType_UserId_Ids { get; set; }
 
         public bool IsRevoked { get; set; }
+
+
+        public Comment()
+        {
+            ReactionType_UserId_Ids = "[]";
+        }
     }
 }
