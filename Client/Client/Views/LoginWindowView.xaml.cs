@@ -46,12 +46,14 @@ namespace Client.Views
         {
             var registerWindow = new RegisterWindowView();
             registerWindow.ShowDialog();
+            this.Close();
         }
 
         private void ForgotPasswordTextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var forgotPasswordWindow = new ForgotPasswordWindowView();
             forgotPasswordWindow.ShowDialog();
+            this.Close();
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
