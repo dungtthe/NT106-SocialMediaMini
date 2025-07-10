@@ -73,7 +73,7 @@
                     BorderBrush="{DynamicResource ColorBlueOne}"
                     BorderThickness="1"
                     FontSize="14"
-                    Tag="Nhập Email">
+                    Tag="Nhập Tên tài khoản">
                     <TextBox.Effect>
                         <DropShadowEffect
                             BlurRadius="4"
@@ -123,8 +123,8 @@
                 </TextBox>
 
                 <!--  Password  -->
-                <PasswordBox
-                    x:Name="PasswordBox"
+                <TextBox
+                    x:Name="txtPassword"
                     Grid.Row="1"
                     Grid.RowSpan="2"
                     Height="40"
@@ -134,18 +134,19 @@
                     BorderBrush="{DynamicResource ColorBlueOne}"
                     BorderThickness="1"
                     FontSize="14"
-                    Tag="Mật khẩu">
-                    <PasswordBox.Effect>
+                    Tag="Mật khẩu"
+                    TextChanged="txtPassword_TextChanged">
+                    <TextBox.Effect>
                         <DropShadowEffect
                             BlurRadius="4"
                             Opacity="0.2"
                             ShadowDepth="1" />
-                    </PasswordBox.Effect>
-                    <PasswordBox.Style>
-                        <Style TargetType="PasswordBox">
+                    </TextBox.Effect>
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
                             <Setter Property="Template">
                                 <Setter.Value>
-                                    <ControlTemplate TargetType="PasswordBox">
+                                    <ControlTemplate TargetType="TextBox">
                                         <Grid>
                                             <Border
                                                 Background="White"
@@ -168,7 +169,7 @@
                                                     <Style TargetType="TextBlock">
                                                         <Setter Property="Visibility" Value="Collapsed" />
                                                         <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding Password, RelativeSource={RelativeSource TemplatedParent}}" Value="">
+                                                            <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource TemplatedParent}}" Value="">
                                                                 <Setter Property="Visibility" Value="Visible" />
                                                             </DataTrigger>
                                                         </Style.Triggers>
@@ -180,11 +181,11 @@
                                 </Setter.Value>
                             </Setter>
                         </Style>
-                    </PasswordBox.Style>
-                </PasswordBox>
+                    </TextBox.Style>
+                </TextBox>
 
                 <!--  Confirm Password  -->
-                <PasswordBox
+                <TextBox
                     x:Name="ConfirmPasswordBox"
                     Grid.Row="2"
                     Height="40"
@@ -194,18 +195,19 @@
                     BorderBrush="{DynamicResource ColorBlueOne}"
                     BorderThickness="1"
                     FontSize="14"
-                    Tag="Xác nhận mật khẩu">
-                    <PasswordBox.Effect>
+                    Tag="Xác nhận mật khẩu"
+                    TextChanged="txtPassword_TextChanged">
+                    <TextBox.Effect>
                         <DropShadowEffect
                             BlurRadius="4"
                             Opacity="0.2"
                             ShadowDepth="1" />
-                    </PasswordBox.Effect>
-                    <PasswordBox.Style>
-                        <Style TargetType="PasswordBox">
+                    </TextBox.Effect>
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
                             <Setter Property="Template">
                                 <Setter.Value>
-                                    <ControlTemplate TargetType="PasswordBox">
+                                    <ControlTemplate TargetType="TextBox">
                                         <Grid>
                                             <Border
                                                 Background="White"
@@ -228,7 +230,7 @@
                                                     <Style TargetType="TextBlock">
                                                         <Setter Property="Visibility" Value="Collapsed" />
                                                         <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding Password, RelativeSource={RelativeSource TemplatedParent}}" Value="">
+                                                            <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource TemplatedParent}}" Value="">
                                                                 <Setter Property="Visibility" Value="Visible" />
                                                             </DataTrigger>
                                                         </Style.Triggers>
@@ -240,8 +242,8 @@
                                 </Setter.Value>
                             </Setter>
                         </Style>
-                    </PasswordBox.Style>
-                </PasswordBox>
+                    </TextBox.Style>
+                </TextBox>
 
                 <!--  Register Button  -->
                 <Button
