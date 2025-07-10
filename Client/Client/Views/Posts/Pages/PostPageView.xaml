@@ -59,7 +59,8 @@
                     <Ellipse
                         Width="45"
                         Height="45"
-                        Margin="11,0,11,30">
+                        Margin="11,0,11,30"
+                        VerticalAlignment="Top">
                         <Ellipse.Fill>
                             <ImageBrush x:Name="imgAvatar" />
                         </Ellipse.Fill>
@@ -82,7 +83,7 @@
                             <WrapPanel
                                 x:Name="listImgSelect"
                                 Height="auto"
-                                Margin="0,10,0,0"
+                                Margin="0,10,0,40"
                                 Orientation="Horizontal" />
                         </StackPanel>
 

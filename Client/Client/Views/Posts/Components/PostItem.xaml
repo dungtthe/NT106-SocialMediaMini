@@ -62,34 +62,31 @@
             </Grid>
 
             <!--  Blog Content  -->
-            <TextBlock
-                Grid.Row="1"
-                Margin="0,0,0,10"
-                FontSize="14"
-                Text="{Binding Content}"
-                TextWrapping="Wrap" />
+            <StackPanel Grid.Row="1">
+                <TextBlock
+                    Margin="0,0,0,10"
+                    FontSize="14"
+                    Text="{Binding Content}"
+                    TextWrapping="Wrap" />
 
-            <!--  Images in post  -->
-            <ItemsControl
-                Grid.Row="1"
-                Margin="0,40,0,10"
-                ItemsSource="{Binding Images}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Grid
-                            Width="200"
-                            Height="200"
-                            Margin="0,0,10,10">
-                            <Border
-                                Background="Transparent"
-                                ClipToBounds="True"
-                                CornerRadius="15">
-                                <!--<Image
+                <!--  Images in post  -->
+                <ItemsControl Margin="0,0,0,10" ItemsSource="{Binding Images}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid
+                                Width="200"
+                                Height="200"
+                                Margin="0,0,10,10">
+                                <Border
+                                    Background="Transparent"
+                                    ClipToBounds="True"
+                                    CornerRadius="15">
+                                    <!--<Image
                                     Width="200"
                                     Height="200"
                                     Source="{Binding}"
@@ -101,24 +98,27 @@
                                             Rect="0,0,200,200" />
                                     </Image.Clip>
                                 </Image>-->
-                                <Image
-                                    Width="200"
-                                    Height="200"
-                                    Source="{Binding Converter={StaticResource StringToImageSourceConverter}}"
-                                    Stretch="UniformToFill">
-                                    <Image.Clip>
-                                        <RectangleGeometry
-                                            RadiusX="15"
-                                            RadiusY="15"
-                                            Rect="0,0,200,200" />
-                                    </Image.Clip>
-                                </Image>
-                            </Border>
-                        </Grid>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-
+                                    <Image
+                                        x:Name="ImageItemInPost"
+                                        Width="200"
+                                        Height="200"
+                                        Cursor="Hand"
+                                        MouseLeftButtonDown="ImageItemInPost_MouseLeftButtonDown"
+                                        Source="{Binding Converter={StaticResource StringToImageSourceConverter}}"
+                                        Stretch="UniformToFill">
+                                        <Image.Clip>
+                                            <RectangleGeometry
+                                                RadiusX="15"
+                                                RadiusY="15"
+                                                Rect="0,0,200,200" />
+                                        </Image.Clip>
+                                    </Image>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
             <StackPanel
                 Grid.Row="2"
                 HorizontalAlignment="Left"

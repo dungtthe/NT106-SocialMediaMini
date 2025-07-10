@@ -38,7 +38,9 @@ namespace Client.Views
                 return;
             }
             var mainWindowView = new MainWindow();
+            this.Hide();
             mainWindowView.ShowDialog();
+            this.Show();
             ConversationViewModel.GI().Reset();
             PostViewModel.Reset();
         }

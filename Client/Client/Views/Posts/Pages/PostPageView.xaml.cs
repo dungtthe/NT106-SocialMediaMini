@@ -35,7 +35,17 @@ namespace Client.Views.Posts.Pages
         {
             InitializeComponent();
             this.DataContext = PostViewModel.GI();
-            imgAvatar.ImageSource = new BitmapImage(new Uri(UserStore.Avatar, UriKind.RelativeOrAbsolute));
+
+            if (UserStore.Avatar == "no_img_user.png")
+            {
+                var uri = new Uri($"pack://application:,,,/Resources/Images/no_img_user.png", UriKind.RelativeOrAbsolute);
+                imgAvatar.ImageSource = new BitmapImage(uri);
+            }
+            else
+            {
+                imgAvatar.ImageSource = new BitmapImage(new Uri(UserStore.Avatar, UriKind.RelativeOrAbsolute));
+            }
+
             //if (!isFirst)
             //{
             //    this.DataContext = PostViewModel();
