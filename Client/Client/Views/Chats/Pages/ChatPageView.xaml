@@ -299,9 +299,9 @@
                                             <StackPanel>
                                                 <!--  Avatar  -->
                                                 <Ellipse
-                                                    Width="60"
-                                                    Height="60"
-                                                    Margin="0,0,15,0"
+                                                    Width="30"
+                                                    Height="30"
+                                                    Margin="0,0,10,0"
                                                     VerticalAlignment="Top">
                                                     <Ellipse.Fill>
                                                         <ImageBrush ImageSource="{Binding Sender.Avatar}" />
@@ -309,15 +309,15 @@
 
                                                 </Ellipse>
                                                 <!--  ten nguoi nhan  -->
-                                                <TextBlock
-                                                    Margin="0,5,8,0"
+                                                <!--<TextBlock
+                                                    Margin="0,5,3,0"
                                                     HorizontalAlignment="Center"
                                                     VerticalAlignment="Center"
-                                                    FontSize="14"
+                                                    FontSize="10"
                                                     FontStyle="Italic"
                                                     FontWeight="Regular"
                                                     Foreground="{DynamicResource ColorBlackOne}"
-                                                    Text="{Binding Sender.FullName}" />
+                                                    Text="{Binding Sender.FullName}" />-->
                                             </StackPanel>
 
                                             <Border
@@ -332,14 +332,22 @@
                                                         Foreground="{DynamicResource ColorBlackThree}"
                                                         Text="{Binding Content}"
                                                         TextWrapping="Wrap" />
-                                                    <TextBlock
+                                                    <!--<TextBlock
                                                         Margin="0,3,0,0"
                                                         HorizontalAlignment="Right"
                                                         FontSize="14"
                                                         Foreground="Gray"
-                                                        Text="{Binding CreatedAt}" />
+                                                        Text="{Binding CreatedAt}" />-->
                                                 </StackPanel>
+
+                                                <Border.ToolTip>
+                                                    <StackPanel>
+                                                        <TextBlock FontWeight="Bold" Text="{Binding Sender.FullName}" />
+                                                        <TextBlock Text="{Binding CreatedAt}" />
+                                                    </StackPanel>
+                                                </Border.ToolTip>
                                             </Border>
+
                                         </StackPanel>
 
                                         <!--  tin của mình  -->
@@ -348,6 +356,8 @@
                                             HorizontalAlignment="Right"
                                             Orientation="Horizontal"
                                             Visibility="{Binding MessageType, Converter={StaticResource ShowMine}}">
+
+
                                             <Border
                                                 MaxWidth="1000"
                                                 Padding="8"
@@ -360,14 +370,22 @@
                                                         Foreground="{DynamicResource ColorBlackThree}"
                                                         Text="{Binding Content}"
                                                         TextWrapping="Wrap" />
-                                                    <TextBlock
+                                                    <!--<TextBlock
                                                         Margin="0,3,0,0"
                                                         HorizontalAlignment="Right"
                                                         FontSize="14"
                                                         Foreground="Gray"
-                                                        Text="{Binding CreatedAt}" />
+                                                        Text="{Binding CreatedAt}" />-->
                                                 </StackPanel>
+                                                <Border.ToolTip>
+                                                    <StackPanel>
+                                                        <!--<TextBlock FontWeight="Bold" Text="{Binding Sender.FullName}" />-->
+                                                        <TextBlock Text="{Binding CreatedAt}" />
+                                                    </StackPanel>
+                                                </Border.ToolTip>
                                             </Border>
+
+
                                         </StackPanel>
 
                                         <!--  tin của mình (loại có trả lời)  -->
@@ -410,13 +428,19 @@
                                                         Foreground="{DynamicResource ColorBlackThree}"
                                                         Text="{Binding Content}"
                                                         TextWrapping="Wrap" />
-                                                    <TextBlock
+                                                    <!--<TextBlock
                                                         Margin="0,3,0,0"
                                                         HorizontalAlignment="Right"
                                                         FontSize="14"
                                                         Foreground="Gray"
-                                                        Text="{Binding CreatedAt}" />
+                                                        Text="{Binding CreatedAt}" />-->
                                                 </StackPanel>
+                                                <Border.ToolTip>
+                                                    <StackPanel>
+                                                        <!--<TextBlock FontWeight="Bold" Text="{Binding Sender.FullName}" />-->
+                                                        <TextBlock Text="{Binding CreatedAt}" />
+                                                    </StackPanel>
+                                                </Border.ToolTip>
                                             </Border>
                                         </StackPanel>
 
@@ -426,11 +450,12 @@
                                             Orientation="Horizontal"
                                             Visibility="{Binding MessageType, Converter={StaticResource ShowOtherWithReply}}">
                                             <StackPanel>
+
                                                 <!--  Avatar  -->
                                                 <Ellipse
-                                                    Width="60"
-                                                    Height="60"
-                                                    Margin="0,0,15,0"
+                                                    Width="30"
+                                                    Height="30"
+                                                    Margin="0,0,10,0"
                                                     VerticalAlignment="Top">
                                                     <Ellipse.Fill>
                                                         <ImageBrush ImageSource="{Binding Sender.Avatar}" />
@@ -438,15 +463,16 @@
 
                                                 </Ellipse>
                                                 <!--  ten nguoi nhan  -->
-                                                <TextBlock
-                                                    Margin="0,5,8,0"
-                                                    HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center"
-                                                    FontSize="14"
-                                                    FontStyle="Italic"
-                                                    FontWeight="Regular"
-                                                    Foreground="{DynamicResource ColorBlackOne}"
-                                                    Text="{Binding Sender.FullName}" />
+                                                <!--<TextBlock
+                                                     Margin="0,5,3,0"
+                                                     HorizontalAlignment="Center"
+                                                     VerticalAlignment="Center"
+                                                     FontSize="10"
+                                                     FontStyle="Italic"
+                                                     FontWeight="Regular"
+                                                     Foreground="{DynamicResource ColorBlackOne}"
+                                                     Text="{Binding Sender.FullName}" />-->
+
                                             </StackPanel>
                                             <Border
                                                 MaxWidth="1000"
@@ -483,18 +509,47 @@
                                                         Foreground="{DynamicResource ColorBlackThree}"
                                                         Text="{Binding Content}"
                                                         TextWrapping="Wrap" />
-                                                    <TextBlock
+                                                    <!--<TextBlock
                                                         Margin="0,3,0,0"
                                                         HorizontalAlignment="Right"
                                                         FontSize="14"
                                                         Foreground="Gray"
-                                                        Text="{Binding CreatedAt}" />
+                                                        Text="{Binding CreatedAt}" />-->
                                                 </StackPanel>
+                                                <Border.ToolTip>
+                                                    <StackPanel>
+                                                        <TextBlock FontWeight="Bold" Text="{Binding Sender.FullName}" />
+                                                        <TextBlock Text="{Binding CreatedAt}" />
+                                                    </StackPanel>
+                                                </Border.ToolTip>
                                             </Border>
                                         </StackPanel>
+
+
                                     </StackPanel>
+
+
+
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
+
+
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <!--  Không hiệu ứng hover  -->
+                                    <Setter Property="OverridesDefaultStyle" Value="True" />
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Setter Property="BorderThickness" Value="0" />
+                                    <Setter Property="Cursor" Value="Hand" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="ListBoxItem">
+                                                <ContentPresenter />
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
                         </ListBox>
 
                     </StackPanel>
@@ -522,22 +577,18 @@
                         <Grid Height="70">
                             <TextBox
                                 x:Name="txtMessageInput"
-                                Margin="20,0,0,0"
-                                VerticalContentAlignment="Center"
+                                Margin="20,0,100,0"
+                                VerticalAlignment="Center"
                                 materialDesign:HintAssist.Hint="Nhập tin nhắn"
                                 materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                AcceptsReturn="True"
                                 BorderThickness="0"
                                 FontSize="16"
                                 Foreground="{DynamicResource ColorBlackOne}"
-                                KeyDown="txtMessageInput_KeyDown"
-                                TextChanged="txtMessageInput_TextChanged">
-                                <!--Text="{Binding MessageInput}">
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="TextChanged">
-                                        <i:InvokeCommandAction Command="{Binding Search}" CommandParameter="{Binding ElementName=searchBox}" />
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>-->
-                            </TextBox>
+                                PreviewKeyDown="txtMessageInput_PreviewKeyDown"
+                                TextChanged="txtMessageInput_TextChanged"
+                                TextWrapping="Wrap" />
+
 
                             <Button
                                 x:Name="btnSendMsg"

@@ -89,17 +89,22 @@ namespace Client.Views.Chats.Pages
         private void btnSendMsg_Click(object sender, RoutedEventArgs e)
         {
             //test
-            ToastManager.AddToast(Const.Type.ToastType.Success, DateTime.Now.ToString());
-           // SendMsg();
+           // ToastManager.AddToast(Const.Type.ToastType.Success, DateTime.Now.ToString());
+            SendMsg();
         }
 
         private void SendMsg()
         {
             btnSendMsg.IsEnabled = false;
-
+            var content = txtMessageInput.Text;
             if (ConversationViewModel.GI().IsValidChatRoom())
             {
-                var data = new Tuple<long, string>(ConversationViewModel.GI().ChatRoomDetail.ChatRoomId, txtMessageInput.Text);
+                if (content.EndsWith("\n"))
+                {
+                    content = content.TrimEnd('\r','\n');
+                }
+
+                var data = new Tuple<long, string>(ConversationViewModel.GI().ChatRoomDetail.ChatRoomId, content);
                 ConversationViewModel.MessagesSend.Enqueue(data);
             }
             txtMessageInput.Text = "";
@@ -120,15 +125,22 @@ namespace Client.Views.Chats.Pages
         private void txtMessageInput_KeyDown(object sender, KeyEventArgs e)
         {
 
+          
+        }
+
+        private void txtMessageInput_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
             if (!btnSendMsg.IsEnabled)
-            {
                 return;
-            }
 
             if (e.Key == Key.Enter)
             {
-                e.Handled = true; // Chặn xuống dòng 
-                SendMsg(); // Gửi tin nhắn
+                if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+                {
+                    return;
+                }
+                e.Handled = true;
+                SendMsg();
             }
         }
     }

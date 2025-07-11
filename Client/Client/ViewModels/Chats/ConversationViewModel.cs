@@ -79,7 +79,11 @@ namespace Client.ViewModels.Chats
             // Message
             public string LastMessage
             {
-                get { return _lastMessage; }
+                get
+                {
+                    string[] s = _lastMessage.Split("\r");
+                    return s[0];
+                }
                 set { SetProperty(ref _lastMessage, value, nameof(LastMessage)); }
             }
 
