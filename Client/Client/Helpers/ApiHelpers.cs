@@ -3,6 +3,7 @@ using Client.LocalStorage;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -180,5 +181,34 @@ namespace Client.Helpers
                 StatusCode = (int)response.StatusCode
             };
         }
+
+
+        public static async Task<ApiResponse> PostFileAsync(string apiUri, List<(string fileName, byte[] content)> files, bool isUseToken = true)
+        {
+            using var request = new HttpRequestMessage(HttpMethod.Post, ConfigConst.BaseApiUrl + apiUri);
+            using var content = new MultipartFormDataContent();
+
+            foreach (var (fileName, fileBytes) in files)
+            {
+                var byteContent = new ByteArrayContent(fileBytes);
+                byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+
+                content.Add(byteContent, "files", fileName);
+            }
+
+            AddTokenHeader(request, isUseToken);
+
+            request.Content = content;
+
+            var response = await client.SendAsync(request);
+            string responseBody = await response.Content.ReadAsStringAsync();
+
+            return new ApiResponse
+            {
+                ResponseBody = responseBody,
+                StatusCode = (int)response.StatusCode
+            };
+        }
+
     }
 }

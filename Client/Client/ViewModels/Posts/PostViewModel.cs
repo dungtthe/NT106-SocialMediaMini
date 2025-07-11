@@ -288,9 +288,6 @@ namespace Client.ViewModels.Posts
             });
         }
 
-
-
         public static ConcurrentQueue<long> NewPostQueue = new ConcurrentQueue<long>();//id post
-
     }
 }

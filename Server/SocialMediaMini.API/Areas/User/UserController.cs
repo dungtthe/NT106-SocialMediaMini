@@ -31,7 +31,7 @@ namespace SocialMediaMini.API.Areas.User
             }
             catch (Exception ex)
             {
-                await LoggerHelper.LogMsgAsync("RegisterAsync(Request_RegisterDTO data)", JsonConvert.SerializeObject(data), ex);
+               // await LoggerHelper.LogMsgAsync("RegisterAsync(Request_RegisterDTO data)", JsonConvert.SerializeObject(data), ex);
                 return this.InternalServerError();
             }
         }
@@ -62,7 +62,7 @@ namespace SocialMediaMini.API.Areas.User
             }
             catch (Exception ex)
             {
-                await LoggerHelper.LogMsgAsync("LoginAsync(Request_LoginDTO data)", JsonConvert.SerializeObject(data), ex);
+                //await LoggerHelper.LogMsgAsync("LoginAsync(Request_LoginDTO data)", JsonConvert.SerializeObject(data), ex);
                 return this.InternalServerError();
             }
         }

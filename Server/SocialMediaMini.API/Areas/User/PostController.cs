@@ -37,7 +37,7 @@ namespace SocialMediaMini.API.Areas.User
             }
             catch (Exception ex)
             {
-                await LoggerHelper.LogMsgAsync("GetFriendPostsAsync()", "", ex);
+                //await LoggerHelper.LogMsgAsync("GetFriendPostsAsync()", "", ex);
                 return this.InternalServerError();
             }
         }
@@ -64,7 +64,7 @@ namespace SocialMediaMini.API.Areas.User
             }
             catch (Exception ex)
             {
-                await LoggerHelper.LogMsgAsync("GetPostDetailAsync()", "", ex);
+                //await LoggerHelper.LogMsgAsync("GetPostDetailAsync()", "", ex);
                 return this.InternalServerError();
             }
         }
@@ -90,7 +90,7 @@ namespace SocialMediaMini.API.Areas.User
             }
             catch (Exception ex)
             {
-                await LoggerHelper.LogMsgAsync("GetMyPostsAsync()", "", ex);
+                //await LoggerHelper.LogMsgAsync("GetMyPostsAsync()", "", ex);
                 return this.InternalServerError();
             }
         }
@@ -111,7 +111,7 @@ namespace SocialMediaMini.API.Areas.User
             }
             catch (Exception ex)
             {
-                await LoggerHelper.LogMsgAsync("AddPostAsync()", "", ex);
+               // await LoggerHelper.LogMsgAsync("AddPostAsync()", "", ex);
                 return this.InternalServerError();
             }
         }

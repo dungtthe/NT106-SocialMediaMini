@@ -9,17 +9,23 @@ namespace SocialMediaMini.Common.Helpers
     public static class Utils
     {
         public static readonly string DesktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-
-        public static string GetPathUpload()
+        private static readonly string AppName = "SocialMediaMini";
+        private static string GetPathLog()
         {
-            return Path.Combine(DesktopPath, "Uploads");
+            return Path.Combine(DesktopPath, AppName, "Logs");
         }
-
-        public static string GetPathLog()
+        public static string GetPathUploadImage()
         {
-            return Path.Combine(DesktopPath, "Logs");
+            return Path.Combine(DesktopPath, AppName, "Uploads", "Images");
         }
-
+        public static string GetPathLogException()
+        {
+            return Path.Combine(DesktopPath, AppName, "LogException");
+        }
+        public static string GetPathLogInformation()
+        {
+            return Path.Combine(DesktopPath, GetPathLog(), "LogInformation");
+        }
 
         public static string RandomPassword()
         {

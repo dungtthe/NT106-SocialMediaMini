@@ -1,6 +1,7 @@
 ﻿using Client.Helpers;
 using Client.LocalStorage;
 using Client.Services;
+using Client.ViewModels;
 using Client.ViewModels.Posts;
 using Microsoft.Win32;
 using Newtonsoft.Json;
@@ -157,10 +158,24 @@ namespace Client.Views.Posts.Pages
         {
             btnDang.IsEnabled = false;
 
+            var ims = GetAllImage();
+            var images = "[]";
+            if (ims.Any())
+            {
+                images = await FileService.UploadImageAsync(ims);
+                if (images == null)
+                {
+                    ToastManager.AddToast(Const.Type.ToastType.Error, "Có lỗi xảy ra khi đăng bài!");
+                    btnHuyPost.Visibility = Visibility.Hidden;
+                    txtContentPost.Text = "";
+                    listImgSelect.Children.Clear();
+                    return;
+                }
+            }
             var data = new Request_AddPostDTO()
             {
                 Content = txtContentPost.Text,
-                Images = JsonConvert.SerializeObject(GetAllImagesBase64()),
+                Images = images,
                 PostVisibilityType = PostVisibilityType.Friend
             };
 
@@ -180,22 +195,35 @@ namespace Client.Views.Posts.Pages
             }
         }
 
-        private List<string> GetAllImagesBase64()
+        //private List<string> GetAllImagesBase64()
+        //{
+        //    var result = new List<string>();
+        //    foreach (var child in listImgSelect.Children)
+        //    {
+        //        if (child is Border border && border.Child is Image image && image.Source != null)
+        //        {
+        //            var base64 = ImageHelpers.ImageSourceToBase64(image.Source);
+        //            if (!string.IsNullOrEmpty(base64))
+        //            {
+        //                result.Add(base64);
+        //            }
+        //        }
+        //    }
+        //    return result;
+        //}
+
+
+        private List<Image> GetAllImage()
         {
-            var result = new List<string>();
+            var result = new List<Image>();
             foreach (var child in listImgSelect.Children)
             {
                 if (child is Border border && border.Child is Image image && image.Source != null)
                 {
-                    var base64 = ImageHelpers.ImageSourceToBase64(image.Source);
-                    if (!string.IsNullOrEmpty(base64))
-                    {
-                        result.Add(base64);
-                    }
+                    result.Add(image);
                 }
             }
             return result;
         }
-
     }
 }

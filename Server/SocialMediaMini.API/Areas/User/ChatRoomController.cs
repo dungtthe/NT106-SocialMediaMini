@@ -37,7 +37,7 @@ namespace SocialMediaMini.API.Areas.User
             }
             catch (Exception ex)
             {
-                await LoggerHelper.LogMsgAsync("GetConversationsAsync()", "", ex);
+                //await LoggerHelper.LogMsgAsync("GetConversationsAsync()", "", ex);
                 return this.InternalServerError();
             }
         }
@@ -58,7 +58,7 @@ namespace SocialMediaMini.API.Areas.User
             }
             catch (Exception ex)
             {
-                await LoggerHelper.LogMsgAsync("GetConversationsAsync()", "", ex);
+                //await LoggerHelper.LogMsgAsync("GetConversationsAsync()", "", ex);
                 return this.InternalServerError();
             }
         }
@@ -80,7 +80,7 @@ namespace SocialMediaMini.API.Areas.User
             }
             catch (Exception ex)
             {
-                await LoggerHelper.LogMsgAsync("ReadMessages(long chatRoomId)", "", ex);
+                //await LoggerHelper.LogMsgAsync("ReadMessages(long chatRoomId)", "", ex);
                 return this.InternalServerError();
             }
         }

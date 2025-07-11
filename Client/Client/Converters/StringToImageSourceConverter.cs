@@ -1,4 +1,5 @@
-﻿using Client.Helpers;
+﻿using Client.Const;
+using Client.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -23,38 +24,51 @@ namespace Client.Converters
 
             try
             {
-                // Base64 xử lý riêng
-                if (input.StartsWith("data:image") || input.Length > 100)
-                {
-                    if (input.Contains("base64,"))
-                        input = input.Substring(input.IndexOf("base64,") + 7);
 
-                    return ImageHelpers.Base64ToImage(input);
-                }
-                else if (input.StartsWith("http", StringComparison.OrdinalIgnoreCase))
-                {
-                    using var webClient = new WebClient();
-                    byte[] data = webClient.DownloadData(input);
-                    using var ms = new MemoryStream(data);
+                using var webClient = new WebClient();
+                byte[] data = webClient.DownloadData(ConfigConst.BaseApiUrl + "/api/file/image/" + input);
+                using var ms = new MemoryStream(data);
+                var image = new BitmapImage();
+                image.BeginInit();
+                image.CacheOption = BitmapCacheOption.OnLoad;
+                image.StreamSource = ms;
+                image.EndInit();
+                image.Freeze();
+                return image;
 
-                    var image = new BitmapImage();
-                    image.BeginInit();
-                    image.CacheOption = BitmapCacheOption.OnLoad;
-                    image.StreamSource = ms;
-                    image.EndInit();
-                    image.Freeze();
-                    return image;
-                }
-                else
-                {
-                    var image = new BitmapImage();
-                    image.BeginInit();
-                    image.UriSource = new Uri(input, UriKind.RelativeOrAbsolute);
-                    image.CacheOption = BitmapCacheOption.OnLoad;
-                    image.EndInit();
-                    image.Freeze();
-                    return image;
-                }
+
+                //// Base64 xử lý riêng
+                //if (input.StartsWith("data:image") || input.Length > 100)
+                //{
+                //    if (input.Contains("base64,"))
+                //        input = input.Substring(input.IndexOf("base64,") + 7);
+
+                //    return ImageHelpers.Base64ToImage(input);
+                //}
+                //else if (input.StartsWith("http", StringComparison.OrdinalIgnoreCase))
+                //{
+                //    using var webClient = new WebClient();
+                //    byte[] data = webClient.DownloadData(input);
+                //    using var ms = new MemoryStream(data);
+
+                //    var image = new BitmapImage();
+                //    image.BeginInit();
+                //    image.CacheOption = BitmapCacheOption.OnLoad;
+                //    image.StreamSource = ms;
+                //    image.EndInit();
+                //    image.Freeze();
+                //    return image;
+                //}
+                //else
+                //{
+                //    var image = new BitmapImage();
+                //    image.BeginInit();
+                //    image.UriSource = new Uri(input, UriKind.RelativeOrAbsolute);
+                //    image.CacheOption = BitmapCacheOption.OnLoad;
+                //    image.EndInit();
+                //    image.Freeze();
+                //    return image;
+                //}
             }
             catch (Exception ex)
             {
