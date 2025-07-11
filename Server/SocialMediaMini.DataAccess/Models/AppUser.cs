@@ -47,12 +47,6 @@ namespace SocialMediaMini.DataAccess.Models
         public string FriendIds { get; set; }
         public string BlockIds { get; set; }
 
-        [MaxLength(500)]
-        public string EncryptionPublicKey { get; set; }
-
-        [MaxLength(500)] // Độ dài đủ cho Base64 của IV (16 byte)
-        public string IV { get; set; }
-
         public AppUser()
         {
             FriendIds = "[]";

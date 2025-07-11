@@ -77,16 +77,17 @@ namespace Client.Views
 
         private async Task<bool> RegisterAsync(string userName, string password, string email, string phoneNumber)
         {
-            try
-            {
-                bool success = await UserService.RegisterAsync(userName, password, email, phoneNumber);
-                return success;
-            }
-            catch (Exception ex)
-            {
-                //MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi đăng ký", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
-            }
+            //try
+            //{
+            //    bool success = await UserService.RegisterAsync(userName, password, email, phoneNumber);
+            //    return success;
+            //}
+            //catch (Exception ex)
+            //{
+            //    //MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi đăng ký", MessageBoxButton.OK, MessageBoxImage.Error);
+            //    return false;
+            //}
+            return false;
         }
 
         private string realPassword = string.Empty;

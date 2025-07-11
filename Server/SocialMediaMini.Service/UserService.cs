@@ -55,90 +55,9 @@ namespace SocialMediaMini.Service
             return rs;
         }
 
-        public async Task<ResponeMessage> RegisterAsync(Request_RegisterDTO request)
+        public Task<ResponeMessage> RegisterAsync(Request_RegisterDTO request)
         {
-            var user = new AppUser
-            {
-                UserName = request.UserName,
-                Password = SecurityHelper.HashPassword(request.Password),
-                FullName = request.UserName,
-                Email = request.Email,
-                PhoneNumber = request.PhoneNumber,
-                // Nhận khóa công khai và IV từ client
-                EncryptionPublicKey = request.EncryptionPublicKey,
-                IV = request.IV // Thêm cột IV vào AppUser nếu chưa có
-            };
-
-            var checkUserName = await _dbContext.Users.FirstOrDefaultAsync(x => x.UserName == request.UserName);
-            if (checkUserName != null)
-            {
-                return new Respone_RegisterDTO
-                {
-                    HttpStatusCode = HttpStatusCode.Conflict,
-                    Message = "Tên tài khoản đã tồn tại!"
-                };
-            }
-
-            var checkEmail = await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == request.Email);
-            if (checkEmail != null)
-            {
-                return new Respone_RegisterDTO
-                {
-                    HttpStatusCode = HttpStatusCode.Conflict,
-                    Message = "Email đã tồn tại!"
-                };
-            }
-
-            var checkPhoneNumber = await _dbContext.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber);
-            if (checkPhoneNumber != null)
-            {
-                return new Respone_RegisterDTO
-                {
-                    HttpStatusCode = HttpStatusCode.Conflict,
-                    Message = "Số điện thoại đã tồn tại!"
-                };
-            }
-
-            await _dbContext.Users.AddAsync(user);
-            await _dbContext.SaveChangesAsync();
-
-            var token = GenerateJwtToken(user);
-
-            return new Respone_RegisterDTO
-            {
-                HttpStatusCode = HttpStatusCode.Ok,
-                Message = "Đăng ký thành công!",
-                UserId = user.Id,
-                FullName = user.FullName,
-                Image = "no_img_user.png",
-                Token = token
-            };
-        }
-
-        public async Task<Respone_LoginDTO> LoginAsync(Request_LoginDTO request)
-        {
-            var fUser = await _dbContext.Users.FirstOrDefaultAsync(x => x.UserName == request.UserName);
-            if (fUser == null || fUser.Password != SecurityHelper.HashPassword(request.Password))
-            {
-                return new Respone_LoginDTO
-                {
-                    HttpStatusCode = HttpStatusCode.NotFound,
-                    Message = "Tên tài khoản hoặc mật khẩu không chính xác!"
-                };
-            }
-            var token = GenerateJwtToken(fUser);
-            string[] imgs = fUser.Images != null
-                ? JsonConvert.DeserializeObject<string[]>(fUser.Images)
-                : new string[] { "no_img_user.png" };
-            var rsp = new Respone_LoginDTO
-            {
-                UserId = fUser.Id,
-                HttpStatusCode = HttpStatusCode.Ok,
-                FullName = fUser.FullName,
-                Image = imgs[0],
-                Token = token,
-            };
-            return rsp;
+            throw new NotImplementedException();
         }
 
         private string GenerateJwtToken(AppUser user)
