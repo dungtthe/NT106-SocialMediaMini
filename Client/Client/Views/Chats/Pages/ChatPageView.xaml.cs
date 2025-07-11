@@ -1,4 +1,6 @@
-﻿using Client.ViewModels.Chats;
+﻿using Client.ViewModels;
+using Client.ViewModels.Chats;
+using Client.Views.Toast;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -86,7 +88,9 @@ namespace Client.Views.Chats.Pages
         }
         private void btnSendMsg_Click(object sender, RoutedEventArgs e)
         {
-            SendMsg();
+            //test
+            ToastManager.AddToast(Const.Type.ToastType.Success, DateTime.Now.ToString());
+           // SendMsg();
         }
 
         private void SendMsg()

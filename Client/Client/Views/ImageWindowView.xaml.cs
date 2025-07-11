@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using Client.ViewModels;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -43,7 +44,7 @@ namespace Client.Views
             var dlg = new SaveFileDialog
             {
                 Filter = "JPEG Image|*.jpg",
-                FileName = "image.jpg",
+                FileName = Guid.NewGuid().ToString() + ".jpg",
                 OverwritePrompt = true,
                 AddExtension = true
             };
@@ -58,9 +59,11 @@ namespace Client.Views
                         encoder.Frames.Add(BitmapFrame.Create(bitmap));
                         encoder.Save(fs);
                     }
+                    ToastManager.AddToast(Const.Type.ToastType.Success, "Lưu ảnh thành công");
                 }
                 catch (Exception ex)
                 {
+                    ToastManager.AddToast(Const.Type.ToastType.Error, "Có lỗi xảy ra khi lưu ảnh!");
                 }
             }
         }

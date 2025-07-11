@@ -1,10 +1,12 @@
 ﻿using Client.Helpers;
 using Client.Services;
+using Client.ViewModels;
 using Client.ViewModels.Chats;
 using Client.ViewModels.Posts;
 using Client.Views.Posts.Pages;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,6 +43,7 @@ namespace Client.Views
             this.Hide();
             mainWindowView.ShowDialog();
             this.Show();
+            MainWindow.PageViewType = PageViewType.NONE;
             ConversationViewModel.GI().Reset();
             PostViewModel.Reset();
         }
@@ -61,7 +64,17 @@ namespace Client.Views
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
+           
             this.Close();
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            MainWindow.PageViewType = PageViewType.NONE;
+            ConversationViewModel.GI().Reset();
+            PostViewModel.Reset();
+            ToastManager.Stop();
         }
 
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)

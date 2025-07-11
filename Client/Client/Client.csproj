@@ -52,6 +52,8 @@
     <None Remove="Resources\Icons\SuCoIcon.png" />
     <None Remove="Resources\Icons\SuCo_Brown_Icon.png" />
     <None Remove="Resources\Icons\SuCo_White_Icon.png" />
+    <None Remove="Resources\Icons\toast_error.png" />
+    <None Remove="Resources\Icons\toast_sus.png" />
     <None Remove="Resources\Icons\Warning_Icon.png" />
     <None Remove="Resources\Images\logoHaloNew.png" />
     <None Remove="Resources\Images\meolag.jpg" />
@@ -120,6 +122,8 @@
     <Resource Include="Resources\Icons\SuCoIcon.png" />
     <Resource Include="Resources\Icons\SuCo_Brown_Icon.png" />
     <Resource Include="Resources\Icons\SuCo_White_Icon.png" />
+    <Resource Include="Resources\Icons\toast_error.png" />
+    <Resource Include="Resources\Icons\toast_sus.png" />
     <Resource Include="Resources\Icons\Warning_Icon.png" />
     <Resource Include="Resources\Images\logoHaloNew.png" />
     <Resource Include="Resources\Images\meolag.jpg" />

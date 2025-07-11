@@ -1,0 +1,53 @@
+﻿<Window
+    x:Class="Client.Views.Toast.ToastError"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Width="Auto"
+    Height="Auto"
+    AllowsTransparency="True"
+    Background="Transparent"
+    ResizeMode="NoResize"
+    SizeToContent="WidthAndHeight"
+    Topmost="True"
+    WindowStyle="None">
+
+    <Border
+        Margin="6"
+        Background="#E57373 "
+        CornerRadius="8"
+        SnapsToDevicePixels="True">
+        <StackPanel>
+            <Image
+                Width="8"
+                Height="8"
+                Margin="0,4,5,2"
+                HorizontalAlignment="Right"
+                Cursor="Hand"
+                MouseLeftButtonDown="Image_MouseLeftButtonDown"
+                Source="/Resources/Icons/iconclose.png" />
+            <StackPanel
+                Margin="5,0,5,10"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+
+                <Image
+                    Width="25"
+                    Height="25"
+                    Margin="0,0,8,0"
+                    VerticalAlignment="Top"
+                    Source="/Resources/Icons/toast_error.png" />
+
+                <TextBlock
+                    x:Name="ToastMessage"
+                    MaxWidth="300"
+                    VerticalAlignment="Center"
+                    FontSize="14"
+                    FontWeight="SemiBold"
+                    Foreground="#212121"
+                    Text="Đây là thông báo lỗi"
+                    TextWrapping="Wrap" />
+            </StackPanel>
+        </StackPanel>
+
+    </Border>
+</Window>

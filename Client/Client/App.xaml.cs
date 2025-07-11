@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using Client.ViewModels;
+using System.Configuration;
 using System.Data;
 using System.Windows;
 
@@ -9,6 +10,10 @@ namespace Client
     /// </summary>
     public partial class App : Application
     {
+        public App():base()
+        {
+            ToastManager.Start();
+        }
     }
 
 }
