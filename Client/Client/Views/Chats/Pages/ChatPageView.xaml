@@ -293,7 +293,9 @@
                                         <!--  tin nhắn của người khác  -->
                                         <StackPanel
                                             Margin="0,10,0,10"
+                                            MouseLeftButtonDown="itemMessage_MouseLeftButtonDown"
                                             Orientation="Horizontal"
+                                            Tag="{Binding IdAndContent}"
                                             Visibility="{Binding MessageType, Converter={StaticResource ShowOther}}">
 
                                             <StackPanel>
@@ -354,7 +356,9 @@
                                         <StackPanel
                                             Margin="0,10,0,10"
                                             HorizontalAlignment="Right"
+                                            MouseLeftButtonDown="itemMessage_MouseLeftButtonDown"
                                             Orientation="Horizontal"
+                                            Tag="{Binding IdAndContent}"
                                             Visibility="{Binding MessageType, Converter={StaticResource ShowMine}}">
 
 
@@ -392,7 +396,9 @@
                                         <StackPanel
                                             Margin="0,10,0,10"
                                             HorizontalAlignment="Right"
+                                            MouseLeftButtonDown="itemMessage_MouseLeftButtonDown"
                                             Orientation="Horizontal"
+                                            Tag="{Binding IdAndContent}"
                                             Visibility="{Binding MessageType, Converter={StaticResource ShowMineWithReply}}">
                                             <Border
                                                 MaxWidth="1000"
@@ -447,7 +453,9 @@
                                         <!--  tin của người khác (loại có trả lời)  -->
                                         <StackPanel
                                             Margin="0,10,0,10"
+                                            MouseLeftButtonDown="itemMessage_MouseLeftButtonDown"
                                             Orientation="Horizontal"
+                                            Tag="{Binding IdAndContent}"
                                             Visibility="{Binding MessageType, Converter={StaticResource ShowOtherWithReply}}">
                                             <StackPanel>
 
@@ -554,10 +562,53 @@
 
                     </StackPanel>
 
+
                     <!--  input  -->
                     <StackPanel Height="114">
+                        <!--  reply  -->
+                        <StackPanel
+                            x:Name="reply"
+                            Height="45"
+                            Margin="5,0,5,0"
+                            Background="#EBECF0"
+                            Opacity="0.7"
+                            Orientation="Horizontal"
+                            Visibility="Collapsed">
+                            <Grid Width="2" Background="{DynamicResource ColorBlueTwo}" />
+                            <StackPanel MinWidth="1240" MaxWidth="1240">
+                                <TextBlock
+                                    x:Name="tblReplyNameSender"
+                                    Margin="5,5,0,0"
+                                    Foreground="{DynamicResource ColorBlackThree}"
+                                    TextWrapping="WrapWithOverflow">
+                                    Trả lời: Dung
+                                </TextBlock>
+                                <TextBlock
+                                    x:Name="tblReplyContentMsg"
+                                    Margin="5,0,0,0"
+                                    Foreground="{DynamicResource ColorGreyTwo}"
+                                    TextWrapping="WrapWithOverflow">
+                                    Trả lời: Dung
+                                </TextBlock>
+                            </StackPanel>
+                            <Grid>
+                                <Button
+                                    x:Name="btnCloseReplyBox"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Click="btnCloseReplyBox_Click">
+                                    <Image
+                                        Width="8"
+                                        Height="18"
+                                        Source="/Resources/Icons/iconclose.png" />
+                                </Button>
+                            </Grid>
+                        </StackPanel>
                         <!--  inputfile  -->
-                        <StackPanel Height="45" Orientation="Horizontal">
+                        <StackPanel
+                            x:Name="inputFile"
+                            Height="45"
+                            Orientation="Horizontal">
                             <Image
                                 Height="32"
                                 Margin="20,0,0,0"

@@ -235,6 +235,11 @@ namespace Client.ViewModels.Chats
                     get => _reactions;
                     set => SetProperty(ref _reactions, value, nameof(Reactions));
                 }
+
+                public string IdAndContent
+                {
+                    get => JsonConvert.SerializeObject(new Tuple<long, string, string>(Id, Sender.FullName, Content));
+                }
             }
 
 
@@ -408,7 +413,7 @@ namespace Client.ViewModels.Chats
         }
 
         #region notification
-        public static ConcurrentQueue<Tuple<long, string>> MessagesSend = new ConcurrentQueue<Tuple<long, string>>();//hàng đợi message gửi lên server(chatroomid-msg)
+        public static ConcurrentQueue<Tuple<long, string, long>> MessagesSend = new ConcurrentQueue<Tuple<long, string, long>>();//hàng đợi message gửi lên server(chatroomid-msg)
         public static ConcurrentQueue<string> MessagesReceive = new ConcurrentQueue<string>();//hàng đợi nhận từ server
 
         private void SendLoop()
@@ -432,6 +437,10 @@ namespace Client.ViewModels.Chats
                                     Content = content,
                                     ParrentMessageId = null
                                 };
+                                if (data.Item3 != -1)
+                                {
+                                    dataSend.ParrentMessageId = data.Item3;
+                                }
 
                                 await NotifyService.SendMessage(NotificationType.MESSAGE, JsonConvert.SerializeObject(dataSend));
                             }

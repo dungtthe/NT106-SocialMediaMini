@@ -1,6 +1,7 @@
 ﻿using Client.ViewModels;
 using Client.ViewModels.Chats;
 using Client.Views.Toast;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -89,11 +90,11 @@ namespace Client.Views.Chats.Pages
         private void btnSendMsg_Click(object sender, RoutedEventArgs e)
         {
             //test
-           // ToastManager.AddToast(Const.Type.ToastType.Success, DateTime.Now.ToString());
-            SendMsg();
+            // ToastManager.AddToast(Const.Type.ToastType.Success, DateTime.Now.ToString());
+            SendMsg(parrentMsgId);
         }
 
-        private void SendMsg()
+        private void SendMsg(long parrentMessage)
         {
             btnSendMsg.IsEnabled = false;
             var content = txtMessageInput.Text;
@@ -101,10 +102,10 @@ namespace Client.Views.Chats.Pages
             {
                 if (content.EndsWith("\n"))
                 {
-                    content = content.TrimEnd('\r','\n');
+                    content = content.TrimEnd('\r', '\n');
                 }
 
-                var data = new Tuple<long, string>(ConversationViewModel.GI().ChatRoomDetail.ChatRoomId, content);
+                var data = new Tuple<long, string, long>(ConversationViewModel.GI().ChatRoomDetail.ChatRoomId, content, parrentMessage);
                 ConversationViewModel.MessagesSend.Enqueue(data);
             }
             txtMessageInput.Text = "";
@@ -125,7 +126,7 @@ namespace Client.Views.Chats.Pages
         private void txtMessageInput_KeyDown(object sender, KeyEventArgs e)
         {
 
-          
+
         }
 
         private void txtMessageInput_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -140,8 +141,42 @@ namespace Client.Views.Chats.Pages
                     return;
                 }
                 e.Handled = true;
-                SendMsg();
+                SendMsg(parrentMsgId);
+                HideBoxReply();
             }
+        }
+
+
+        private long parrentMsgId = -1;
+        private void itemMessage_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is StackPanel item)
+            {
+                var value = JsonConvert.DeserializeObject<Tuple<long, string, string>>(item.Tag.ToString());
+                parrentMsgId = value.Item1;
+                ShowBoxReply(value.Item2, value.Item3);
+            }
+        }
+
+        private void ShowBoxReply(string senderName, string msgContent)
+        {
+            tblReplyNameSender.Text = "Trả lời: " + senderName;
+            string[] s = msgContent.Split("\r");
+            tblReplyContentMsg.Text = s[0];
+            reply.Visibility = Visibility.Visible;
+            inputFile.Visibility = Visibility.Collapsed;
+        }
+
+        private void HideBoxReply()
+        {
+            reply.Visibility = Visibility.Collapsed;
+            inputFile.Visibility = Visibility.Visible;
+        }
+
+        private void btnCloseReplyBox_Click(object sender, RoutedEventArgs e)
+        {
+            HideBoxReply();
+            parrentMsgId = -1;
         }
     }
 }
