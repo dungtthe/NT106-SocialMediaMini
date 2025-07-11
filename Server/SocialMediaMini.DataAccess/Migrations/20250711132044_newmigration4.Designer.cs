@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SocialMediaMini.DataAccess;
 
@@ -11,9 +12,11 @@ using SocialMediaMini.DataAccess;
 namespace SocialMediaMini.DataAccess.Migrations
 {
     [DbContext(typeof(SocialMediaMiniContext))]
-    partial class SocialMediaMiniContextModelSnapshot : ModelSnapshot
+    [Migration("20250711132044_newmigration4")]
+    partial class newmigration4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

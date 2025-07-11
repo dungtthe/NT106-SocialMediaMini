@@ -20,18 +20,79 @@ namespace SocialMediaMini.Service
 {
     public interface IUserService
     {
-        Task<ResponeMessage> RegisterAsync(Request_RegisterDTO request);
+        Task<Respone_RegisterDTO> RegisterAsync(Request_RegisterDTO request); // Đã cập nhật
         Task<Respone_LoginDTO> LoginAsync(Request_LoginDTO request);
     }
+
     public class UserService : IUserService
     {
         private readonly SocialMediaMiniContext _dbContext;
-
         private readonly IConfiguration _configuration;
+
         public UserService(SocialMediaMiniContext dbContext, IConfiguration configuration)
         {
             _dbContext = dbContext;
             _configuration = configuration;
+        }
+
+        public async Task<Respone_RegisterDTO> RegisterAsync(Request_RegisterDTO request)
+        {
+            var user = new AppUser
+            {
+                UserName = request.UserName,
+                Password = SecurityHelper.HashPassword(request.Password),
+                FullName = request.UserName,
+                Email = request.Email,
+                PhoneNumber = request.PhoneNumber,
+                // Nhận khóa công khai và IV từ client
+                EncryptionPublicKey = request.EncryptionPublicKey,
+                IV = request.IV // Thêm cột IV vào AppUser nếu chưa có
+            };
+
+            var checkUserName = await _dbContext.Users.FirstOrDefaultAsync(x => x.UserName == request.UserName);
+            if (checkUserName != null)
+            {
+                return new Respone_RegisterDTO
+                {
+                    HttpStatusCode = HttpStatusCode.Conflict,
+                    Message = "Tên tài khoản đã tồn tại!"
+                };
+            }
+
+            var checkEmail = await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == request.Email);
+            if (checkEmail != null)
+            {
+                return new Respone_RegisterDTO
+                {
+                    HttpStatusCode = HttpStatusCode.Conflict,
+                    Message = "Email đã tồn tại!"
+                };
+            }
+
+            var checkPhoneNumber = await _dbContext.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber);
+            if (checkPhoneNumber != null)
+            {
+                return new Respone_RegisterDTO
+                {
+                    HttpStatusCode = HttpStatusCode.Conflict,
+                    Message = "Số điện thoại đã tồn tại!"
+                };
+            }
+
+            await _dbContext.Users.AddAsync(user);
+            await _dbContext.SaveChangesAsync();
+
+            var token = GenerateJwtToken(user);
+
+            return new Respone_RegisterDTO
+            {
+                HttpStatusCode = HttpStatusCode.Ok,
+                Message = "Đăng ký thành công!",
+                UserId = user.Id,
+                FullName = user.FullName,
+                Image = "no_img_user.png",
+                Token = token
+            };
         }
 
         public async Task<Respone_LoginDTO> LoginAsync(Request_LoginDTO request)
@@ -47,8 +108,8 @@ namespace SocialMediaMini.Service
             }
             var token = GenerateJwtToken(fUser);
             string[] imgs = fUser.Images != null
-            ? JsonConvert.DeserializeObject<string[]>(fUser.Images)
-            : new string[] { "no_img_user.png" };
+                ? JsonConvert.DeserializeObject<string[]>(fUser.Images)
+                : new string[] { "no_img_user.png" };
             var rsp = new Respone_LoginDTO
             {
                 UserId = fUser.Id,
@@ -60,57 +121,6 @@ namespace SocialMediaMini.Service
             return rsp;
         }
 
-        public async Task<ResponeMessage> RegisterAsync(Request_RegisterDTO request)
-        {
-            var user = new AppUser
-            {
-                UserName = request.UserName,
-                Password = SecurityHelper.HashPassword(request.Password),
-                FullName = request.UserName,
-                Email = request.Email,
-                PhoneNumber = request.PhoneNumber,
-            };
-            var checkUserName = await _dbContext.Users.FirstOrDefaultAsync(x => x.UserName == request.UserName);
-            if (checkUserName != null)
-            {
-                return new ResponeMessage
-                {
-                    HttpStatusCode = HttpStatusCode.Conflict,
-                    Message = "Tên tài khoản đã tồn tại!"
-                };
-            }
-
-            var checkEmail = await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == request.Email);
-            if (checkEmail != null)
-            {
-                return new ResponeMessage
-                {
-                    HttpStatusCode = HttpStatusCode.Conflict,
-                    Message = "Email đã tồn tại!"
-                };
-            }
-
-            var checkPhoneNumber = await _dbContext.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber);
-            if (checkPhoneNumber != null)
-            {
-                return new ResponeMessage
-                {
-                    HttpStatusCode = HttpStatusCode.Conflict,
-                    Message = "Số điện thoại đã tồn tại!"
-                };
-            }
-
-            await _dbContext.Users.AddAsync(user);
-            await _dbContext.SaveChangesAsync();
-            return new ResponeMessage
-            {
-                HttpStatusCode = HttpStatusCode.Ok,
-                Message = "Đăng ký thành công!"
-            };
-        }
-
-
-
         private string GenerateJwtToken(AppUser user)
         {
             var issuer = _configuration["Jwt:Issuer"];
@@ -118,12 +128,11 @@ namespace SocialMediaMini.Service
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            // Tạo danh sách claims cơ bản
             var claims = new List<Claim>
             {
-            new Claim("UserId", user.Id.ToString()),
+                new Claim("UserId", user.Id.ToString()),
             };
-            // Tạo JWT token
+
             var token = new JwtSecurityToken(
                 issuer: issuer,
                 claims: claims,
