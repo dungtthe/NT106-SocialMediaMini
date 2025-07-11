@@ -153,5 +153,32 @@ namespace Client.Helpers
                 StatusCode = (int)response.StatusCode
             };
         }
+
+
+        // PATCH
+        public static async Task<ApiResponse> PatchAsync(ApiRequest request)
+        {
+            HttpRequestMessage httpRequest = new HttpRequestMessage(HttpMethod.Patch, ConfigConst.BaseApiUrl + request.ApiUri)
+            {
+                Content = new StringContent(request.Body, Encoding.UTF8, "application/json")
+            };
+            AddTokenHeader(httpRequest, request.IsUseToken);
+            if (request.Headers != null)
+            {
+                foreach (var header in request.Headers)
+                {
+                    httpRequest.Headers.Add(header.Key, header.Value);
+                }
+            }
+
+            HttpResponseMessage response = await client.SendAsync(httpRequest);
+            string responseBody = await response.Content.ReadAsStringAsync();
+
+            return new ApiResponse
+            {
+                ResponseBody = responseBody,
+                StatusCode = (int)response.StatusCode
+            };
+        }
     }
 }

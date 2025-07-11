@@ -48,5 +48,48 @@ namespace SocialMediaMini.DataAccess.Models
         {
             return JsonConvert.DeserializeObject<List<string>>(Images);
         }
+
+
+        public ReactionType? ReactOrUnReact(long userId, ReactionType reactionType)
+        {
+            var reactionAndUserIds = GetReactionAndUserIds();
+            Tuple<ReactionType, long> temp = null;
+            bool hasReact = false;
+            foreach (var item in reactionAndUserIds)
+            {
+                if(item.Item2 == userId)
+                {
+                    temp = item;
+                    break;
+                }
+            }
+            if(temp == null)
+            {
+                reactionAndUserIds.Add(new Tuple<ReactionType, long>(reactionType,userId));
+                hasReact = true;
+            }
+            else
+            {
+                reactionAndUserIds.Remove(temp);
+                if (temp.Item1 != reactionType)
+                {
+                    reactionAndUserIds.Add(new Tuple<ReactionType, long>(reactionType, userId));
+                    hasReact = true;
+                }
+            }
+
+            //update lai
+            var list = new List<string>();
+            foreach (var reactionAndUserId in reactionAndUserIds)
+            {
+                list.Add((byte)reactionAndUserId.Item1 + "_" + reactionAndUserId.Item2);
+            }
+            ReactionType_UserId_Ids = JsonConvert.SerializeObject(list);
+            if (hasReact)
+            {
+                return reactionType;
+            }
+            return null;
+        }
     }
 }

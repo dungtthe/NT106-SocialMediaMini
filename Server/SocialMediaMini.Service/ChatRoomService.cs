@@ -112,7 +112,7 @@ namespace SocialMediaMini.Service
 
             await _dbContext.SaveChangesAsync();
 
-            var nUser = new Respone_NotificationDTO.Respone_NotificationMessage.User()
+            var nUser = new UserDto()
             {
                 Id = fSender.Id,
                 Avatar = fSender.GetFirstImage(),
@@ -141,7 +141,7 @@ namespace SocialMediaMini.Service
                     Id = parrentMsg.Id,
                     Content = parrentMsg.Content,
                     CreatedAt = parrentMsg.CreateAt.ToString("dd/MM/yyyy HH:mm:ss"),
-                    Sender = new Respone_NotificationDTO.Respone_NotificationMessage.User()
+                    Sender = new UserDto()
                     {
                         Id = parrentMsgSender.Id,
                         FullName = parrentMsgSender.FullName,
@@ -212,7 +212,7 @@ namespace SocialMediaMini.Service
                 msgRsp.CreatedAt = msg.CreateAt.ToString("dd/MM/yyyy HH:mm:ss");
 
                 //reaction
-                var reactions = new List<Respone_ChatRoomDetail.Reaction>();
+                var reactions = new List<ReactionDto>();
                 var fReaction_user_ids = msg.GetReactionAndUserIds();
                 foreach (var item in fReaction_user_ids)
                 {
@@ -229,13 +229,13 @@ namespace SocialMediaMini.Service
 
                     //add vao react
                     var appUserReact = usersTemp.Where(u => u.Id == userIdReact).FirstOrDefault();
-                    var userReact = new Respone_ChatRoomDetail.User()
+                    var userReact = new UserDto()
                     {
                         Id = userIdReact,
                         FullName = appUserReact.FullName,
                         Avatar = appUserReact.GetFirstImage()
                     };
-                    reactions.Add(new Respone_ChatRoomDetail.Reaction()
+                    reactions.Add(new ReactionDto()
                     {
                         User = userReact,
                         ReactionType = item.Item1
@@ -263,7 +263,7 @@ namespace SocialMediaMini.Service
                 }
 
                 var sender = usersTemp.Where(u => u.Id == msg.UserId).FirstOrDefault();
-                msgRsp.Sender = new Respone_ChatRoomDetail.User()
+                msgRsp.Sender = new UserDto()
                 {
                     Id = msg.UserId,
                     FullName = sender.FullName,

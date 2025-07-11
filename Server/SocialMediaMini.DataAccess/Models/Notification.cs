@@ -22,5 +22,10 @@ namespace SocialMediaMini.DataAccess.Models
         public string Content {  get; set; }//là tin nhắn thì để rỗng cũng được
         public bool IsRead {  get; set; }
         public DateTime CreateAt { get; set; }
+
+        public Notification()
+        {
+            CreateAt = DateTime.Now;
+        }
     }
 }

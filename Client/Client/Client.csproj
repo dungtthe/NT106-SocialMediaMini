@@ -26,6 +26,7 @@
     <None Remove="Resources\Icons\ExportExelCongNoTonKho.png" />
     <None Remove="Resources\Icons\Export_excel_white_icon.png" />
     <None Remove="Resources\Icons\heart.png" />
+    <None Remove="Resources\Icons\heart_not_active.png" />
     <None Remove="Resources\Icons\Help_Icon.png" />
     <None Remove="Resources\Icons\HistoryBrown_Icon.png" />
     <None Remove="Resources\Icons\HistoryWhite_Icon.png" />
@@ -94,6 +95,7 @@
     <Resource Include="Resources\Icons\ExportExelCongNoTonKho.png" />
     <Resource Include="Resources\Icons\Export_excel_white_icon.png" />
     <Resource Include="Resources\Icons\heart.png" />
+    <Resource Include="Resources\Icons\heart_not_active.png" />
     <Resource Include="Resources\Icons\Help_Icon.png" />
     <Resource Include="Resources\Icons\HistoryBrown_Icon.png" />
     <Resource Include="Resources\Icons\HistoryWhite_Icon.png" />

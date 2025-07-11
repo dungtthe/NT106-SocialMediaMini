@@ -9,27 +9,14 @@ namespace SocialMediaMini.Shared.Dto.Respone
 {
     public class Respone_ChatRoomDetail
     {
-        public class User
-        {
-            public long Id { get; set; }
-            public string FullName { get; set; }
-            public string Avatar { get; set; }
-        }
-
-        public class Reaction
-        {
-            public User User { get; set; }
-            public ReactionType ReactionType { get; set; }
-        }
-
         public class Message
         {
             public long Id { get; set; }
             public string Content { get; set; }
             public string CreatedAt { get; set; }
-            public User Sender { get; set; }
+            public UserDto Sender { get; set; }
             public Message Parrent { get; set; }
-            public List<Reaction> Reactions { get; set; }
+            public List<ReactionDto> Reactions { get; set; }
             
         }
         public long ChatRoomId { get; set; }

@@ -117,7 +117,19 @@ namespace SocialMediaMini.API.Areas.User
         }
 
 
+        [HttpPatch("react")]
+        public async Task<IActionResult> ReactOrUnReactPost(Request_ReactOrUnReactPostDto data)
+        {
+            var suserId = this.HttpContext.User.FindFirst("UserId")?.Value;
+            long userId = 0;
+            if (suserId == null || !long.TryParse(suserId, out userId))
+            {
+                return Unauthorized();
+            }
 
+            var result = await _postService.ReactOrUnReactPostAsync(userId,data);
+            return result.ToActionResult();
+        }
 
 
     }

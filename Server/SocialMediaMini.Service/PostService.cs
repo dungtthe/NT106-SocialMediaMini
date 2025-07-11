@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using SocialMediaMini.Common.ResultPattern;
 using SocialMediaMini.DataAccess;
+using SocialMediaMini.Shared.Const;
 using SocialMediaMini.Shared.Const.Type;
 using SocialMediaMini.Shared.Dto.Request;
 using SocialMediaMini.Shared.Dto.Respone;
@@ -20,6 +22,7 @@ namespace SocialMediaMini.Service
         Task<long> AddPostAsync(long userId, Request_AddPostDTO data);
         Task<Respone_PostDetail.Post> GetPostDetailAsync(long userRequestId, long postId);
         Task<List<Respone_PostDetail.Post>> GetMyPostsAsync(long userId);
+        Task<Result<Respone_ReactOrUnReactPostDto>> ReactOrUnReactPostAsync(long userId, Request_ReactOrUnReactPostDto request);
     }
     public class PostService : IPostService
     {
@@ -48,27 +51,28 @@ namespace SocialMediaMini.Service
                 var fPosts = await _dbContext.Posts.Where(p => p.UserId == friendId && !p.IsDeleted && p.PostType == PostType.BAI_VIET && p.PostVisibilityType != PostVisibilityType.Private).ToListAsync();
                 foreach (var post in fPosts)
                 {
-                    var friend = new Respone_PostDetail.User()
+                    var friend = new UserDto()
                     {
+                        Id = fFriend.Id,
                         FullName = fFriend.FullName,
                         Avatar = fFriend.GetFirstImage()
                     };
 
                     //reaction
-                    var reactions = new List<Respone_PostDetail.Reaction>();
+                    var reactions = new List<ReactionDto>();
                     var fReaction_user_ids = post.GetReactionAndUserIds();
                     foreach (var item in fReaction_user_ids)
                     {
-                       
+
                         var fuserReact = await _dbContext.Users.FindAsync(item.Item2);
                         if (fuserReact == null)
                         {
                             continue;
                         }
 
-                        reactions.Add(new Respone_PostDetail.Reaction()
+                        reactions.Add(new ReactionDto()
                         {
-                            User = new Respone_PostDetail.User()
+                            User = new UserDto()
                             {
                                 FullName = fuserReact.FullName,
                                 Avatar = fuserReact.GetFirstImage()
@@ -145,14 +149,15 @@ namespace SocialMediaMini.Service
 
 
             //rsp
-            var userRsp = new Respone_PostDetail.User()
+            var userRsp = new UserDto()
             {
+                Id = fUser.Id,
                 FullName = fUserPost.FullName,
                 Avatar = fUserPost.GetFirstImage()
             };
 
             //reaction
-            var reactions = new List<Respone_PostDetail.Reaction>();
+            var reactions = new List<ReactionDto>();
             var fReaction_user_ids = fPost.GetReactionAndUserIds();
             foreach (var item in fReaction_user_ids)
             {
@@ -161,10 +166,11 @@ namespace SocialMediaMini.Service
                 {
                     continue;
                 }
-                reactions.Add(new Respone_PostDetail.Reaction()
+                reactions.Add(new ReactionDto()
                 {
-                    User = new Respone_PostDetail.User()
+                    User = new UserDto()
                     {
+                        Id = fuserReact.Id,
                         FullName = fuserReact.FullName,
                         Avatar = fuserReact.GetFirstImage()
                     },
@@ -195,10 +201,11 @@ namespace SocialMediaMini.Service
             if (fUser == null)
                 return null;
             var fPosts = await _dbContext.Posts.Where(p => p.UserId == userId && !p.IsDeleted && p.PostType == PostType.BAI_VIET).ToListAsync();
-            
+
             //rsp
-            var userRsp = new Respone_PostDetail.User()
+            var userRsp = new UserDto()
             {
+                Id = fUser.Id,
                 FullName = fUser.FullName,
                 Avatar = fUser.GetFirstImage()
             };
@@ -207,7 +214,7 @@ namespace SocialMediaMini.Service
             {
                 //reaction
                 var fReaction_user_ids = post.GetReactionAndUserIds();
-                var reactions = new List<Respone_PostDetail.Reaction>();
+                var reactions = new List<ReactionDto>();
                 foreach (var item in fReaction_user_ids)
                 {
                     var fuserReact = await _dbContext.Users.FindAsync(item.Item2);
@@ -215,10 +222,11 @@ namespace SocialMediaMini.Service
                     {
                         continue;
                     }
-                    reactions.Add(new Respone_PostDetail.Reaction()
+                    reactions.Add(new ReactionDto()
                     {
-                        User = new Respone_PostDetail.User()
+                        User = new UserDto()
                         {
+                            Id = fuserReact.Id,
                             FullName = fuserReact.FullName,
                             Avatar = fuserReact.GetFirstImage()
                         },
@@ -236,6 +244,7 @@ namespace SocialMediaMini.Service
                     User = userRsp,
                     Reactions = reactions,
                     CommentCount = await _dbContext.Comments.Where(c => c.PostId == post.Id).CountAsync(),
+
                 };
 
 
@@ -243,6 +252,71 @@ namespace SocialMediaMini.Service
             }
 
             return result;
+        }
+
+        public async Task<Result<Respone_ReactOrUnReactPostDto>> ReactOrUnReactPostAsync(long userId, Request_ReactOrUnReactPostDto request)
+        {
+            var fUser = await _dbContext.Users.FindAsync(userId);
+            if (fUser == null)
+            {
+                return Result<Respone_ReactOrUnReactPostDto>.Failure(HttpStatusCode.NotFound, "Có lỗi xảy ra. Vui lòng thử lại sau");
+            }
+
+            var fPost = await _dbContext.Posts.FindAsync(request.PostId);
+            if (fPost == null)
+            {
+                return Result<Respone_ReactOrUnReactPostDto>.Failure(HttpStatusCode.NotFound, "Có lỗi xảy ra. Vui lòng thử lại sau");
+            }
+
+
+            if (userId != fPost.UserId)
+            {
+                if (fPost.PostVisibilityType == PostVisibilityType.Private)
+                {
+                    return Result<Respone_ReactOrUnReactPostDto>.Failure(HttpStatusCode.Forbidden, "Có lỗi xảy ra. Vui lòng thử lại sau");
+                }
+
+                var friendIds = fPost.User.GetFriendIds();
+                if (fPost.PostVisibilityType == PostVisibilityType.Friend)
+                {
+                    if (!friendIds.Contains(userId))
+                    {
+                        return Result<Respone_ReactOrUnReactPostDto>.Failure(HttpStatusCode.Forbidden, "Có lỗi xảy ra. Vui lòng thử lại sau");
+                    }
+                }
+            }
+
+            var reactionType = fPost.ReactOrUnReact(userId, request.ReactionType);
+
+            if (fUser.Id != fPost.UserId && reactionType.HasValue)
+            {
+                await _dbContext.Notifications.AddAsync(new DataAccess.Models.Notification()
+                {
+                    UserId = fPost.UserId,
+                    NotificationType = NotificationType.POST,
+                    ReferenceId = fPost.Id,
+                    Content = $"{fUser.UserName} đã thả cảm xúc tới bài viết của bạn"
+                });
+            }
+
+            await _dbContext.SaveChangesAsync();
+
+            var rs = Result<Respone_ReactOrUnReactPostDto>.Success(new Respone_ReactOrUnReactPostDto() { PostId = fPost.Id });
+
+            if (reactionType.HasValue)
+            {
+                rs.Value.Reaction = new ReactionDto()
+                {
+                    ReactionType = reactionType.Value,
+                    User = new UserDto()
+                    {
+                        Id = userId,
+                        FullName = fUser.FullName,
+                        Avatar = fUser.GetFirstImage(),
+                    }
+                };
+            }
+            return rs;
         }
     }
 }

@@ -10,4 +10,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.15" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="SocialMediaMini.Shared">
+      <HintPath>..\..\SocialMediaMini.Shared\SocialMediaMini.Shared\bin\Release\net8.0\SocialMediaMini.Shared.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

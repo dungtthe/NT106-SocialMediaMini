@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SocialMediaMini.Common.ResultPattern;
 using SocialMediaMini.Shared.Const;
 using SocialMediaMini.Shared.Dto.Respone;
 
@@ -17,6 +18,14 @@ namespace SocialMediaMini.API.Extensions
         public static IActionResult InternalServerError(this ControllerBase controller)
         {
             return controller.StatusCode(HttpStatusCode.InternalServerError, new { message = "Hệ thống đang gặp sự cố. Vui lòng thử lại sau!" });
+        }
+
+        public static IActionResult ToActionResult<T>(this Result<T> result)
+        {
+            return result.Error is null
+            ? new ObjectResult(result.Value) { StatusCode = result.HttpStatusCode }
+            : new ObjectResult(result.Error)
+            { StatusCode = result.HttpStatusCode };
         }
     }
 }

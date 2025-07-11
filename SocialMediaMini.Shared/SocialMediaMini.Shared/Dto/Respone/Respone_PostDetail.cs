@@ -9,16 +9,6 @@ namespace SocialMediaMini.Shared.Dto.Respone
 {
     public class Respone_PostDetail
     {
-        public class User
-        {
-            public string FullName { get; set; }
-            public string Avatar { get; set; }
-        }
-        public class Reaction
-        {
-            public User User { get; set; }
-            public ReactionType ReactionType { get; set; }
-        }
         public class Post
         {
             public long PostId { get; set; }
@@ -26,8 +16,8 @@ namespace SocialMediaMini.Shared.Dto.Respone
             public List<string> Images { get; set; }
             public DateTime CreateAt { get; set; }
             public DateTime UpdateAt { get; set; }
-            public User User { get; set; }
-            public List<Reaction> Reactions { get; set; }
+            public UserDto User { get; set; }
+            public List<ReactionDto> Reactions { get; set; }
             public long CommentCount { get; set; }
         }
     }

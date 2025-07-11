@@ -1,4 +1,5 @@
 ﻿using Client.Helpers;
+using Client.LocalStorage;
 using Client.Services;
 using Client.ViewModels.Chats;
 using Client.Views;
@@ -40,6 +41,13 @@ namespace Client.ViewModels.Posts
 
         public class ItemUserViewModel : BaseViewModel
         {
+            private long _id;
+            public long Id
+            {
+                get => _id;
+                set => SetProperty(ref _id, value, nameof(Id));
+            }
+
             private string _fullName;
             public string FullName
             {
@@ -130,12 +138,28 @@ namespace Client.ViewModels.Posts
                 set => SetProperty(ref _reactions, value, nameof(Reactions));
             }
 
+
+            private long _reactionCount;
+            public long ReactionCount
+            {
+                get => _reactionCount;
+                set => SetProperty(ref _reactionCount, value, nameof(ReactionCount));
+            }
+
             private long _commentCount;
             public long CommentCount
             {
                 get => _commentCount;
                 set => SetProperty(ref _commentCount, value, nameof(CommentCount));
             }
+
+            private bool _currentUserHasReacted;
+            public bool CurrentUserHasReacted
+            {
+                get => _currentUserHasReacted;
+                set => SetProperty(ref _currentUserHasReacted,value, nameof(CurrentUserHasReacted));
+            }
+
         }
 
         private ObservableCollection<PostViewModel.ItemPostViewModel> _items;
@@ -221,6 +245,7 @@ namespace Client.ViewModels.Posts
                     CommentCount = dto.CommentCount,
                     User = new PostViewModel.ItemUserViewModel
                     {
+                        Id = dto.User.Id,
                         FullName = dto.User?.FullName,
                         Avatar = dto.User?.Avatar
                     },
@@ -230,12 +255,15 @@ namespace Client.ViewModels.Posts
                                 ReactionType = r.ReactionType,
                                 User = new PostViewModel.ItemUserViewModel
                                 {
+                                    Id = r.User.Id,
                                     FullName = r.User?.FullName,
                                     Avatar = r.User?.Avatar
                                 }
                             }) ?? new List<PostViewModel.ItemReactionViewModel>())
                 };
 
+                itemAdd.ReactionCount = itemAdd.Reactions.Count;
+                itemAdd.CurrentUserHasReacted = dto.Reactions.FirstOrDefault(r => r.User.Id == UserStore.UserIdCur) != null;
                 if (isAddFirst)
                 {
                     Items.Insert(0, itemAdd);
@@ -255,6 +283,8 @@ namespace Client.ViewModels.Posts
                         Items.Add(item);
                     }
                 }
+
+
             });
         }
 

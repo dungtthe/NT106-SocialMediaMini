@@ -1,10 +1,12 @@
 ﻿using Client.Const;
 using Client.Helpers;
 using Client.LocalStorage;
+using Client.ViewModels;
 using Client.ViewModels.Posts;
 using MaterialDesignThemes.Wpf;
 using Newtonsoft.Json;
 using SocialMediaMini.Shared.Const;
+using SocialMediaMini.Shared.Const.Type;
 using SocialMediaMini.Shared.Dto.Request;
 using SocialMediaMini.Shared.Dto.Respone;
 using System;
@@ -93,6 +95,30 @@ namespace Client.Services
                 // Log nếu cần
             }
 
+            return null;
+        }
+
+        public static async Task<Respone_ReactOrUnReactPostDto> ReactOrUnReactPost(long postId, ReactionType reactionType)
+        {
+            try
+            {
+                var data = new Request_ReactOrUnReactPostDto()
+                {
+                    PostId = postId,
+                    ReactionType = reactionType
+                };
+                var response = await ApiHelpers.PatchAsync(new ApiRequest("/api/post/react", JsonConvert.SerializeObject(data),true));
+                if (response.StatusCode == HttpStatusCode.Ok)
+                {
+                    return JsonConvert.DeserializeObject<Respone_ReactOrUnReactPostDto>(response.ResponseBody);
+                }
+
+                ToastManager.AddToast(Const.Type.ToastType.Error, response.ResponseBody);
+            }
+            catch
+            {
+                ToastManager.AddToast(Const.Type.ToastType.Error, "Có lỗi xảy ra. Vui lòng thử lại sau");
+            }
             return null;
         }
     }

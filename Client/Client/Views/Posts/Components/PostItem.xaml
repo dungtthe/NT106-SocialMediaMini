@@ -11,6 +11,7 @@
 
     <UserControl.Resources>
         <converters:StringToImageSourceConverter x:Key="StringToImageSourceConverter" />
+        <converters:CollapsedConverter x:Key="CollapsedConverter" />
     </UserControl.Resources>
 
     <Border
@@ -126,15 +127,18 @@
 
                 <!--  Like Button  -->
                 <Button
+                    x:Name="btnReact"
                     Width="110"
                     Height="30"
                     Margin="0,0,10,0"
                     Background="Transparent"
                     BorderBrush="{DynamicResource ColorBlueOne}"
                     BorderThickness="1"
+                    Click="btnReact_Click"
                     Cursor="Hand"
                     FontSize="12"
-                    Foreground="{DynamicResource ColorBlueOne}">
+                    Foreground="{DynamicResource ColorBlueOne}"
+                    Tag="{Binding PostId}">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Border
@@ -148,11 +152,18 @@
                                     VerticalAlignment="Center"
                                     Orientation="Horizontal">
                                     <Image
-                                        Width="14"
-                                        Height="14"
+                                        Width="18"
+                                        Height="18"
                                         Margin="0,0,5,0"
-                                        Source="/Resources/Icons/heart.png" />
-                                    <TextBlock VerticalAlignment="Center" Text="{Binding Reactions.Count, StringFormat='({0})'}" />
+                                        Source="/Resources/Icons/heart.png"
+                                        Visibility="{Binding CurrentUserHasReacted, Converter={StaticResource CollapsedConverter}}" />
+                                    <Image
+                                        Width="18"
+                                        Height="18"
+                                        Margin="0,0,5,0"
+                                        Source="/Resources/Icons/heart_not_active.png"
+                                        Visibility="{Binding CurrentUserHasReacted, Converter={StaticResource CollapsedConverter}, ConverterParameter=Inverse}" />
+                                    <TextBlock VerticalAlignment="Center" Text="{Binding ReactionCount, StringFormat='({0})'}" />
                                 </StackPanel>
                             </Border>
                         </ControlTemplate>
