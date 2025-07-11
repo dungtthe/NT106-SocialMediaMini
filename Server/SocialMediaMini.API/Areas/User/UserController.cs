@@ -27,7 +27,26 @@ namespace SocialMediaMini.API.Areas.User
             try
             {
                 var rsp = await _userService.RegisterAsync(data);
-                return this.ResponeMessageResult(rsp);
+                if (rsp.HttpStatusCode == HttpStatusCode.Ok)
+                {
+                    return Ok(new
+                    {
+                        success = true,
+                        message = rsp.Message,
+                        userId = rsp.UserId,
+                        fullName = rsp.FullName,
+                        image = rsp.Image,
+                        token = rsp.Token
+                    });
+                }
+                else
+                {
+                    return StatusCode((int)rsp.HttpStatusCode, new
+                    {
+                        success = false,
+                        message = rsp.Message
+                    });
+                }
             }
             catch (Exception ex)
             {

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SocialMediaMini.DataAccess;
 
@@ -11,9 +12,11 @@ using SocialMediaMini.DataAccess;
 namespace SocialMediaMini.DataAccess.Migrations
 {
     [DbContext(typeof(SocialMediaMiniContext))]
-    partial class SocialMediaMiniContextModelSnapshot : ModelSnapshot
+    [Migration("20250711101720_newmigration3")]
+    partial class newmigration3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,6 +52,10 @@ namespace SocialMediaMini.DataAccess.Migrations
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
 
+                    b.Property<string>("EncryptionPrivateKey")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<string>("EncryptionPublicKey")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
@@ -65,10 +72,6 @@ namespace SocialMediaMini.DataAccess.Migrations
 
                     b.Property<string>("Gender")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("IV")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Images")
                         .ValueGeneratedOnAdd()

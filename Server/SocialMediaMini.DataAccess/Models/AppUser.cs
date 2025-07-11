@@ -9,14 +9,13 @@ using System.Threading.Tasks;
 
 namespace SocialMediaMini.DataAccess.Models
 {
-
     [Table("Users")]
-    public class AppUser:BaseModel
+    public class AppUser : BaseModel
     {
         [Required]
         [MinLength(6)]
         [MaxLength(100)]
-        public string UserName {  get; set; }
+        public string UserName { get; set; }
 
         [Required]
         [MinLength(6)]
@@ -38,15 +37,21 @@ namespace SocialMediaMini.DataAccess.Models
         [MaxLength(30)]
         public string PhoneNumber { get; set; }
 
-        public string Address {  get; set; }
+        public string Address { get; set; }
 
         public string Gender { get; set; }
 
         public DateTime? DateOfBirth { get; set; }
 
         public string Images { get; set; }
-        public string FriendIds {  get; set; }
-        public string BlockIds {  get; set; }
+        public string FriendIds { get; set; }
+        public string BlockIds { get; set; }
+
+        [MaxLength(500)]
+        public string EncryptionPublicKey { get; set; }
+
+        [MaxLength(500)] // Độ dài đủ cho Base64 của IV (16 byte)
+        public string IV { get; set; }
 
         public AppUser()
         {
@@ -61,11 +66,12 @@ namespace SocialMediaMini.DataAccess.Models
 
         public List<long> GetFriendIds()
         {
-            return JsonConvert.DeserializeObject<List<long>>(FriendIds);
+            return JsonConvert.DeserializeObject<List<long>>(FriendIds) ?? new List<long>();
         }
+
         public List<long> GetBlockIds()
         {
-            return JsonConvert.DeserializeObject<List<long>>(BlockIds);
+            return JsonConvert.DeserializeObject<List<long>>(BlockIds) ?? new List<long>();
         }
     }
 }
