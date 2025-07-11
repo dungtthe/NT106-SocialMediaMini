@@ -53,5 +53,29 @@ namespace Client.Services
 
             return new Tuple<bool, string>(false, "Không thể truy cập tới máy chủ. Vui lòng thử lại sau!");
         }
+
+        public static async Task<Tuple<bool, string>> RegisterAsync(Request_RegisterDTO data)
+        {
+            try
+            {
+                var response = await ApiHelpers.PostAsync(new ApiRequest("/api/user/register", JsonConvert.SerializeObject(data), false));
+                if (response.StatusCode == HttpStatusCode.Ok)
+                {
+                    var rspData = response.ResponseBody;
+                    if (rspData != null)
+                    {
+                        return new Tuple<bool, string>(true, rspData);
+                    }
+                }
+                else
+                {
+                    return new Tuple<bool, string>(false, response.ResponseBody);
+                }
+            }
+            catch { }
+
+            return new Tuple<bool, string>(false, "Không thể truy cập tới máy chủ. Vui lòng thử lại sau!");
+        }
+
     }
 }

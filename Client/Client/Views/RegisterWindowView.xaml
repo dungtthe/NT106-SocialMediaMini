@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Title="Register"
     Width="300"
-    Height="450"
+    Height="580"
     AllowsTransparency="True"
     Background="Transparent"
     ResizeMode="NoResize"
@@ -26,6 +26,7 @@
             </Button>
             <Grid Margin="20">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -62,12 +63,132 @@
                     </Image.Style>
                 </Image>
 
+                <!--  Email  -->
+                <TextBox
+                    x:Name="txtEmail"
+                    Grid.Row="1"
+                    Height="40"
+                    Margin="0,0,0,20"
+                    Padding="12,0"
+                    VerticalContentAlignment="Center"
+                    BorderBrush="{DynamicResource ColorBlueOne}"
+                    BorderThickness="1"
+                    FontSize="14"
+                    Tag="Nhập Email">
+                    <TextBox.Effect>
+                        <DropShadowEffect
+                            BlurRadius="4"
+                            Opacity="0.2"
+                            ShadowDepth="1" />
+                    </TextBox.Effect>
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="TextBox">
+                                        <Grid>
+                                            <Border
+                                                Background="White"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                CornerRadius="8">
+                                                <ScrollViewer
+                                                    x:Name="PART_ContentHost"
+                                                    Margin="0"
+                                                    VerticalAlignment="Center" />
+                                            </Border>
+                                            <TextBlock
+                                                Margin="12,0,0,0"
+                                                VerticalAlignment="Center"
+                                                FontStyle="Italic"
+                                                Foreground="Gray"
+                                                IsHitTestVisible="False"
+                                                Text="{TemplateBinding Tag}">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource TemplatedParent}}" Value="">
+                                                                <Setter Property="Visibility" Value="Visible" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+
                 <!--  Phone Number  -->
                 <TextBox
-                    x:Name="PhoneNumberTextBox"
-                    Grid.RowSpan="2"
+                    x:Name="txtPhone"
+                    Grid.Row="2"
                     Height="40"
-                    Margin="0,150,0,20"
+                    Margin="0,0,0,20"
+                    Padding="12,0"
+                    VerticalContentAlignment="Center"
+                    BorderBrush="{DynamicResource ColorBlueOne}"
+                    BorderThickness="1"
+                    FontSize="14"
+                    Tag="Nhập Số điện thoại">
+                    <TextBox.Effect>
+                        <DropShadowEffect
+                            BlurRadius="4"
+                            Opacity="0.2"
+                            ShadowDepth="1" />
+                    </TextBox.Effect>
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="TextBox">
+                                        <Grid>
+                                            <Border
+                                                Background="White"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                CornerRadius="8">
+                                                <ScrollViewer
+                                                    x:Name="PART_ContentHost"
+                                                    Margin="0"
+                                                    VerticalAlignment="Center" />
+                                            </Border>
+                                            <TextBlock
+                                                Margin="12,0,0,0"
+                                                VerticalAlignment="Center"
+                                                FontStyle="Italic"
+                                                Foreground="Gray"
+                                                IsHitTestVisible="False"
+                                                Text="{TemplateBinding Tag}">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource TemplatedParent}}" Value="">
+                                                                <Setter Property="Visibility" Value="Visible" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+
+                <!--  Tên tài khoản  -->
+                <TextBox
+                    x:Name="txtAccount"
+                    Grid.Row="3"
+                    Height="40"
+                    Margin="0,0,0,20"
                     Padding="12,0"
                     VerticalContentAlignment="Center"
                     BorderBrush="{DynamicResource ColorBlueOne}"
@@ -124,18 +245,17 @@
 
                 <!--  Password  -->
                 <TextBox
-                    x:Name="txtPassword"
-                    Grid.Row="1"
-                    Grid.RowSpan="2"
+                    x:Name="txtPass1"
+                    Grid.Row="4"
                     Height="40"
-                    Margin="0,18,0,52"
+                    Margin="0,0,0,20"
                     Padding="12,0"
                     VerticalContentAlignment="Center"
                     BorderBrush="{DynamicResource ColorBlueOne}"
                     BorderThickness="1"
                     FontSize="14"
                     Tag="Mật khẩu"
-                    TextChanged="txtPassword_TextChanged">
+                    TextChanged="txtPass1_TextChanged">
                     <TextBox.Effect>
                         <DropShadowEffect
                             BlurRadius="4"
@@ -186,17 +306,17 @@
 
                 <!--  Confirm Password  -->
                 <TextBox
-                    x:Name="ConfirmPasswordBox"
-                    Grid.Row="2"
+                    x:Name="txtPass2"
+                    Grid.Row="5"
                     Height="40"
-                    Margin="0,21,0,0"
+                    Margin="0,0,0,20"
                     Padding="12,0"
                     VerticalContentAlignment="Center"
                     BorderBrush="{DynamicResource ColorBlueOne}"
                     BorderThickness="1"
                     FontSize="14"
                     Tag="Xác nhận mật khẩu"
-                    TextChanged="ConfirmPasswordBox_TextChanged">
+                    TextChanged="txtPass2_TextChanged">
                     <TextBox.Effect>
                         <DropShadowEffect
                             BlurRadius="4"
@@ -248,9 +368,9 @@
                 <!--  Register Button  -->
                 <Button
                     x:Name="btnRegister"
-                    Grid.Row="3"
+                    Grid.Row="6"
                     Height="40"
-                    Margin="0,0,0,46"
+                    Margin="0,0,0,20"
                     Background="{DynamicResource ColorBlueOne}"
                     BorderThickness="0"
                     Click="btnRegister_Click"
@@ -293,9 +413,9 @@
 
                 <!--  Login Link  -->
                 <TextBlock
-                    Grid.Row="3"
+                    Grid.Row="6"
                     Height="16"
-                    Margin="0,48,0,0"
+                    Margin="0,50,0,0"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
                     Cursor="Hand"
@@ -304,7 +424,6 @@
                     MouseLeftButtonDown="LogInTextBlock_MouseLeftButtonDown"
                     Text="Bạn đã có tài khoản? Đăng nhập"
                     TextDecorations="Underline">
-
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
                             <Style.Triggers>

@@ -25,7 +25,8 @@ namespace SocialMediaMini.API.Areas.User
         [HttpPost("register")]
         public async Task<IActionResult> RegisterAsync(Request_RegisterDTO data)
         {
-            return this.InternalServerError();
+            var result = await _userService.RegisterAsync(data);
+            return result.ToActionResult();
         }
 
         [HttpPost("login")]

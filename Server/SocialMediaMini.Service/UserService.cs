@@ -21,7 +21,7 @@ namespace SocialMediaMini.Service
 {
     public interface IUserService
     {
-        Task<ResponeMessage> RegisterAsync(Request_RegisterDTO request);
+        Task<Result<string>> RegisterAsync(Request_RegisterDTO request);
         Task<Result<Respone_LoginDTO>> LoginAsync(Request_LoginDTO request);
     }
 
@@ -55,9 +55,38 @@ namespace SocialMediaMini.Service
             return rs;
         }
 
-        public Task<ResponeMessage> RegisterAsync(Request_RegisterDTO request)
+        public async Task<Result<string>> RegisterAsync(Request_RegisterDTO request)
         {
-            throw new NotImplementedException();
+            var user = new AppUser
+            {
+                UserName = request.UserName,
+                Password = SecurityHelper.HashPassword(request.Password),
+                FullName = request.UserName,
+                Email = request.Email,
+                PhoneNumber = request.PhoneNumber,
+            };
+            var checkUserName = await _dbContext.Users.FirstOrDefaultAsync(x => x.UserName == request.UserName);
+            if (checkUserName != null)
+            {
+                return Result<string>.Failure(HttpStatusCode.Conflict, "Tên tài khoản đã tồn tại!");
+            }
+
+            var checkEmail = await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == request.Email);
+            if (checkEmail != null)
+            {
+                return Result<string>.Failure(HttpStatusCode.Conflict, "Email đã tồn tại!");
+            }
+
+            var checkPhoneNumber = await _dbContext.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber);
+            if (checkPhoneNumber != null)
+            {
+                return Result<string>.Failure(HttpStatusCode.Conflict, "Số điện thoại đã tồn tại!");
+            }
+
+            await _dbContext.Users.AddAsync(user);
+            await _dbContext.SaveChangesAsync();
+
+            return Result<string>.Success("Đăng ký thành công!");
         }
 
         private string GenerateJwtToken(AppUser user)

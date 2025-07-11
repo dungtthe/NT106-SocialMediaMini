@@ -1,6 +1,8 @@
 ﻿using Client.Helpers;
 using Client.Services;
+using Client.ViewModels;
 using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -29,126 +31,117 @@ namespace Client.Views
         {
             this.Close();
         }
-
-        private void btnRegister_Click(object sender, RoutedEventArgs e)
+        private async void btnRegister_Click(object sender, RoutedEventArgs e)
         {
-            string userName = PhoneNumberTextBox.Text; // Sử dụng PhoneNumberTextBox làm UserName
-            string password = realPassword;
-            string confirmPassword = realConfirmPassword;
-            string email = "sample@gmail.com"; // Không có TextBox cho Email, cần thêm nếu cần
-            //string phoneNumber = PhoneNumberTextBox.Text;
-            string phoneNumber = "123456789";
+            string email = txtEmail.Text;
+            string phoneNumber = txtPhone.Text;
+            string accountName = txtAccount.Text;
+            string password = realPassword1;
+            string confirmPassword = realPassword2;
 
-
-            // Kiểm tra dữ liệu
-            if (string.IsNullOrWhiteSpace(userName) || string.IsNullOrWhiteSpace(password) /*||
-                string.IsNullOrWhiteSpace(confirmPassword) || string.IsNullOrWhiteSpace(phoneNumber)*/)
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(phoneNumber) ||
+                string.IsNullOrWhiteSpace(accountName) || string.IsNullOrWhiteSpace(password) ||
+                string.IsNullOrWhiteSpace(confirmPassword))
             {
-                (new MessageBox.Error("Vui lòng điền đầy đủ thông tin!")).ShowDialog();
+                ToastManager.AddToast(Const.Type.ToastType.Error, "Vui lòng điền đầy đủ tất cả các trường.");
                 return;
             }
 
             if (password != confirmPassword)
             {
-                (new MessageBox.Error("Mật khẩu và xác nhận mật khẩu không khớp!")).ShowDialog();
+                ToastManager.AddToast(Const.Type.ToastType.Error, "Mật khẩu và xác nhận mật khẩu không khớp.");
                 return;
             }
 
-            // Gọi UserService.RegisterAsync
-            RegisterAsync(userName, password, email, phoneNumber).ContinueWith(task =>
+            var rs = await UserService.RegisterAsync(new SocialMediaMini.Shared.Dto.Request.Request_RegisterDTO()
             {
-                if (task.IsCompletedSuccessfully && task.Result)
-                {
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        //MessageBox.Show("Đăng ký thành công!", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
-                        this.Close();
-                    });
-                }
-                else
-                {
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        (new MessageBox.Error("Đăng ký thất bại!")).ShowDialog();
-                    });
-                }
-            }, TaskScheduler.FromCurrentSynchronizationContext());
+                Email = email,
+                Password = password,
+                UserName = accountName,
+                PhoneNumber = phoneNumber,
+            });
+
+
+            if (!rs.Item1)
+            {
+                ToastManager.AddToast(Const.Type.ToastType.Error, rs.Item2);
+                return;
+            }
+            ToastManager.AddToast(Const.Type.ToastType.Success, rs.Item2);
+
+            this.Close();
+
         }
 
-        private async Task<bool> RegisterAsync(string userName, string password, string email, string phoneNumber)
+        private string realPassword1 = string.Empty;
+        private string realPassword2 = string.Empty;
+        private bool isUpdatingPassword1 = false;
+        private bool isUpdatingPassword2 = false;
+
+        private void txtPass2_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //try
-            //{
-            //    bool success = await UserService.RegisterAsync(userName, password, email, phoneNumber);
-            //    return success;
-            //}
-            //catch (Exception ex)
-            //{
-            //    //MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi đăng ký", MessageBoxButton.OK, MessageBoxImage.Error);
-            //    return false;
-            //}
-            return false;
-        }
-
-        private string realPassword = string.Empty;
-        private bool isUpdatingPassword = false;
-        private string realConfirmPassword = string.Empty;
-
-
-        private void txtPassword_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (isUpdatingPassword)
+            if (isUpdatingPassword2)
                 return;
 
             var txtBox = sender as TextBox;
+            if (txtBox == null)
+                return;
+
             int caretIndex = txtBox.CaretIndex;
-            int changeLength = txtBox.Text.Length - realPassword.Length;
+            int changeLength = txtBox.Text.Length - realPassword2.Length;
+
+            if (changeLength > 0)
+            {
+                // User typed something new
+                string added = txtBox.Text.Substring(caretIndex - changeLength, changeLength);
+                realPassword2 = realPassword2.Insert(caretIndex - changeLength, added);
+            }
+            else if (changeLength < 0)
+            {
+                // User deleted
+                int removeStart = caretIndex;
+                int removeCount = Math.Abs(changeLength);
+                if (removeStart < realPassword2.Length)
+                    realPassword2 = realPassword2.Remove(removeStart, removeCount);
+            }
+
+            isUpdatingPassword2 = true;
+            txtBox.Text = new string('•', realPassword2.Length);
+            txtBox.CaretIndex = caretIndex;
+            isUpdatingPassword2 = false;
+        }
+
+        private void txtPass1_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (isUpdatingPassword1)
+                return;
+
+            var txtBox = sender as TextBox;
+            if (txtBox == null)
+                return;
+
+            int caretIndex = txtBox.CaretIndex;
+            int changeLength = txtBox.Text.Length - realPassword1.Length;
 
             if (changeLength > 0)
             {
                 string added = txtBox.Text.Substring(caretIndex - changeLength, changeLength);
-                realPassword = realPassword.Insert(caretIndex - changeLength, added);
+                realPassword1 = realPassword1.Insert(caretIndex - changeLength, added);
             }
             else if (changeLength < 0)
             {
                 int removeStart = caretIndex;
                 int removeCount = Math.Abs(changeLength);
-                if (removeStart < realPassword.Length)
-                    realPassword = realPassword.Remove(removeStart, removeCount);
+                if (removeStart < realPassword1.Length)
+                    realPassword1 = realPassword1.Remove(removeStart, removeCount);
             }
 
-            isUpdatingPassword = true;
-            txtBox.Text = new string('•', realPassword.Length);
+            isUpdatingPassword1 = true;
+            txtBox.Text = new string('•', realPassword1.Length);
             txtBox.CaretIndex = caretIndex;
-            isUpdatingPassword = false;
+            isUpdatingPassword1 = false;
         }
 
-        private void ConfirmPasswordBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (isUpdatingPassword)
-                return;
-
-            var txtBox = sender as TextBox;
-            int caretIndex = txtBox.CaretIndex;
-            int changeLength = txtBox.Text.Length - realConfirmPassword.Length;
-
-            if (changeLength > 0)
-            {
-                string added = txtBox.Text.Substring(caretIndex - changeLength, changeLength);
-                realConfirmPassword = realConfirmPassword.Insert(caretIndex - changeLength, added);
-            }
-            else if (changeLength < 0)
-            {
-                int removeStart = caretIndex;
-                int removeCount = Math.Abs(changeLength);
-                if (removeStart < realConfirmPassword.Length)
-                    realConfirmPassword = realConfirmPassword.Remove(removeStart, removeCount);
-            }
-
-            isUpdatingPassword = true;
-            txtBox.Text = new string('•', realConfirmPassword.Length);
-            txtBox.CaretIndex = caretIndex;
-            isUpdatingPassword = false;
-        }
+       
     }
 }

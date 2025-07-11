@@ -10,8 +10,8 @@ namespace SocialMediaMini.Shared.Dto.Request
     public class Request_RegisterDTO
     {
         [Required(ErrorMessage = "Tên đăng nhập không được để trống!")]
-        [MinLength(6,ErrorMessage = "Tên tài khoản phải ít nhất 6 kí tự!")]
-        [MaxLength(100,ErrorMessage = "Tên tài khoản không được vượt quá 100 kí tự!")]
+        [MinLength(6, ErrorMessage = "Tên tài khoản phải ít nhất 6 kí tự!")]
+        [MaxLength(100, ErrorMessage = "Tên tài khoản không được vượt quá 100 kí tự!")]
         public string UserName { get; set; }
 
         [Required(ErrorMessage = "Mật khẩu không được để trống!")]
@@ -29,7 +29,5 @@ namespace SocialMediaMini.Shared.Dto.Request
         [MaxLength(30, ErrorMessage = "Số điện thoại không được quá 30 kí tự!")]
         public string PhoneNumber { get; set; }
 
-        public string EncryptionPublicKey { get; set; } // Thêm để nhận từ client
-        public string IV { get; set; } // Thêm để nhận từ client
     }
 }

@@ -53,8 +53,10 @@ namespace Client.Views
         private void RegisterTextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var registerWindow = new RegisterWindowView();
+            this.Hide();
             registerWindow.ShowDialog();
-            this.Close();
+            this.Show();
+            //this.Close();
         }
 
         private void ForgotPasswordTextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
