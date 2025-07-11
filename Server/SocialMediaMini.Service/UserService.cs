@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using SocialMediaMini.Common.Helpers;
+using SocialMediaMini.Common.ResultPattern;
 using SocialMediaMini.DataAccess;
 using SocialMediaMini.DataAccess.Models;
 using SocialMediaMini.Shared.Const;
@@ -21,7 +22,7 @@ namespace SocialMediaMini.Service
     public interface IUserService
     {
         Task<ResponeMessage> RegisterAsync(Request_RegisterDTO request);
-        Task<Respone_LoginDTO> LoginAsync(Request_LoginDTO request);
+        Task<Result<Respone_LoginDTO>> LoginAsync(Request_LoginDTO request);
     }
     public class UserService : IUserService
     {
@@ -34,30 +35,23 @@ namespace SocialMediaMini.Service
             _configuration = configuration;
         }
 
-        public async Task<Respone_LoginDTO> LoginAsync(Request_LoginDTO request)
+        public async Task<Result<Respone_LoginDTO>> LoginAsync(Request_LoginDTO request)
         {
             var fUser = await _dbContext.Users.FirstOrDefaultAsync(x => x.UserName == request.UserName);
             if (fUser == null || fUser.Password != SecurityHelper.HashPassword(request.Password))
             {
-                return new Respone_LoginDTO
-                {
-                    HttpStatusCode = HttpStatusCode.NotFound,
-                    Message = "Tên tài khoản hoặc mật khẩu không chính xác!"
-                };
+                return Result<Respone_LoginDTO>.Failure(HttpStatusCode.NotFound, "Tên tài khoản hoặc mật khẩu không chính xác!");
+              
             }
             var token = GenerateJwtToken(fUser);
-            string[] imgs = fUser.Images != null
-            ? JsonConvert.DeserializeObject<string[]>(fUser.Images)
-            : new string[] { "no_img_user.png" };
-            var rsp = new Respone_LoginDTO
+            var rs = Result<Respone_LoginDTO>.Success(new Respone_LoginDTO() 
             {
                 UserId = fUser.Id,
-                HttpStatusCode = HttpStatusCode.Ok,
                 FullName = fUser.FullName,
-                Image = imgs[0],
+                Image = fUser.GetFirstImage(),
                 Token = token,
-            };
-            return rsp;
+            });
+            return rs;
         }
 
         public async Task<ResponeMessage> RegisterAsync(Request_RegisterDTO request)

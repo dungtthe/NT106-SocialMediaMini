@@ -17,7 +17,7 @@ namespace Client.Services
 {
     public static class UserService
     {
-        public static async Task<bool>LoginAsync(string userName,string password)
+        public static async Task<Tuple<bool,string>>LoginAsync(string userName,string password)
         {
             UserStore.Reset();
             var data = new Request_LoginDTO()
@@ -39,14 +39,17 @@ namespace Client.Services
                         UserStore.Avatar = rspData.Image;
                         UserStore.FullName=rspData.FullName;
                         UserStore.Token= rspData.Token;
-
-                        return true;
+                        return new Tuple<bool, string>(true, "Chào " + UserStore.FullName + "!");
                     }
+                }
+                else
+                {
+                    return new Tuple<bool, string>(false, response.ResponseBody);
                 }
             }
             catch { }
 
-            return false;
+            return new Tuple<bool, string>(false, "Không thể truy cập tới máy chủ. Vui lòng thử lại sau!");
 
         }
     }

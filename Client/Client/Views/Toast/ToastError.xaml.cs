@@ -24,14 +24,19 @@ namespace Client.Views.Toast
         public ToastError(string content = "")
         {
             InitializeComponent();
-            this.Hide();
+            this.ShowInTaskbar = false;
             ToastMessage.Text = string.IsNullOrWhiteSpace(content)
                 ? "Đã xảy ra lỗi!" : content;
 
             Loaded += (s, e) =>
             {
-                this.Left = SystemParameters.WorkArea.Right - this.ActualWidth - 20;
-                this.Top = SystemParameters.WorkArea.Bottom - this.ActualHeight - 20;
+                //bottom-right
+                //this.Left = SystemParameters.WorkArea.Right - this.ActualWidth - 20;
+                //this.Top = SystemParameters.WorkArea.Bottom - this.ActualHeight - 20;
+
+                //top-center
+                this.Left = SystemParameters.WorkArea.Left + (SystemParameters.WorkArea.Width - this.ActualWidth) / 2;
+                this.Top = SystemParameters.WorkArea.Top + 20;
             };
         }
 

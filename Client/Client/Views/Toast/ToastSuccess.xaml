@@ -26,7 +26,7 @@
                 MouseLeftButtonDown="Image_MouseLeftButtonDown"
                 Source="/Resources/Icons/iconclose.png" />
             <StackPanel
-                Margin="5,0,5,10"
+                Margin="10,0,15,12"
                 VerticalAlignment="Center"
                 Orientation="Horizontal">
 

@@ -35,10 +35,12 @@ namespace Client.Views
         private async void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             var rs = await UserService.LoginAsync(PhoneNumberTextBox.Text, realPassword);
-            if (!rs)
+            if (!rs.Item1)
             {
+                ToastManager.AddToast(Const.Type.ToastType.Error, rs.Item2);
                 return;
             }
+            ToastManager.AddToast(Const.Type.ToastType.Success, rs.Item2);
             var mainWindowView = new MainWindow();
             this.Hide();
             mainWindowView.ShowDialog();
