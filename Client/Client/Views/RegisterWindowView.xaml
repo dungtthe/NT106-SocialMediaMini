@@ -196,7 +196,7 @@
                     BorderThickness="1"
                     FontSize="14"
                     Tag="Xác nhận mật khẩu"
-                    TextChanged="txtPassword_TextChanged">
+                    TextChanged="ConfirmPasswordBox_TextChanged">
                     <TextBox.Effect>
                         <DropShadowEffect
                             BlurRadius="4"
