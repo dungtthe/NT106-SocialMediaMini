@@ -10,5 +10,7 @@ namespace Client.Models
     {
         public string FullName { get; set; }
         public string Avatar { get; set; }
+        public long Id { get; set; }
+        public string Status { get; set; }
     }
 }

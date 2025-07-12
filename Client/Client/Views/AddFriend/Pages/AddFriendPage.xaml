@@ -4,8 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Client.Views.AddFriend.Pages"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:Client.Models"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Width="500"
     Height="700"
     d:DesignHeight="550"
@@ -18,25 +18,6 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/ResourcesXAML/ScrollBar.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <!--  Sample Temporary User Data  -->
-            <models:UserModel
-                x:Key="TempUser1"
-                Avatar="/Resources/Images/meolag.jpg"
-                FullName="Temp User 1" />
-            <models:UserModel
-                x:Key="TempUser2"
-                Avatar="/Resources/Images/meolag.jpg"
-                FullName="Temp User 2" />
-            <models:UserModel
-                x:Key="TempUser3"
-                Avatar="/Resources/Images/meolag.jpg"
-                FullName="Temp User 3" />
-            <!--  Sample Temporary User List  -->
-            <x:Array x:Key="SuggestedUsers" Type="models:UserModel">
-                <StaticResource ResourceKey="TempUser1" />
-                <StaticResource ResourceKey="TempUser2" />
-                <StaticResource ResourceKey="TempUser3" />
-            </x:Array>
         </ResourceDictionary>
     </Page.Resources>
 
@@ -46,7 +27,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <!--  Search Bar  -->
+        <!-- Search Bar -->
         <Border
             Grid.Row="0"
             Margin="0,0,0,15"
@@ -72,11 +53,13 @@
                     VerticalAlignment="Center"
                     Source="/Resources/Icons/icon-search.png" />
                 <TextBox
+                    x:Name="SearchTextBox"
                     Grid.Column="1"
                     VerticalAlignment="Center"
                     BorderThickness="0"
                     FontSize="14"
-                    Tag="tìm bạn bè...">
+                    Tag="tìm bạn bè..."
+                    TextChanged="SearchTextBox_TextChanged">
                     <TextBox.Style>
                         <Style TargetType="TextBox">
                             <Setter Property="Template">
@@ -115,13 +98,13 @@
             </Grid>
         </Border>
 
-        <!--  Suggested Friends List  -->
+        <!-- Suggested Friends List -->
         <ScrollViewer
             Grid.Row="1"
             HorizontalScrollBarVisibility="Disabled"
             Style="{StaticResource ModernScrollViewerStyle}"
             VerticalScrollBarVisibility="Auto">
-            <ItemsControl Margin="0,0,0,20" ItemsSource="{StaticResource SuggestedUsers}">
+            <ItemsControl x:Name="SuggestedFriendsList" Margin="0,0,0,20">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Border
@@ -142,32 +125,38 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <!--  Avatar  -->
+                                <!-- Avatar -->
                                 <Ellipse
                                     Width="40"
                                     Height="40"
                                     Margin="0,0,10,0">
                                     <Ellipse.Fill>
-                                        <!-- <ImageBrush ImageSource="{Binding Avatar}" /> -->
-                                        <ImageBrush ImageSource="/Resources/Images/meolag.jpg" />
+                                        <ImageBrush ImageSource="{Binding Avatar}" />
                                     </Ellipse.Fill>
                                 </Ellipse>
-                                <!--  Username  -->
-                                <TextBlock
-                                    Grid.Column="1"
-                                    VerticalAlignment="Center"
-                                    FontSize="16"
-                                    FontWeight="Bold"
-                                    Text="{Binding FullName}" />
-                                <!--  Add Friend Button  -->
+                                <!-- Username and Status -->
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                    <TextBlock
+                                        VerticalAlignment="Center"
+                                        FontSize="16"
+                                        FontWeight="Bold"
+                                        Text="{Binding FullName}" />
+                                    <TextBlock
+                                        FontSize="12"
+                                        Foreground="Gray"
+                                        Text="{Binding Status}" />
+                                </StackPanel>
+                                <!-- Add Friend Button -->
                                 <Button
                                     Grid.Column="2"
                                     Width="120"
                                     Height="30"
+                                    x:Name="AddFriendButton"
                                     Background="Transparent"
                                     BorderBrush="{DynamicResource ColorBlueOne}"
                                     BorderThickness="1"
-                                    Cursor="Hand">
+                                    Cursor="Hand"
+                                    Click="AddFriendButton_Click">
                                     <Button.Template>
                                         <ControlTemplate TargetType="Button">
                                             <Border
