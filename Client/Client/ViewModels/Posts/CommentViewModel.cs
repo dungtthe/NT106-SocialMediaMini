@@ -1,6 +1,8 @@
 ﻿using Client.Helpers;
 using Client.Services;
 using SocialMediaMini.Shared.Const.Type;
+using SocialMediaMini.Shared.Dto.Request;
+using SocialMediaMini.Shared.Dto.Respone;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -131,18 +133,53 @@ namespace Client.ViewModels.Posts
                 {
                     if (data != null)
                     {
-                        var mappedItems = data.Select(dto => new ItemViewModel
+                        foreach (var item in data)
                         {
-                            Id = dto.Id,
-                            Content = dto.Content,
-                            CreatedAt = dto.CreatedAt,
-                            User = new ItemUserViewModel
-                            {
-                                Id = dto.User.Id,
-                                FullName = dto.User.FullName,
-                                Avatar = dto.User.Avatar
-                            },
-                            Reactions = new ObservableCollection<ItemReactionViewModel>(
+                            AddCommentItem(item);
+                        }
+                    }
+                });
+
+            });
+        }
+
+
+        public void RequestAddComment(string content, long? parrentComment)
+        {
+            Task.Run(async () =>
+            {
+                var rs = await PostService.AddCommentAsync(new Request_AddCommentDto()
+                {
+                    PostId = postId,
+                    Content = content,
+                    ParrentComment = parrentComment
+                });
+
+                if (rs != null)
+                {
+                    UIHelpers.InvokeDispatcherUI(() =>
+                    {
+                        AddCommentItem(rs);
+                    });
+                }
+            });
+        }
+
+
+        private void AddCommentItem(CommentDto dto)
+        {
+            Items.Add(new ItemViewModel()
+            {
+                Id = dto.Id,
+                Content = dto.Content,
+                CreatedAt = dto.CreatedAt,
+                User = new ItemUserViewModel
+                {
+                    Id = dto.User.Id,
+                    FullName = dto.User.FullName,
+                    Avatar = dto.User.Avatar
+                },
+                Reactions = new ObservableCollection<ItemReactionViewModel>(
                                dto.Reactions?.Select(r => new ItemReactionViewModel
                                {
                                    ReactionType = r.ReactionType,
@@ -152,16 +189,7 @@ namespace Client.ViewModels.Posts
                                        FullName = r.User.FullName,
                                        Avatar = r.User.Avatar
                                    }
-                               }) ?? new List<ItemReactionViewModel>())
-                        });
-
-                        foreach (var item in mappedItems)
-                        {
-                            Items.Add(item);
-                        }
-                    }
-                });
-
+                               }))
             });
         }
     }

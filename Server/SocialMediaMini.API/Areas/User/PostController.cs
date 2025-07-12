@@ -145,5 +145,19 @@ namespace SocialMediaMini.API.Areas.User
         }
 
 
+
+        [HttpPost("comment/add")]
+        public async Task<IActionResult> AddCommentAsync(Request_AddCommentDto data)
+        {
+            var suserId = this.HttpContext.User.FindFirst("UserId")?.Value;
+            long userId = 0;
+            if (suserId == null || !long.TryParse(suserId, out userId))
+            {
+                return Unauthorized();
+            }
+
+            var rs = await _postService.AddCommentAsync(userId,data);
+            return rs.ToActionResult();
+        }
     }
 }

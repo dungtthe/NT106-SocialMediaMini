@@ -39,6 +39,7 @@ namespace SocialMediaMini.DataAccess.Models
         public Comment()
         {
             ReactionType_UserId_Ids = "[]";
+            CreateAt = DateTime.Now;
         }
 
         public List<Tuple<ReactionType, long>> GetReactionAndUserIds()

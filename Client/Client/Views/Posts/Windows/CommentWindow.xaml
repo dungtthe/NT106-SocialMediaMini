@@ -148,6 +148,7 @@
                             FontSize="14"
                             Tag="Nhập bình luận của bạn..."
                             Text="{Binding CommentText, UpdateSourceTrigger=PropertyChanged}"
+                            TextChanged="CommentTextBox_TextChanged"
                             TextWrapping="NoWrap"
                             VerticalScrollBarVisibility="Disabled">
 
@@ -191,6 +192,7 @@
 
                         <!--  Nút gửi  -->
                         <Button
+                            x:Name="btnSend"
                             Grid.Column="1"
                             Width="80"
                             Height="40"

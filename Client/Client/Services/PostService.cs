@@ -12,6 +12,7 @@ using SocialMediaMini.Shared.Dto.Respone;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -138,6 +139,24 @@ namespace Client.Services
             catch
             {
                 
+            }
+            return null;
+        }
+
+
+        public static async Task<CommentDto> AddCommentAsync(Request_AddCommentDto data)
+        {
+            try
+            {
+                var response = await ApiHelpers.PostAsync(new ApiRequest("/api/post/comment/add", JsonConvert.SerializeObject(data), true));
+                if (response.StatusCode == HttpStatusCode.Ok)
+                {
+                    return JsonConvert.DeserializeObject<CommentDto>(response.ResponseBody);
+                }
+            }
+            catch(Exception ex) 
+            {
+                Debug.WriteLine(ex.Message);
             }
             return null;
         }

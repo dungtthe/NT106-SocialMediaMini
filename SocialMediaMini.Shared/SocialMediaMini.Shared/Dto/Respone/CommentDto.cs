@@ -13,5 +13,7 @@ namespace SocialMediaMini.Shared.Dto.Respone
         public string CreatedAt { get; set; }
         public UserDto User { get; set; }
         public List<ReactionDto> Reactions { get; set; }
+
+        public CommentDto ParrentComment { get; set; }
     }
 }
