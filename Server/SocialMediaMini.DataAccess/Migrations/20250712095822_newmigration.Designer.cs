@@ -12,8 +12,8 @@ using SocialMediaMini.DataAccess;
 namespace SocialMediaMini.DataAccess.Migrations
 {
     [DbContext(typeof(SocialMediaMiniContext))]
-    [Migration("20250712085111_AddAvatarAndStatusToUsers")]
-    partial class AddAvatarAndStatusToUsers
+    [Migration("20250712095822_newmigration")]
+    partial class newmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,12 +38,6 @@ namespace SocialMediaMini.DataAccess.Migrations
 
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Avatar")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)")
-                        .HasDefaultValue("/Resources/Images/meolag.jpg");
 
                     b.Property<string>("BlockIds")
                         .ValueGeneratedOnAdd()

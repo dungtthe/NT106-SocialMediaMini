@@ -11,13 +11,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="SocialMediaMini.Shared">
-      <HintPath>..\..\SocialMediaMini.Shared\SocialMediaMini.Shared\bin\Release\net8.0\SocialMediaMini.Shared.dll</HintPath>
-    </Reference>
+    <Folder Include="Const\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Const\" />
+    <Reference Include="SocialMediaMini.Shared">
+      <HintPath>..\..\SocialMediaMini.Shared\SocialMediaMini.Shared\bin\Release\net8.0\SocialMediaMini.Shared.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

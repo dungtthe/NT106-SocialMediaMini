@@ -36,12 +36,6 @@ namespace SocialMediaMini.DataAccess.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Avatar")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)")
-                        .HasDefaultValue("/Resources/Images/meolag.jpg");
-
                     b.Property<string>("BlockIds")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)")

@@ -42,6 +42,7 @@ namespace SocialMediaMini.DataAccess.Migrations
                     FullName = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true, defaultValue: "Offline"),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -52,6 +53,33 @@ namespace SocialMediaMini.DataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FriendRequests",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SenderId = table.Column<long>(type: "bigint", nullable: false),
+                    ReceiverId = table.Column<long>(type: "bigint", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false, defaultValue: "Pending"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FriendRequests", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FriendRequests_Users_ReceiverId",
+                        column: x => x.ReceiverId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_FriendRequests_Users_SenderId",
+                        column: x => x.SenderId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -260,6 +288,17 @@ namespace SocialMediaMini.DataAccess.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FriendRequests_ReceiverId",
+                table: "FriendRequests",
+                column: "ReceiverId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FriendRequests_SenderId_ReceiverId",
+                table: "FriendRequests",
+                columns: new[] { "SenderId", "ReceiverId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Messages_ChatRoomId",
                 table: "Messages",
                 column: "ChatRoomId");
@@ -300,6 +339,9 @@ namespace SocialMediaMini.DataAccess.Migrations
         {
             migrationBuilder.DropTable(
                 name: "CommentHistories");
+
+            migrationBuilder.DropTable(
+                name: "FriendRequests");
 
             migrationBuilder.DropTable(
                 name: "Messages");

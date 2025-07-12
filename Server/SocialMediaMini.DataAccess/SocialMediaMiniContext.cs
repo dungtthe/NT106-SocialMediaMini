@@ -37,10 +37,6 @@ namespace SocialMediaMini.DataAccess
                 .Property(e => e.BlockIds)
                 .HasDefaultValue("[]");
             modelBuilder.Entity<AppUser>()
-                .Property(e => e.Avatar)
-                .HasDefaultValue("/Resources/Images/meolag.jpg")
-                .HasMaxLength(255);
-            modelBuilder.Entity<AppUser>()
                 .Property(e => e.Status)
                 .HasDefaultValue("Offline")
                 .HasMaxLength(20);

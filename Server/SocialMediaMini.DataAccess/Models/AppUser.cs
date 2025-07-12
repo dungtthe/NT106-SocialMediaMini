@@ -37,9 +37,6 @@ namespace SocialMediaMini.DataAccess.Models
         [MaxLength(30)]
         public string PhoneNumber { get; set; }
 
-        [MaxLength(255)]
-        public string Avatar { get; set; } 
-
         [MaxLength(20)]
         public string Status { get; set; }
 

@@ -242,7 +242,7 @@ namespace SocialMediaMini.Service
                         Id = fr.Sender.Id,
                         UserName = fr.Sender.UserName,
                         FullName = fr.Sender.FullName,
-                        Avatar = fr.Sender.Avatar,
+                        Avatar = fr.Sender.GetFirstImage(),
                         Status = fr.Sender.Status
                     },
                     Receiver = new UserDto
@@ -250,7 +250,7 @@ namespace SocialMediaMini.Service
                         Id = fr.Receiver.Id,
                         UserName = fr.Receiver.UserName,
                         FullName = fr.Receiver.FullName,
-                        Avatar = fr.Receiver.Avatar,
+                        Avatar = fr.Receiver.GetFirstImage(),
                         Status = fr.Receiver.Status
                     },
                     Status = fr.Status,
