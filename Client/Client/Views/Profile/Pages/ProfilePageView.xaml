@@ -14,11 +14,11 @@
                 <RowDefinition Height="*"/>    
             </Grid.RowDefinitions>
 
-            <Border Grid.Row="0" Background="{DynamicResource ColorBlackThree}" CornerRadius="10 10 0 0" Padding="20">
+            <Border Grid.Row="0" Background="{DynamicResource ColorBlueFour}" CornerRadius="10 10 0 0" Padding="20">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/> 
-                        <ColumnDefinition Width="*"/>   
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Orientation="Vertical">
@@ -28,21 +28,21 @@
                             </Ellipse.Fill>
                         </Ellipse>
                         <Button Width="30"
-                            Height="30"
-                            Margin="10,5,0,0"
-                            Padding="0"
-                            Background="{DynamicResource ColorWhiteOne}"
-                            BorderBrush="Transparent"
-                            Click="EditAvatarButton_Click">     
+                    Height="30"
+                    Margin="10,5,0,0"
+                    Padding="0"
+                    Background="{DynamicResource ColorWhiteOne}"
+                    BorderBrush="Transparent"
+                    Click="EditAvatarButton_Click">
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
                                     <Border Background="{TemplateBinding Background}"
-                                        CornerRadius="15" 
-                                        Width="30" Height="30"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center">
+                                CornerRadius="15" 
+                                Width="30" Height="30"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center">
                                         <Image Width="16" Height="16" Source="/Resources/Icons/PenBlack_Icon.png" 
-                                         VerticalAlignment="Center" HorizontalAlignment="Center"/>    
+                                   VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                     </Border>
                                 </ControlTemplate>
                             </Button.Template>
@@ -53,47 +53,75 @@
                     <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="20,0,10,0" Grid.ColumnSpan="2">
                         <UniformGrid Columns="2" Rows="4" Margin="0,0,0,10" HorizontalAlignment="Stretch">
 
-                            <!-- FullName -->
+                            <!-- Họ và tên -->
                             <StackPanel Margin="10">
-                                <TextBlock Text="Họ và tên:" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource ColorWhiteOne}" />
-                                <TextBlock Text="[FullName]" FontSize="22" Foreground="{DynamicResource ColorWhiteOne}" />
+                                <TextBlock Text="Họ và tên:" FontSize="22" FontWeight="Bold" Foreground="Black" />
+                                <TextBlock Text="[FullName]" FontSize="22" Foreground="Black" />
                             </StackPanel>
 
                             <!-- Email -->
                             <StackPanel Margin="10">
-                                <TextBlock Text="Email:" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource ColorWhiteOne}" />
-                                <TextBlock Text="[Email]" FontSize="22" Foreground="{DynamicResource ColorWhiteOne}" />
+                                <TextBlock Text="Email:" FontSize="22" FontWeight="Bold" Foreground="Black" />
+                                <TextBlock Text="[Email]" FontSize="22" Foreground="Black" />
                             </StackPanel>
 
-                            <!-- PhoneNumber -->
+                            <!-- Số điện thoại -->
                             <StackPanel Margin="10">
-                                <TextBlock Text="Số điện thoại:" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource ColorWhiteOne}" />
-                                <TextBlock Text="[PhoneNumber]" FontSize="22" Foreground="{DynamicResource ColorWhiteOne}" />
+                                <TextBlock Text="Số điện thoại:" FontSize="22" FontWeight="Bold" Foreground="Black" />
+                                <TextBlock Text="[PhoneNumber]" FontSize="22" Foreground="Black" />
                             </StackPanel>
 
-                            <!-- Address -->
+                            <!-- Địa chỉ -->
                             <StackPanel Margin="10">
-                                <TextBlock Text="Địa chỉ:" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource ColorWhiteOne}" />
-                                <TextBlock Text="[Address]" FontSize="22" Foreground="{DynamicResource ColorWhiteOne}" />
+                                <TextBlock Text="Địa chỉ:" FontSize="22" FontWeight="Bold" Foreground="Black" />
+                                <TextBlock Text="[Address]" FontSize="22" Foreground="Black" />
                             </StackPanel>
 
-                            <!-- Gender -->
-                            <StackPanel Margin="10">
-                                <TextBlock Text="Giới tính:" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource ColorWhiteOne}" />
-                                <TextBlock Text="[Gender]" FontSize="22" Foreground="{DynamicResource ColorWhiteOne}" />
+                            <!-- Giới tính -->
+                            <StackPanel Margin="10" Orientation="Vertical">
+                                <TextBlock Text="Giới tính:" FontSize="22" FontWeight="Bold" Foreground="Black" HorizontalAlignment="Left" Margin="0,0,0,5"/>
+                                <ComboBox x:Name="GenderCombo"
+                              Width="200"
+                              FontSize="20"
+                              SelectedIndex="0"
+                              Foreground="Black"
+                              Background="White"
+                              BorderBrush="Gray"
+                              HorizontalAlignment="Left">
+                                    <ComboBoxItem Content="Nam" Foreground="Black" Background="White"/>
+                                    <ComboBoxItem Content="Nữ" Foreground="Black" Background="White"/>
+                                    <ComboBoxItem Content="Khác" Foreground="Black" Background="White"/>
+                                </ComboBox>
                             </StackPanel>
 
-                            <!-- DateOfBirth -->
-                            <StackPanel Margin="10">
-                                <TextBlock Text="Ngày sinh:" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource ColorWhiteOne}" />
-                                <TextBlock Text="[DateOfBirth]" FontSize="22" Foreground="{DynamicResource ColorWhiteOne}" />
+                            <!-- Ngày sinh -->
+                            <StackPanel Margin="10" Orientation="Vertical">
+                                <TextBlock Text="Ngày sinh:" FontSize="22" FontWeight="Bold" Foreground="Black" HorizontalAlignment="Left" Margin="0,0,0,5"/>
+                                <DatePicker x:Name="DatePickerDOB"
+                                Width="200"
+                                FontSize="20"
+                                HorizontalAlignment="Left"
+                                Foreground="Black"
+                                Background="White"
+                                BorderBrush="Gray"/>
                             </StackPanel>
-
                         </UniformGrid>
-                    </StackPanel>
 
+                        <!-- Nút chỉnh sửa -->
+                        <Button Content="Chỉnh sửa thông tin"
+                    Width="220"
+                    Height="45"
+                    FontSize="18"
+                    FontWeight="SemiBold"
+                    Margin="0,10,0,0"
+                    HorizontalAlignment="Center"
+                    Background="{DynamicResource ColorBlueOne}"
+                    Foreground="White"
+                    Click="EditProfileButton_Click"/>
+                    </StackPanel>
                 </Grid>
             </Border>
+
 
             <!-- Khu vực bài post -->
             <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="0,20,0,0">
