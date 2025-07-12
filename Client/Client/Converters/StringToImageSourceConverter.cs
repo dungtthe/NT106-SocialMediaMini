@@ -20,7 +20,7 @@ namespace Client.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is not string input || string.IsNullOrWhiteSpace(input))
-                return null;
+                return "pack://application:,,,/Resources/Images/no_img_user.png";
 
 
             if (input == "no_img_user.png" || input == "pack://application:,,,/Resources/Images/no_img_user.png" || input == "/Resources/Images/no_img_user.png")
@@ -83,7 +83,7 @@ namespace Client.Converters
             catch (Exception ex)
             {
                 Debug.WriteLine($"Converter Error: {ex.Message}");
-                return null;
+                return "pack://application:,,,/Resources/Images/no_img_user.png";
             }
         }
 

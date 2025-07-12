@@ -46,7 +46,7 @@
                     Height="40"
                     Margin="0,0,10,0">
                     <Ellipse.Fill>
-                        <ImageBrush ImageSource="{Binding User.Avatar}" />
+                        <ImageBrush ImageSource="{Binding User.Avatar, Converter={StaticResource StringToImageSourceConverter}}" />
                     </Ellipse.Fill>
                 </Ellipse>
 
