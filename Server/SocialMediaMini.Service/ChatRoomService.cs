@@ -3,8 +3,10 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using SocialMediaMini.Common.ResultPattern;
 using SocialMediaMini.DataAccess;
 using SocialMediaMini.DataAccess.Models;
+using SocialMediaMini.Shared.Const;
 using SocialMediaMini.Shared.Const.Type;
 using SocialMediaMini.Shared.Dto.Request;
 using SocialMediaMini.Shared.Dto.Respone;
@@ -23,6 +25,7 @@ namespace SocialMediaMini.Service
         Task<Respone_ChatRoomDetail> GetChatRoomDetailAsync(long userId, long chatRoomId);
         Task<Tuple<List<long>, Respone_NotificationDTO.Respone_NotificationMessage>> AddMessageAsync(Request_AddMessageDTO data);
         Task ReadMessages(long userId, long chatRoomId);
+        Task<Result<Respone_NotificationDTO.Respone_NotificationMessage>> RevokeMessageAsync(long userId, Request_RevokeMessage data);
     }
     public class ChatRoomService : IChatRoomService
     {
@@ -67,7 +70,7 @@ namespace SocialMediaMini.Service
                 ChatRoomId = chatRoom.Id,
                 ReactionType_UserId_Ids = "[]",
                 ReadByUserIds = $"[{data.UserId}]",
-                MessageType = Common.Const.Type.MessageType.Text
+                MessageType = MessageType.Text
             };
 
             await _dbContext.Messages.AddAsync(msg);
@@ -243,7 +246,7 @@ namespace SocialMediaMini.Service
                 }
                 msgRsp.Reactions = reactions;
 
-                if (msg.MessageType == Common.Const.Type.MessageType.Revoked)
+                if (msg.MessageType == MessageType.Revoked)
                 {
                     msgRsp.Content = "Tin nhắn đã bị thu hồi";
                 }
@@ -383,7 +386,7 @@ namespace SocialMediaMini.Service
                 {
                     continue;
                 }
-                if (lastMesg.MessageType == Common.Const.Type.MessageType.Revoked)
+                if (lastMesg.MessageType == MessageType.Revoked)
                 {
                     rspItem.LastMessage = "Tin nhắn đã bị thu hồi";
                 }
@@ -417,6 +420,94 @@ namespace SocialMediaMini.Service
             await _dbContext.SaveChangesAsync();
         }
 
+        public async Task<Result<Respone_NotificationDTO.Respone_NotificationMessage>> RevokeMessageAsync(long userId, Request_RevokeMessage data)
+        {
+            var fUser = await _dbContext.Users.FindAsync(userId);
+            if (fUser == null)
+            {
+                return Result<Respone_NotificationDTO.Respone_NotificationMessage>.Failure(HttpStatusCode.NotFound, "Có lỗi xảy ra. Vui lòng thử lại sau");
+            }
+            var fMessage = await _dbContext.Messages.FirstOrDefaultAsync(m => m.UserId == userId && m.Id == data.MessageId && m.ChatRoomId == data.ChatRoomId && m.MessageType != MessageType.Revoked);
+            if (fMessage == null)
+            {
+                return Result<Respone_NotificationDTO.Respone_NotificationMessage>.Failure(HttpStatusCode.NotFound, "Có lỗi xảy ra. Vui lòng thử lại sau");
+            }
+            if (fMessage.ChatRoom.IsGroupChat)
+            {
+                if (!fMessage.ChatRoom.CanSendMessage)
+                {
+                    return Result<Respone_NotificationDTO.Respone_NotificationMessage>.Failure(HttpStatusCode.Forbidden, "Trưởng nhóm đã tắt tính năng nhắn tin");
+                }
+            }
+            else
+            {
+                
+
+                var listUserIds = fMessage.ChatRoom.GetUserIds();
+                long ?userId2 = listUserIds.Where(u => u != userId).FirstOrDefault();
+                if(userId2 == null)
+                {
+                    return Result<Respone_NotificationDTO.Respone_NotificationMessage>.Failure(HttpStatusCode.NotFound, "Có lỗi xảy ra. Vui lòng thử lại sau");
+                }
+
+                //check block
+                var listBlockUser1 = fUser.GetBlockIds();
+                if(listBlockUser1.Contains(userId2.Value))
+                {
+                    return Result<Respone_NotificationDTO.Respone_NotificationMessage>.Failure(HttpStatusCode.Forbidden, "Bạn và người này đã chặn nhau nên không thể sử dụng chức năng này!");
+                }
+
+                var fUser2 = await _dbContext.Users.FindAsync(userId2.Value);
+                if (fUser2 == null)
+                {
+                    return Result<Respone_NotificationDTO.Respone_NotificationMessage>.Failure(HttpStatusCode.NotFound, "Có lỗi xảy ra. Vui lòng thử lại sau");
+                }
+
+                //check block
+                if (fUser2.GetBlockIds().Contains(userId))
+                {
+                    return Result<Respone_NotificationDTO.Respone_NotificationMessage>.Failure(HttpStatusCode.Forbidden, "Bạn và người này đã chặn nhau nên không thể sử dụng chức năng này!");
+                }
+            }
+
+
+            //ok
+            fMessage.MessageType = MessageType.Revoked;
+            await _dbContext.SaveChangesAsync();
+
+            var dataRsp = new Respone_NotificationDTO.Respone_NotificationMessage()
+            {
+                ChatRoomId = fMessage.ChatRoomId,
+                Id = fMessage.Id,
+                Content = "Tin nhắn đã bị thu hồi",
+                CreatedAt = fMessage.CreateAt.ToString("dd/MM/yyyy HH:mm:ss"),
+                Sender = new UserDto()
+                {
+                    Id = fMessage.Id,
+                    FullName = fMessage.User.FullName,
+                    Avatar = fMessage.User.GetFirstImage(),
+                }
+
+            };
+            if(fMessage.ParrentMessageId != null)
+            {
+                dataRsp.Parrent = new Respone_NotificationDTO.Respone_NotificationMessage()
+                {
+                    ChatRoomId = fMessage.ChatRoomId,
+                    Id = fMessage.ParentMessage.Id,
+                    Content = fMessage.ParentMessage.Content,
+                    CreatedAt = fMessage.ParentMessage.CreateAt.ToString("dd/MM/yyyy HH:mm:ss"),
+                    Sender = new UserDto()
+                    {
+                        Id = fMessage.ParentMessage.Id,
+                        FullName = fMessage.ParentMessage.User.FullName,
+                        Avatar = fMessage.ParentMessage.User.GetFirstImage(),
+                    }
+                };
+            }
+
+            return Result<Respone_NotificationDTO.Respone_NotificationMessage>.Success(dataRsp);
+        }
 
         private async Task<Message> GetLastMessage(long chatRoomId)
         {

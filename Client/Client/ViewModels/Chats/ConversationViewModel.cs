@@ -1,10 +1,14 @@
 ﻿using Client.Const;
+using Client.Const.Type;
 using Client.Helpers;
 using Client.LocalStorage;
 using Client.Services;
 using Client.Services.RealTimes;
 using Client.Views;
 using Newtonsoft.Json;
+using SocialMediaMini.Shared.Const.Type;
+using SocialMediaMini.Shared.Dto.Request;
+using SocialMediaMini.Shared.Dto.Respone;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -16,9 +20,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using SocialMediaMini.Shared.Const.Type;
-using SocialMediaMini.Shared.Dto.Request;
-using SocialMediaMini.Shared.Dto.Respone;
 
 namespace Client.ViewModels.Chats
 {
@@ -194,12 +195,7 @@ namespace Client.ViewModels.Chats
                 private ItemUserViewModel _sender;
                 private ItemMessageViewModel _parent;
                 private ObservableCollection<ItemReactionViewModel> _reactions;
-                private MessageType _messageType;
-                public MessageType MessageType
-                {
-                    get => _messageType;
-                    set => SetProperty(ref _messageType, value, nameof(MessageType));
-                }
+                
                 public ItemUserViewModel Sender
                 {
                     get => _sender;
@@ -239,6 +235,14 @@ namespace Client.ViewModels.Chats
                 public string IdAndContent
                 {
                     get => JsonConvert.SerializeObject(new Tuple<long, string, string>(Id, Sender.FullName, Content));
+                }
+
+
+                private MessageShowType _messageShowType;
+                public MessageShowType MessageShowType
+                {
+                    get => _messageShowType;
+                    set => SetProperty(ref _messageShowType, value, nameof(MessageShowType));
                 }
             }
 
@@ -509,14 +513,13 @@ namespace Client.ViewModels.Chats
                                         var hasParent = msgNew.Parent != null;
 
                                         if (isMine && hasParent)
-                                            msgNew.MessageType = MessageType.MineWithReply;
+                                            msgNew.MessageShowType = MessageShowType.MineWithReply;
                                         else if (isMine)
-                                            msgNew.MessageType = MessageType.Mine;
+                                            msgNew.MessageShowType = MessageShowType.Mine;
                                         else if (hasParent)
-                                            msgNew.MessageType = MessageType.OtherWithReply;
+                                            msgNew.MessageShowType = MessageShowType.OtherWithReply;
                                         else
-                                            msgNew.MessageType = MessageType.Other;
-
+                                            msgNew.MessageShowType = MessageShowType.Other;
 
                                         try
                                         {

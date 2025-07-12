@@ -1,22 +1,23 @@
-﻿using System;
+﻿using Client.Const.Type;
+using SocialMediaMini.Shared.Const.Type;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Data;
 using System.Windows;
-using Client.Helpers;
+using System.Windows.Data;
 
 namespace Client.Converters
 {
-    public class TypeMessageToVisibilityConverter : IValueConverter
+    public class MessageShowTypeToVisibilityConverter : IValueConverter
     {
-        public MessageType TargetType { get; set; }
+        public MessageShowType TargetType { get; set; }
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is MessageType actualType)
+            if (value is MessageShowType actualType)
                 return actualType == TargetType ? Visibility.Visible : Visibility.Collapsed;
 
             return Visibility.Collapsed;

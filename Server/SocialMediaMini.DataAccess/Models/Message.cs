@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using SocialMediaMini.Common.Const.Type;
 using SocialMediaMini.Shared.Const.Type;
 using System;
 using System.Collections.Generic;

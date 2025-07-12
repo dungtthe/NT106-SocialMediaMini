@@ -16,4 +16,8 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Const\" />
+  </ItemGroup>
+
 </Project>

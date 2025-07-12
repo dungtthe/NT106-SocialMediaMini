@@ -4,14 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Client.Helpers
+namespace Client.Const.Type
 {
-    public enum MessageType
+    public enum MessageShowType
     {
         Other,               // Người khác gửi không reply
         OtherWithReply,      // Người khác gửi có reply
         Mine,                // Mình gửi không reply
         MineWithReply        // Mình gửi có reply
     }
-
 }

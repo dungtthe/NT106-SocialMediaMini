@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using SocialMediaMini.Common.Helpers;
 using SocialMediaMini.DataAccess;
 using SocialMediaMini.DataAccess.Models;
+using SocialMediaMini.Shared.Const.Type;
 
 namespace SocialMediaMini.API.Areas.Admin
 {
@@ -199,7 +200,7 @@ namespace SocialMediaMini.API.Areas.Admin
                         CreateAt = DateTime.Now,
                         UserId = userIds[ran.Next(0, userIds.Count)],
                         ChatRoomId = chatRoom.Id,
-                        MessageType = Common.Const.Type.MessageType.Text,
+                        MessageType = MessageType.Text,
                         ChatRoom = chatRoom,
                     });
                 }
@@ -218,7 +219,7 @@ namespace SocialMediaMini.API.Areas.Admin
                         CreateAt = DateTime.Now,
                         UserId = userIds[ran.Next(0, userIds.Count)],
                         ChatRoomId = msg.ChatRoomId,
-                        MessageType = Common.Const.Type.MessageType.Text,
+                        MessageType = MessageType.Text,
                         ParentMessage = msg
                     });
                 }

@@ -1,4 +1,5 @@
 ﻿using Client.Const;
+using Client.Const.Type;
 using Client.Helpers;
 using Client.LocalStorage;
 using Client.ViewModels.Chats;
@@ -105,13 +106,13 @@ namespace Client.Services
                             var hasParent = msg.Parrent != null;
 
                             if (isMine && hasParent)
-                                messageVM.MessageType = MessageType.MineWithReply;
+                                messageVM.MessageShowType = MessageShowType.MineWithReply;
                             else if (isMine)
-                                messageVM.MessageType = MessageType.Mine;
+                                messageVM.MessageShowType = MessageShowType.Mine;
                             else if (hasParent)
-                                messageVM.MessageType = MessageType.OtherWithReply;
+                                messageVM.MessageShowType = MessageShowType.OtherWithReply;
                             else
-                                messageVM.MessageType = MessageType.Other;
+                                messageVM.MessageShowType = MessageShowType.Other;
 
 
                             viewModel.Messages.Add(messageVM);

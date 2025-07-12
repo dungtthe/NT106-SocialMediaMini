@@ -26,10 +26,10 @@
         </ResourceDictionary>
 
         <!--  Converter theo TypeMessage  -->
-        <converters:TypeMessageToVisibilityConverter x:Key="ShowOther" TargetType="Other" />
-        <converters:TypeMessageToVisibilityConverter x:Key="ShowOtherWithReply" TargetType="OtherWithReply" />
-        <converters:TypeMessageToVisibilityConverter x:Key="ShowMine" TargetType="Mine" />
-        <converters:TypeMessageToVisibilityConverter x:Key="ShowMineWithReply" TargetType="MineWithReply" />
+        <converters:MessageShowTypeToVisibilityConverter x:Key="ShowOther" TargetType="Other" />
+        <converters:MessageShowTypeToVisibilityConverter x:Key="ShowOtherWithReply" TargetType="OtherWithReply" />
+        <converters:MessageShowTypeToVisibilityConverter x:Key="ShowMine" TargetType="Mine" />
+        <converters:MessageShowTypeToVisibilityConverter x:Key="ShowMineWithReply" TargetType="MineWithReply" />
     </Page.Resources>
 
 
@@ -296,7 +296,7 @@
                                             MouseLeftButtonDown="itemMessage_MouseLeftButtonDown"
                                             Orientation="Horizontal"
                                             Tag="{Binding IdAndContent}"
-                                            Visibility="{Binding MessageType, Converter={StaticResource ShowOther}}">
+                                            Visibility="{Binding MessageShowType, Converter={StaticResource ShowOther}}">
 
                                             <StackPanel>
                                                 <!--  Avatar  -->
@@ -359,7 +359,7 @@
                                             MouseLeftButtonDown="itemMessage_MouseLeftButtonDown"
                                             Orientation="Horizontal"
                                             Tag="{Binding IdAndContent}"
-                                            Visibility="{Binding MessageType, Converter={StaticResource ShowMine}}">
+                                            Visibility="{Binding MessageShowType, Converter={StaticResource ShowMine}}">
 
 
                                             <Border
@@ -399,7 +399,7 @@
                                             MouseLeftButtonDown="itemMessage_MouseLeftButtonDown"
                                             Orientation="Horizontal"
                                             Tag="{Binding IdAndContent}"
-                                            Visibility="{Binding MessageType, Converter={StaticResource ShowMineWithReply}}">
+                                            Visibility="{Binding MessageShowType, Converter={StaticResource ShowMineWithReply}}">
                                             <Border
                                                 MaxWidth="1000"
                                                 Padding="8"
@@ -456,7 +456,7 @@
                                             MouseLeftButtonDown="itemMessage_MouseLeftButtonDown"
                                             Orientation="Horizontal"
                                             Tag="{Binding IdAndContent}"
-                                            Visibility="{Binding MessageType, Converter={StaticResource ShowOtherWithReply}}">
+                                            Visibility="{Binding MessageShowType, Converter={StaticResource ShowOtherWithReply}}">
                                             <StackPanel>
 
                                                 <!--  Avatar  -->
