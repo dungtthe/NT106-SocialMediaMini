@@ -35,5 +35,18 @@ namespace SocialMediaMini.API.Areas.User
             var result = await _userService.LoginAsync(data);
             return result.ToActionResult();
         }
+
+        [HttpGet("friends-summary")]
+        public async Task<IActionResult> GetFriendsSummaryAsync()
+        {
+            var suserId = this.HttpContext.User.FindFirst("UserId")?.Value;
+            long userId = 0;
+            if (suserId == null || !long.TryParse(suserId, out userId))
+            {
+                return Unauthorized();
+            }
+            var rs = await _userService.GetFriendsSummaryAsync(userId);
+            return rs.ToActionResult();
+        }
     }
 }

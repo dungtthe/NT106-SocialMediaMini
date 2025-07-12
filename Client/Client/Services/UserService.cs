@@ -20,7 +20,7 @@ namespace Client.Services
 {
     public static class UserService
     {
-        public static async Task<Tuple<bool,string>>LoginAsync(string userName,string password)
+        public static async Task<Tuple<bool, string>> LoginAsync(string userName, string password)
         {
             UserStore.Reset();
             var data = new Request_LoginDTO()
@@ -39,8 +39,8 @@ namespace Client.Services
                     {
                         UserStore.UserIdCur = rspData.UserId;
                         UserStore.Avatar = rspData.Image;
-                        UserStore.FullName=rspData.FullName;
-                        UserStore.Token= rspData.Token;
+                        UserStore.FullName = rspData.FullName;
+                        UserStore.Token = rspData.Token;
                         return new Tuple<bool, string>(true, "Chào " + UserStore.FullName + "!");
                     }
                 }
@@ -77,5 +77,22 @@ namespace Client.Services
             return new Tuple<bool, string>(false, "Không thể truy cập tới máy chủ. Vui lòng thử lại sau!");
         }
 
+        public static async Task<List<Respone_FriendSumaryDto>> GetFriendsSummaryAsync()
+        {
+            try
+            {
+                var response = await ApiHelpers.GetAsync(new ApiRequestGet("/api/user/friends-summary", true));
+                if (response.StatusCode == HttpStatusCode.Ok)
+                {
+                    var list = JsonConvert.DeserializeObject<List<Respone_FriendSumaryDto>>(response.ResponseBody);
+                    return list;
+                }
+            }
+            catch
+            {
+            }
+
+            return null;
+        }
     }
 }

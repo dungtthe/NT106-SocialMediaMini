@@ -101,12 +101,14 @@
 
                     <!--  add group btn  -->
                     <Button
+                        x:Name="btnShowCreateGroupChatWindow"
                         Width="40"
                         Height="40"
                         Padding="0"
                         VerticalAlignment="Center"
                         Background="Transparent"
-                        BorderBrush="Transparent">
+                        BorderBrush="Transparent"
+                        Click="btnShowCreateGroupChatWindow_Click">
                         <Image
                             Width="24"
                             Height="24"

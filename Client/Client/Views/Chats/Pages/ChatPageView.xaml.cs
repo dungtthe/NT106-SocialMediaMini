@@ -1,6 +1,7 @@
 ﻿using Client.ViewModels;
 using Client.ViewModels.Chats;
 using Client.Views.AddFriend.Pages;
+using Client.Views.Chats.Windows;
 using Client.Views.Toast;
 using Newtonsoft.Json;
 using System;
@@ -206,6 +207,14 @@ namespace Client.Views.Chats.Pages
         {
             HideBoxReply();
             parrentMsgId = -1;
+        }
+
+        private void btnShowCreateGroupChatWindow_Click(object sender, RoutedEventArgs e)
+        {
+            CreateGroupChatWindowView createGroupChatWindowView = new CreateGroupChatWindowView();
+            this.Opacity = 0.4;
+            createGroupChatWindowView.ShowDialog();
+            this.Opacity = 1;
         }
     }
 }

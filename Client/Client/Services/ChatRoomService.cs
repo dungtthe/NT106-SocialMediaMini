@@ -2,15 +2,18 @@
 using Client.Const.Type;
 using Client.Helpers;
 using Client.LocalStorage;
+using Client.ViewModels;
 using Client.ViewModels.Chats;
 using Client.ViewModels.Posts;
 using Client.Views;
 using Newtonsoft.Json;
 using SocialMediaMini.Shared.Const;
+using SocialMediaMini.Shared.Dto.Request;
 using SocialMediaMini.Shared.Dto.Respone;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -205,6 +208,28 @@ namespace Client.Services
                 {
                 }
             });
+        }
+
+
+
+        public static async Task<long?> CreateGroupChatAsync(Request_CreateGroupchat data)
+        {
+            try
+            {
+                var response = await ApiHelpers.PostAsync(new ApiRequest("/api/chat-room/create-group", JsonConvert.SerializeObject(data), true));
+                if (response.StatusCode == HttpStatusCode.Ok)
+                {
+                    return long.Parse(response.ResponseBody);
+                }
+                ToastManager.AddToast(Const.Type.ToastType.Error, response.ResponseBody);
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                ToastManager.AddToast(Const.Type.ToastType.Error, "Có lỗi xảy ra. Vui lòng thử lại");
+            }
+            return null;
         }
     }
 }

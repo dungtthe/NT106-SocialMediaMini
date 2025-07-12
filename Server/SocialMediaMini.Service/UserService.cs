@@ -23,6 +23,7 @@ namespace SocialMediaMini.Service
     {
         Task<Result<string>> RegisterAsync(Request_RegisterDTO request);
         Task<Result<Respone_LoginDTO>> LoginAsync(Request_LoginDTO request);
+        Task<Result<List<Respone_FriendSumaryDto>>> GetFriendsSummaryAsync(long userId);
     }
 
     public class UserService : IUserService
@@ -259,6 +260,34 @@ namespace SocialMediaMini.Service
                 .ToListAsync();
 
             return requests;
+        }
+
+        public async Task<Result<List<Respone_FriendSumaryDto>>> GetFriendsSummaryAsync(long userId)
+        {
+            var fUser = await _dbContext.Users.FindAsync(userId);
+            if(fUser == null)
+            {
+                return Result<List<Respone_FriendSumaryDto>>.Failure(HttpStatusCode.NotFound, "Có lỗi xảy ra. Vui lòng thử lại sau");
+            }
+
+            var result = new List<Respone_FriendSumaryDto>();
+
+            var friendIds = fUser.GetFriendIds();
+            foreach( var friendId in friendIds)
+            {
+                var fFriend = await _dbContext.Users.FindAsync(friendId);
+                if(fFriend != null)
+                {
+                    result.Add(new Respone_FriendSumaryDto()
+                    {
+                        UserId = friendId,
+                        FullName = fFriend.FullName,
+                        Avatar = fFriend.GetFirstImage(),
+                    });
+                }
+            }
+            return Result<List<Respone_FriendSumaryDto>>.Success(result);
+
         }
     }
 }

@@ -355,7 +355,7 @@ namespace Client.ViewModels.Chats
         }
 
 
-        private void LoadChatRooms()
+        public void LoadChatRooms()
         {
             Task.Run(async () =>
             {

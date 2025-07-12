@@ -1,0 +1,222 @@
+﻿<Window
+    x:Class="Client.Views.Chats.Windows.CreateGroupChatWindowView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:Client.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Client.Views.Chats.Windows"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="CreateGroupChatWindowView"
+    Width="600"
+    Height="710"
+    AllowsTransparency="True"
+    Background="Transparent"
+    ResizeMode="CanResize"
+    WindowStartupLocation="CenterScreen"
+    WindowStyle="None"
+    mc:Ignorable="d">
+    <Window.Resources>
+        <converters:StringToImageSourceConverter x:Key="StringToImageSourceConverter" />
+        <ResourceDictionary x:Key="scrConversations">
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/ResourcesXAML/ScrollBar.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Border
+            Padding="5"
+            Background="{DynamicResource ColorWhiteOne}"
+            CornerRadius="10">
+            <StackPanel>
+                <Grid>
+                    <TextBlock
+                        Margin="13,0,0,0"
+                        VerticalAlignment="Center"
+                        FontSize="22"
+                        FontWeight="SemiBold"
+                        Foreground="{StaticResource ColorBlackThree}">
+                        Tạo nhóm
+                    </TextBlock>
+                    <Button
+                        x:Name="btnClose"
+                        HorizontalAlignment="Right"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Click="btnClose_Click">
+                        <Image
+                            Width="14"
+                            Height="14"
+                            Source="/Resources/Icons/iconclose.png" />
+                    </Button>
+                </Grid>
+
+                <!--  line  -->
+                <Grid
+                    Height="1"
+                    Margin="0,5,0,0"
+                    Background="{StaticResource ColorGreyOne}" />
+
+                <TextBox
+                    x:Name="txtGroupName"
+                    TextChanged="txtGroupName_TextChanged"
+                    MaxWidth="550"
+                    Margin="0,10,0,0"
+                    materialDesign:HintAssist.Hint="Nhập tên nhóm"
+                    materialDesign:HintAssist.IsFloating="False"
+                    materialDesign:TextFieldAssist.TextBoxViewMargin="0"
+                    materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource ColorBlueTwo}"
+                    FontSize="15"
+                    Foreground="{StaticResource ColorBlackOne}" />
+                <!--  search  -->
+                <Border
+                    Width="500"
+                    Height="38"
+                    Margin="0,25,0,0"
+                    HorizontalAlignment="Center"
+                    Background="{DynamicResource ColorGreyOne}"
+                    CornerRadius="8">
+                    <StackPanel Orientation="Horizontal">
+                        <Button
+                            Width="16"
+                            Height="18"
+                            Margin="10,0,10,0"
+                            Padding="0,2,0,0"
+                            Background="Transparent"
+                            BorderBrush="Transparent">
+                            <Image
+                                Width="16"
+                                Height="16"
+                                Source="/Resources/Icons/icon-search.png" />
+                        </Button>
+                        <TextBox
+                            x:Name="searchBox"
+                            VerticalContentAlignment="Center"
+                            materialDesign:HintAssist.Hint="Tìm kiếm bạn bè"
+                            materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                            BorderThickness="0"
+                            FontSize="16"
+                            Foreground="{DynamicResource ColorBlackOne}" />
+                    </StackPanel>
+
+                </Border>
+
+                <!--  line  -->
+                <Grid
+                    Height="1"
+                    Margin="0,20,0,0"
+                    Background="{StaticResource ColorGreyOne}" />
+
+                <TextBlock
+                    Margin="15,10,0,0"
+                    VerticalAlignment="Center"
+                    FontSize="14"
+                    Foreground="{StaticResource ColorBlackThree}">
+                    Danh sách bạn bè
+                </TextBlock>
+
+                <!--  danh sach ban be  -->
+                <ListBox
+                    Height="450"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    ItemsSource="{Binding FriendItems}"
+                    Style="{StaticResource ModernListBoxStyle}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="0,0,0,7" Orientation="Horizontal">
+                                <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsSelected, Mode=TwoWay}" />
+
+                                <Ellipse
+                                    Width="50"
+                                    Height="50"
+                                    Margin="0,0,15,0"
+                                    VerticalAlignment="Center">
+                                    <Ellipse.Fill>
+                                        <ImageBrush ImageSource="{Binding Avatar, Converter={StaticResource StringToImageSourceConverter}}" />
+                                    </Ellipse.Fill>
+                                </Ellipse>
+
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    FontSize="18"
+                                    FontWeight="Regular"
+                                    Foreground="{DynamicResource ColorBlackThree}"
+                                    Text="{Binding FullName}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+
+
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <!--  Không hiệu ứng hover  -->
+                            <Setter Property="OverridesDefaultStyle" Value="True" />
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="BorderThickness" Value="0" />
+                            <Setter Property="Cursor" Value="Hand" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <ContentPresenter />
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+
+                <Button
+                    x:Name="btnCreate"
+                    Grid.Column="1"
+                    Width="80"
+                    Height="40"
+                    Margin="0,5,25,0"
+                    HorizontalAlignment="Right"
+                    Background="{DynamicResource ColorBlueOne}"
+                    BorderThickness="0"
+                    Click="btnCreate_Click"
+                    Content="Tạo nhóm"
+                    Cursor="Hand"
+                    FontSize="14"
+                    Foreground="White">
+
+                    <Button.Effect>
+                        <DropShadowEffect
+                            BlurRadius="5"
+                            Opacity="0.3"
+                            ShadowDepth="2" />
+                    </Button.Effect>
+
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}" CornerRadius="8">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Opacity" Value="0.9" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="RenderTransform">
+                                        <Setter.Value>
+                                            <ScaleTransform ScaleX="0.98" ScaleY="0.98" />
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

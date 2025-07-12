@@ -1,12 +1,13 @@
-﻿using System;
-using System.Diagnostics;
-using System.Windows;
-using System.Windows.Controls;
-using Client.Helpers;
+﻿using Client.Helpers;
 using Client.LocalStorage;
 using Client.Services;
 using Client.ViewModels.Posts;
+using Client.Views.Chats.Windows;
 using Client.Views.Posts.Windows;
+using System;
+using System.Diagnostics;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace Client.Views.Posts.Components
 {
@@ -75,7 +76,9 @@ namespace Client.Views.Posts.Components
             if(sender is Button btn)
             {
                 CommentWindow commentWindow = new CommentWindow(long.Parse(btn.Tag.ToString()));
+                this.Opacity = 0.4;
                 commentWindow.ShowDialog();
+                this.Opacity = 1;
             }
         }
     }
