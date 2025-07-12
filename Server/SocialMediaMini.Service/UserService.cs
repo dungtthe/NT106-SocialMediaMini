@@ -109,5 +109,156 @@ namespace SocialMediaMini.Service
             );
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+        public async Task<ResponeMessage> SendFriendRequestAsync(long senderId, long receiverId)
+        {
+            try
+            {
+                if (senderId == receiverId)
+                {
+                    return new ResponeMessage
+                    {
+                        HttpStatusCode = HttpStatusCode.BadRequest,
+                        Message = "Không thể gửi yêu cầu cho chính bạn!"
+                    };
+                }
+
+                var existingRequest = await _dbContext.FriendRequests
+                    .FirstOrDefaultAsync(fr => (fr.SenderId == senderId && fr.ReceiverId == receiverId) ||
+                                              (fr.SenderId == receiverId && fr.ReceiverId == senderId));
+                if (existingRequest != null)
+                {
+                    return new ResponeMessage
+                    {
+                        HttpStatusCode = HttpStatusCode.Conflict,
+                        Message = "Yêu cầu kết bạn đã tồn tại!"
+                    };
+                }
+
+                var friendRequest = new FriendRequest
+                {
+                    SenderId = senderId,
+                    ReceiverId = receiverId,
+                    Status = "Pending",
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                };
+                await _dbContext.FriendRequests.AddAsync(friendRequest);
+                await _dbContext.SaveChangesAsync();
+
+                return new ResponeMessage
+                {
+                    HttpStatusCode = HttpStatusCode.Ok,
+                    Message = "Yêu cầu kết bạn đã được gửi!"
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ResponeMessage
+                {
+                    HttpStatusCode = HttpStatusCode.InternalServerError,
+                    Message = $"Lỗi: {ex.Message}"
+                };
+            }
+        }
+
+        public async Task<ResponeMessage> AcceptFriendRequestAsync(long requestId)
+        {
+            try
+            {
+                var friendRequest = await _dbContext.FriendRequests.FindAsync(requestId);
+                if (friendRequest == null || friendRequest.Status != "Pending")
+                {
+                    return new ResponeMessage
+                    {
+                        HttpStatusCode = HttpStatusCode.NotFound,
+                        Message = "Yêu cầu không hợp lệ hoặc đã được xử lý!"
+                    };
+                }
+
+                friendRequest.Status = "Accepted";
+                friendRequest.UpdatedAt = DateTime.UtcNow;
+                await _dbContext.SaveChangesAsync();
+
+                return new ResponeMessage
+                {
+                    HttpStatusCode = HttpStatusCode.Ok,
+                    Message = "Yêu cầu kết bạn đã được chấp nhận!"
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ResponeMessage
+                {
+                    HttpStatusCode = HttpStatusCode.InternalServerError,
+                    Message = $"Lỗi: {ex.Message}"
+                };
+            }
+        }
+
+        public async Task<ResponeMessage> RejectFriendRequestAsync(int requestId)
+        {
+            try
+            {
+                var friendRequest = await _dbContext.FriendRequests.FindAsync(requestId);
+                if (friendRequest == null || friendRequest.Status != "Pending")
+                {
+                    return new ResponeMessage
+                    {
+                        HttpStatusCode = HttpStatusCode.NotFound,
+                        Message = "Yêu cầu không hợp lệ hoặc đã được xử lý!"
+                    };
+                }
+
+                friendRequest.Status = "Rejected";
+                friendRequest.UpdatedAt = DateTime.UtcNow;
+                await _dbContext.SaveChangesAsync();
+
+                return new ResponeMessage
+                {
+                    HttpStatusCode = HttpStatusCode.Ok,
+                    Message = "Yêu cầu kết bạn đã bị từ chối!"
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ResponeMessage
+                {
+                    HttpStatusCode = HttpStatusCode.InternalServerError,
+                    Message = $"Lỗi: {ex.Message}"
+                };
+            }
+        }
+
+        public async Task<List<Response_FriendResponseDto>> GetFriendRequestsAsync(long userId)
+        {
+            var requests = await _dbContext.FriendRequests
+                .Where(fr => fr.ReceiverId == userId && fr.Status == "Pending")
+                .Select(fr => new Response_FriendResponseDto
+                {
+                    Id = fr.Id,
+                    Sender = new UserDto
+                    {
+                        Id = fr.Sender.Id,
+                        UserName = fr.Sender.UserName,
+                        FullName = fr.Sender.FullName,
+                        Avatar = fr.Sender.Avatar,
+                        Status = fr.Sender.Status
+                    },
+                    Receiver = new UserDto
+                    {
+                        Id = fr.Receiver.Id,
+                        UserName = fr.Receiver.UserName,
+                        FullName = fr.Receiver.FullName,
+                        Avatar = fr.Receiver.Avatar,
+                        Status = fr.Receiver.Status
+                    },
+                    Status = fr.Status,
+                    CreatedAt = fr.CreatedAt
+                })
+                .ToListAsync();
+
+            return requests;
+        }
     }
 }

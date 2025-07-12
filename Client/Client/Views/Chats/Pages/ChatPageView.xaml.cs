@@ -1,5 +1,6 @@
 ﻿using Client.ViewModels;
 using Client.ViewModels.Chats;
+using Client.Views.AddFriend.Pages;
 using Client.Views.Toast;
 using Newtonsoft.Json;
 using System;
@@ -29,11 +30,14 @@ namespace Client.Views.Chats.Pages
         public ChatPageView()
         {
             InitializeComponent();
+            AddFriendButton.Click += AddFriendButton_Click;
             ConversationViewModel conversationViewModel = ConversationViewModel.GI();
             conversationViewModel.Init();
             DataContext = conversationViewModel;
             btnSendMsg.IsEnabled = false;
             txtMessageInput.Text = "";
+
+
 
             var viewModel = this.DataContext as ConversationViewModel;
             if (viewModel != null)
@@ -67,6 +71,31 @@ namespace Client.Views.Chats.Pages
                     }
                 };
 
+            }
+        }
+
+        private void AddFriendButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Tạo instance của AddFriendPage
+            var addFriendPage = new AddFriendPage();
+
+            // Chuyển đến AddFriendPage (giả sử sử dụng Frame để điều hướng)
+            if (this.NavigationService != null)
+            {
+                this.NavigationService.Navigate(addFriendPage);
+            }
+            else
+            {
+                // Nếu không sử dụng NavigationService, hiển thị dưới dạng Window hoặc thay thế nội dung
+                var window = new Window
+                {
+                    Title = "Add Friend",
+                    Content = addFriendPage,
+                    Width = 400,
+                    Height = 600,
+                    WindowStartupLocation = WindowStartupLocation.CenterScreen
+                };
+                window.ShowDialog();
             }
         }
         private void Messages_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

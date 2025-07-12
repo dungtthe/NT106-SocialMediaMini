@@ -85,6 +85,7 @@
                     </Border>
                     <!--  add friend btn  -->
                     <Button
+                        x:Name="AddFriendButton"
                         Width="40"
                         Height="40"
                         Margin="10,0,-5,0"

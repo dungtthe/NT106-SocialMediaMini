@@ -9,7 +9,9 @@ namespace SocialMediaMini.Shared.Dto.Respone
     public class UserDto
     {
         public long Id { get; set; }
+        public string UserName { get; set; }
         public string FullName { get; set; }
         public string Avatar { get; set; }
+        public string Status { get; set; } // "Online", "Offline"
     }
 }

@@ -1,10 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SocialMediaMini.DataAccess.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SocialMediaMini.DataAccess
 {
@@ -19,10 +15,10 @@ namespace SocialMediaMini.DataAccess
         public DbSet<Post> Posts { get; set; }
         public DbSet<PostHistory> PostHistories { get; set; }
         public DbSet<User_ChatRoom> User_ChatRooms { get; set; }
+        public DbSet<FriendRequest> FriendRequests { get; set; }
 
         public SocialMediaMiniContext(DbContextOptions<SocialMediaMiniContext> options) : base(options)
         {
-
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -30,7 +26,7 @@ namespace SocialMediaMini.DataAccess
             base.OnModelCreating(modelBuilder);
 
             #region add default
-            //AppUser
+            // AppUser
             modelBuilder.Entity<AppUser>()
                 .Property(e => e.Images)
                 .HasDefaultValue("[\"no_img_user.png\"]");
@@ -40,28 +36,46 @@ namespace SocialMediaMini.DataAccess
             modelBuilder.Entity<AppUser>()
                 .Property(e => e.BlockIds)
                 .HasDefaultValue("[]");
+            modelBuilder.Entity<AppUser>()
+                .Property(e => e.Avatar)
+                .HasDefaultValue("/Resources/Images/meolag.jpg")
+                .HasMaxLength(255);
+            modelBuilder.Entity<AppUser>()
+                .Property(e => e.Status)
+                .HasDefaultValue("Offline")
+                .HasMaxLength(20);
 
-            //Post
+            // Post
             modelBuilder.Entity<Post>()
                 .Property(e => e.Images)
                 .HasDefaultValue("[]");
-
             modelBuilder.Entity<Post>()
                 .Property(e => e.ReactionType_UserId_Ids)
                 .HasDefaultValue("[]");
 
-            //comment
+            // Comment
             modelBuilder.Entity<Comment>()
                 .Property(e => e.ReactionType_UserId_Ids)
                 .HasDefaultValue("[]");
 
-            //message
+            // Message
             modelBuilder.Entity<Message>()
                 .Property(e => e.ReactionType_UserId_Ids)
                 .HasDefaultValue("[]");
             modelBuilder.Entity<Message>()
                 .Property(e => e.ReadByUserIds)
                 .HasDefaultValue("[]");
+
+            // FriendRequest
+            modelBuilder.Entity<FriendRequest>()
+                .Property(e => e.Status)
+                .HasDefaultValue("Pending");
+            modelBuilder.Entity<FriendRequest>()
+                .Property(e => e.CreatedAt)
+                .HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<FriendRequest>()
+                .Property(e => e.UpdatedAt)
+                .HasDefaultValueSql("GETDATE()");
             #endregion
 
             #region không cho phép tự xóa khóa ngoại
@@ -70,15 +84,30 @@ namespace SocialMediaMini.DataAccess
             {
                 foreignKey.DeleteBehavior = DeleteBehavior.NoAction;
             }
-            #endregion không cho phép tự xóa khóa ngoại
-
-            #region add khóa chính
-
             #endregion
 
+            #region add khóa chính
             modelBuilder.Entity<User_ChatRoom>()
-            .HasKey(cd => new { cd.UserId, cd.ChatRoomId });
-        }
+                .HasKey(cd => new { cd.UserId, cd.ChatRoomId });
+            modelBuilder.Entity<FriendRequest>()
+                .HasKey(fr => fr.Id);
+            #endregion
 
+            #region cấu hình quan hệ và chỉ số
+            modelBuilder.Entity<FriendRequest>()
+                .HasOne(fr => fr.Sender)
+                .WithMany()
+                .HasForeignKey(fr => fr.SenderId)
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<FriendRequest>()
+                .HasOne(fr => fr.Receiver)
+                .WithMany()
+                .HasForeignKey(fr => fr.ReceiverId)
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<FriendRequest>()
+                .HasIndex(fr => new { fr.SenderId, fr.ReceiverId })
+                .IsUnique();
+            #endregion            
+        }
     }
 }
