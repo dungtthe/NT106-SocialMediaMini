@@ -12,7 +12,7 @@ using SocialMediaMini.DataAccess;
 namespace SocialMediaMini.DataAccess.Migrations
 {
     [DbContext(typeof(SocialMediaMiniContext))]
-    [Migration("20250712082551_AddAvatarAndStatusToUsers")]
+    [Migration("20250712085111_AddAvatarAndStatusToUsers")]
     partial class AddAvatarAndStatusToUsers
     {
         /// <inheritdoc />

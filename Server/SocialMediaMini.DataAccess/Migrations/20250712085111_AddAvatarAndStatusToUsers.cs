@@ -1,9 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
+#nullable disable
+
 namespace SocialMediaMini.DataAccess.Migrations
 {
+    /// <inheritdoc />
     public partial class AddAvatarAndStatusToUsers : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
@@ -23,6 +27,7 @@ namespace SocialMediaMini.DataAccess.Migrations
                 defaultValue: "Offline");
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
