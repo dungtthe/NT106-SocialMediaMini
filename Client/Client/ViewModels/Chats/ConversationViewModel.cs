@@ -273,10 +273,20 @@ namespace Client.ViewModels.Chats
 
             public string Avatar
             {
-                get => _avatar;
+                get
+                {
+                    if (_avatar == "no_img_user.png")
+                    {
+                        return "pack://application:,,,/Resources/Images/no_img_user.png";
+                    }
+                    else if (string.IsNullOrEmpty(_avatar) || _avatar == "no_img_group.png")
+                    {
+                        return "pack://application:,,,/Resources/Images/no_img_group.png";
+                    }
+                    return _avatar;
+                }
                 set => SetProperty(ref _avatar, value, nameof(Avatar));
             }
-
             public string RoomName
             {
                 get => _roomName;

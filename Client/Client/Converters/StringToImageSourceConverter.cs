@@ -22,6 +22,16 @@ namespace Client.Converters
             if (value is not string input || string.IsNullOrWhiteSpace(input))
                 return null;
 
+
+            if (input == "no_img_user.png" || input == "pack://application:,,,/Resources/Images/no_img_user.png" || input == "/Resources/Images/no_img_user.png")
+            {
+                return "pack://application:,,,/Resources/Images/no_img_user.png";
+            }
+            else if (string.IsNullOrEmpty(input) || input == "no_img_group.png" || input == "pack://application:,,,/Resources/Images/no_img_group.png" || input == "/Resources/Images/no_img_group.png")
+            {
+                return "pack://application:,,,/Resources/Images/no_img_group.png";
+            }
+
             try
             {
 
