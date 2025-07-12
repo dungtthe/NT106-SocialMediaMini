@@ -17,6 +17,7 @@
     <!--  DataContext="{StaticResource ConversationViewModel}" nếu dùng code behine set datacontext nữa là nó phá vỡ liên kết nên nhiều khi lỗi nhiều lắm nên là bỏ cái này đi  -->
 
     <Page.Resources>
+        <converters:StringToImageSourceConverter x:Key="StringToImageSourceConverter" />
         <converters:ZeroToCollapsedConverter x:Key="ZeroToCollapsedConverter" />
         <!--  Style cho ScrollBar  -->
         <ResourceDictionary x:Key="scrConversations">
@@ -30,6 +31,7 @@
         <converters:MessageShowTypeToVisibilityConverter x:Key="ShowOtherWithReply" TargetType="OtherWithReply" />
         <converters:MessageShowTypeToVisibilityConverter x:Key="ShowMine" TargetType="Mine" />
         <converters:MessageShowTypeToVisibilityConverter x:Key="ShowMineWithReply" TargetType="MineWithReply" />
+
     </Page.Resources>
 
 
@@ -183,7 +185,7 @@
                                             Height="45"
                                             Margin="0,0,15,0">
                                             <Ellipse.Fill>
-                                                <ImageBrush ImageSource="{Binding Avatar}" />
+                                                <ImageBrush ImageSource="{Binding Avatar, Converter={StaticResource StringToImageSourceConverter}}" />
                                             </Ellipse.Fill>
                                         </Ellipse>
                                         <!--  title and content  -->
@@ -257,7 +259,7 @@
                             Height="60"
                             Margin="30,0,0,0">
                             <Ellipse.Fill>
-                                <ImageBrush ImageSource="{Binding ChatRoomDetail.Avatar}" />
+                                <ImageBrush ImageSource="{Binding ChatRoomDetail.Avatar, Converter={StaticResource StringToImageSourceConverter}}" />
                             </Ellipse.Fill>
                         </Ellipse>
 
@@ -307,7 +309,7 @@
                                                     Margin="0,0,10,0"
                                                     VerticalAlignment="Top">
                                                     <Ellipse.Fill>
-                                                        <ImageBrush ImageSource="{Binding Sender.Avatar}" />
+                                                        <ImageBrush ImageSource="{Binding Sender.Avatar, Converter={StaticResource StringToImageSourceConverter}}" />
                                                     </Ellipse.Fill>
 
                                                 </Ellipse>
@@ -467,7 +469,7 @@
                                                     Margin="0,0,10,0"
                                                     VerticalAlignment="Top">
                                                     <Ellipse.Fill>
-                                                        <ImageBrush ImageSource="{Binding Sender.Avatar}" />
+                                                        <ImageBrush ImageSource="{Binding Sender.Avatar, Converter={StaticResource StringToImageSourceConverter}}" />
                                                     </Ellipse.Fill>
 
                                                 </Ellipse>

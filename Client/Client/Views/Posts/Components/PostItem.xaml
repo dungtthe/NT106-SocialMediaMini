@@ -46,7 +46,7 @@
                     Height="40"
                     Margin="0,0,10,0">
                     <Ellipse.Fill>
-                        <ImageBrush ImageSource="{Binding User.Avatar}" />
+                        <ImageBrush ImageSource="{Binding User.Avatar, Converter={StaticResource StringToImageSourceConverter}}" />
                     </Ellipse.Fill>
                 </Ellipse>
 
@@ -182,14 +182,17 @@
 
                 <!--  Comment Button  -->
                 <Button
+                    x:Name="btnShowComment"
                     Width="120"
                     Height="30"
                     Background="Transparent"
                     BorderBrush="{DynamicResource ColorBlueOne}"
                     BorderThickness="1"
+                    Click="btnShowComment_Click"
                     Cursor="Hand"
                     FontSize="12"
-                    Foreground="{DynamicResource ColorBlueOne}">
+                    Foreground="{DynamicResource ColorBlueOne}"
+                    Tag="{Binding PostId}">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Border

@@ -121,5 +121,25 @@ namespace Client.Services
             }
             return null;
         }
+
+
+
+        public static async Task <List<CommentDto>> GetCommentsByPostIdAsync(long postId)
+        {
+            try
+            {
+                var response = await ApiHelpers.GetAsync(new ApiRequestGet("/api/post/comment/" + postId, true));
+                if (response.StatusCode == HttpStatusCode.Ok)
+                {
+                    var data = JsonConvert.DeserializeObject<List<CommentDto>>(response.ResponseBody);
+                    return data;
+                }
+            }
+            catch
+            {
+                
+            }
+            return null;
+        }
     }
 }

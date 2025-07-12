@@ -34,6 +34,7 @@ namespace SocialMediaMini.API.Areas.Admin
                     FullName = "Thế Dũng",
                     Email = "thedung@gmail.com",
                     PhoneNumber = "0123456789",
+                    FriendIds = "[2,3,4,5]"
                 },
                 //2
                 new AppUser()
@@ -43,6 +44,7 @@ namespace SocialMediaMini.API.Areas.Admin
                     FullName = "Nguyễn Văn A",
                     Email = "a@gmail.com",
                     PhoneNumber = "0123456788",
+                    FriendIds = "[1,3,4,5]"
                 },
                 //3
                 new AppUser()
@@ -52,6 +54,7 @@ namespace SocialMediaMini.API.Areas.Admin
                     FullName = "Nguyễn Văn B",
                     Email = "b@gmail.com",
                     PhoneNumber = "0123456787",
+                    FriendIds = "[1,2,4,5]"
                 },
                 //4
                 new AppUser()
@@ -61,6 +64,7 @@ namespace SocialMediaMini.API.Areas.Admin
                     FullName = "Nguyễn Văn C",
                     Email = "c@gmail.com",
                     PhoneNumber = "0123456786",
+                     FriendIds = "[1,2,3,5]"
                 },
                 //5
                 new AppUser()
@@ -70,6 +74,7 @@ namespace SocialMediaMini.API.Areas.Admin
                     FullName = "Nguyễn Văn D",
                     Email = "d@gmail.com",
                     PhoneNumber = "0123456785",
+                     FriendIds = "[1,2,4,3]"
                 },
             };
             await _dbContext.Users.AddRangeAsync(users);
@@ -226,6 +231,26 @@ namespace SocialMediaMini.API.Areas.Admin
             }
 
             await _dbContext.AddRangeAsync(messageAdds);
+            await _dbContext.SaveChangesAsync();
+            return Ok("seed ok");
+        }
+
+
+        [HttpGet("/seed2")]
+        public async Task<IActionResult> Get2()
+        {
+            var fpost = await _dbContext.Posts.FindAsync((long)1);
+            for(int i = 0; i < 15; i++)
+            {
+                await _dbContext.AddAsync(new Comment()
+                {
+                    Content = "Comment seed "+i,
+                    CreateAt= DateTime.Now,
+                    UserId = fpost.UserId,
+                    PostId = fpost.Id,
+                    ReactionType_UserId_Ids = "[]"
+                });
+            }
             await _dbContext.SaveChangesAsync();
             return Ok("seed ok");
         }

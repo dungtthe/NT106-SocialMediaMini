@@ -72,14 +72,19 @@ namespace Client.ViewModels
                             {
                                 UIHelpers.InvokeDispatcherUI(() =>
                                 {
-                                    if (toastCur is ToastSuccess)
+                                    if (toastCur != null)
                                     {
-                                        ((ToastSuccess)toastCur).CloseToast();
+
+                                        if (toastCur is ToastSuccess)
+                                        {
+                                            ((ToastSuccess)toastCur)?.CloseToast();
+                                        }
+                                        else
+                                        {
+                                            ((ToastError)toastCur)?.CloseToast();
+                                        }
                                     }
-                                    else
-                                    {
-                                        ((ToastError)toastCur).CloseToast();
-                                    }
+
                                 });
                             }
                         }

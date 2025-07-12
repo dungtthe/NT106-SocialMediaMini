@@ -1,4 +1,5 @@
-﻿using Client.Helpers;
+﻿using Client.Const;
+using Client.Helpers;
 using Client.LocalStorage;
 using Client.Services;
 using Client.ViewModels;
@@ -12,6 +13,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -44,7 +46,26 @@ namespace Client.Views.Posts.Pages
             }
             else
             {
-                imgAvatar.ImageSource = new BitmapImage(new Uri(UserStore.Avatar, UriKind.RelativeOrAbsolute));
+                try
+                {
+                    using var webClient = new WebClient();
+                    byte[] data = webClient.DownloadData(ConfigConst.BaseApiUrl + "/api/file/image/" + UserStore.Avatar);
+                    using var ms = new MemoryStream(data);
+                    var image = new BitmapImage();
+                    image.BeginInit();
+                    image.CacheOption = BitmapCacheOption.OnLoad;
+                    image.StreamSource = ms;
+                    image.EndInit();
+                    image.Freeze();
+
+                    imgAvatar.ImageSource = image;
+                    //imgAvatar.ImageSource = new BitmapImage(new Uri(UserStore.Avatar, UriKind.RelativeOrAbsolute));
+                }
+                catch
+                {
+                    var uri = new Uri($"pack://application:,,,/Resources/Images/no_img_user.png", UriKind.RelativeOrAbsolute);
+                    imgAvatar.ImageSource = new BitmapImage(uri);
+                }
             }
 
             //if (!isFirst)
