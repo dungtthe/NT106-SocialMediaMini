@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SocialMediaMini.Common.ResultPattern;
@@ -23,6 +24,7 @@ namespace SocialMediaMini.Service
         Task<Respone_PostDetail.Post> GetPostDetailAsync(long userRequestId, long postId);
         Task<List<Respone_PostDetail.Post>> GetMyPostsAsync(long userId);
         Task<Result<Respone_ReactOrUnReactPostDto>> ReactOrUnReactPostAsync(long userId, Request_ReactOrUnReactPostDto request);
+        Task<Result<List<CommentDto>>> GetCommentsAsync(long userId, long postId);
     }
     public class PostService : IPostService
     {
@@ -317,6 +319,67 @@ namespace SocialMediaMini.Service
                 };
             }
             return rs;
+        }
+
+        public async Task<Result<List<CommentDto>>> GetCommentsAsync(long userId, long postId)
+        {
+            var fUser = await _dbContext.Users.FindAsync(userId);
+            if (fUser == null)
+            {
+                return Result<List<CommentDto>>.Failure(HttpStatusCode.NotFound, "Có lỗi xảy ra. Vui lòng thử lại sau");
+            }
+
+            var fPost = await _dbContext.Posts.FindAsync(postId);
+            if (fPost == null || (fPost.PostVisibilityType == PostVisibilityType.Private && userId != fPost.UserId))
+            {
+                return Result<List<CommentDto>>.Failure(HttpStatusCode.NotFound, "Không tìm thấy bài đăng.");
+            }
+
+
+            var commentsDto = new List<CommentDto>();
+            var fComments = await _dbContext.Comments.Where(c=>c.PostId == postId).ToListAsync();
+            foreach(var item in fComments)
+            {
+                var commentDto = new CommentDto()
+                {
+                    Id = item.Id,
+                    Content = item.Content,
+                    CreatedAt = item.CreateAt.ToString("dd/MM/yyyy HH:mm:ss"),
+                    User = new UserDto()
+                    {
+                        Id = item.UserId,
+                        FullName = item.User.FullName,
+                        Avatar = item.User.GetFirstImage()
+                    }
+                };
+
+                //reaction
+                var fReaction_user_ids = item.GetReactionAndUserIds();
+                var reactions = new List<ReactionDto>();
+                foreach (var fReaction_user_id in fReaction_user_ids)
+                {
+                    var fuserReact = await _dbContext.Users.FindAsync(fReaction_user_id.Item2);
+                    if (fuserReact == null)
+                    {
+                        continue;
+                    }
+                    reactions.Add(new ReactionDto()
+                    {
+                        User = new UserDto()
+                        {
+                            Id = fuserReact.Id,
+                            FullName = fuserReact.FullName,
+                            Avatar = fuserReact.GetFirstImage()
+                        },
+                        ReactionType = fReaction_user_id.Item1
+                    });
+                }
+                commentDto.Reactions = reactions;
+
+                commentsDto.Add(commentDto);
+            }
+
+            return Result<List<CommentDto>>.Success(commentsDto);
         }
     }
 }
