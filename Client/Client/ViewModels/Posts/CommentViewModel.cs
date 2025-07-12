@@ -160,7 +160,12 @@ namespace Client.ViewModels.Posts
                     UIHelpers.InvokeDispatcherUI(() =>
                     {
                         AddCommentItem(rs);
+                        //add count
+                        var itemPost = PostViewModel.GI().Items.FirstOrDefault(p => p.PostId == postId);
+                        itemPost.CommentCount++;
                     });
+
+                    
                 }
             });
         }

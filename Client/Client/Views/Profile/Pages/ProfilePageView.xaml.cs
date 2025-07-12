@@ -24,10 +24,6 @@ namespace Client.Views.Profile.Pages
         {
             InitializeComponent();
         }
-
-        private void EditButton_Click(object sender, RoutedEventArgs e)
-        {
-            (new MessageBox.Error("test")).ShowDialog();
-        }
+    
     }
 }
