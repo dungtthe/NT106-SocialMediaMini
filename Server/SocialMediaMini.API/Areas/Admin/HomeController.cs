@@ -234,5 +234,25 @@ namespace SocialMediaMini.API.Areas.Admin
             await _dbContext.SaveChangesAsync();
             return Ok("seed ok");
         }
+
+
+        [HttpGet("/seed2")]
+        public async Task<IActionResult> Get2()
+        {
+            var fpost = await _dbContext.Posts.FindAsync((long)1);
+            for(int i = 0; i < 15; i++)
+            {
+                await _dbContext.AddAsync(new Comment()
+                {
+                    Content = "Comment seed "+i,
+                    CreateAt= DateTime.Now,
+                    UserId = fpost.UserId,
+                    PostId = fpost.Id,
+                    ReactionType_UserId_Ids = "[]"
+                });
+            }
+            await _dbContext.SaveChangesAsync();
+            return Ok("seed ok");
+        }
     }
 }

@@ -182,14 +182,17 @@
 
                 <!--  Comment Button  -->
                 <Button
+                    x:Name="btnShowComment"
                     Width="120"
                     Height="30"
                     Background="Transparent"
                     BorderBrush="{DynamicResource ColorBlueOne}"
                     BorderThickness="1"
+                    Click="btnShowComment_Click"
                     Cursor="Hand"
                     FontSize="12"
-                    Foreground="{DynamicResource ColorBlueOne}">
+                    Foreground="{DynamicResource ColorBlueOne}"
+                    Tag="{Binding PostId}">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Border

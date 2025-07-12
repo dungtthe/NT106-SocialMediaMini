@@ -69,5 +69,14 @@ namespace Client.Views.Posts.Components
                 }
             }
         }
+
+        private void btnShowComment_Click(object sender, RoutedEventArgs e)
+        {
+            if(sender is Button btn)
+            {
+                CommentWindow commentWindow = new CommentWindow(long.Parse(btn.Tag.ToString()));
+                commentWindow.ShowDialog();
+            }
+        }
     }
 }
