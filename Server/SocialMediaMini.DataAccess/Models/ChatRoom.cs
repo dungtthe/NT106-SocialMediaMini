@@ -27,6 +27,7 @@ namespace SocialMediaMini.DataAccess.Models
         public ChatRoom()
         {
             UserIds = "[]";
+            Avatar = "no_img_group.png";
         }
 
         public List<long> GetUserIds()
@@ -34,6 +35,15 @@ namespace SocialMediaMini.DataAccess.Models
             return JsonConvert.DeserializeObject<List<long>>(UserIds);
         }
 
+        public void AddMember(long userId)
+        {
+            var userIds = GetUserIds();
+            if(!userIds.Contains(userId))
+            {
+                userIds.Add(userId);
+                UserIds = JsonConvert.SerializeObject(userIds);
+            }
+        }
        
     }
 }

@@ -26,6 +26,7 @@ namespace SocialMediaMini.Service
         Task<Tuple<List<long>, Respone_NotificationDTO.Respone_NotificationMessage>> AddMessageAsync(Request_AddMessageDTO data);
         Task ReadMessages(long userId, long chatRoomId);
         Task<Result<Respone_NotificationDTO.Respone_NotificationMessage>> RevokeMessageAsync(long userId, Request_RevokeMessage data);
+        Task<Result<long>> CreateGroupChatAsync(long userId, Request_CreateGroupchat request);
     }
     public class ChatRoomService : IChatRoomService
     {
@@ -161,6 +162,68 @@ namespace SocialMediaMini.Service
                 nNotiMessage
             );
             return result;
+        }
+
+        public async Task<Result<long>> CreateGroupChatAsync(long userId, Request_CreateGroupchat request)
+        {
+            if (request.MemberIds == null)
+            {
+                return Result<long>.Failure(HttpStatusCode.BadRequest, "Nhóm phải ít nhất 3 thành viên");
+            }
+
+
+            if (!request.MemberIds.Contains(userId))
+            {
+                request.MemberIds.Add(userId);
+            }
+
+            if (request.MemberIds.Count < 3)
+            {
+                return Result<long>.Failure(HttpStatusCode.BadRequest, "Nhóm phải ít nhất 3 thành viên");
+            }
+
+            foreach (var uId in request.MemberIds)
+            {
+                if (await _dbContext.Users.FindAsync(uId) == null)
+                {
+                    return Result<long>.Failure(HttpStatusCode.NotFound, "Có lỗi xảy ra. Vui lòng thử lại");
+                }
+            }
+
+            DataAccess.Models.ChatRoom chatRoom = new ChatRoom()
+            {
+                LeaderId = userId,
+                Name = request.Name,
+                IsGroupChat = true,
+                CanAddMember = true,
+                CanSendMessage = true,
+            };
+            foreach (var uId in request.MemberIds)
+            {
+                chatRoom.AddMember(uId);
+            }
+
+            await _dbContext.ChatRooms.AddAsync(chatRoom);
+            //chatroom-user
+            foreach (var uId in request.MemberIds)
+            {
+                await _dbContext.User_ChatRooms.AddAsync(new User_ChatRoom()
+                {
+                    UserId = uId,
+                    ChatRoom = chatRoom,
+                    IsLeft = false
+                });
+            }
+            //
+            await _dbContext.Messages.AddAsync(new DataAccess.Models.Message()
+            {
+                Content = request.Message,
+                CreateAt = DateTime.Now,
+                UserId = userId,
+                ChatRoom = chatRoom
+            });
+            await _dbContext.SaveChangesAsync();
+            return Result<long>.Success(chatRoom.Id);
         }
 
         public async Task<Respone_ChatRoomDetail> GetChatRoomDetailAsync(long userId, long chatRoomId)
@@ -441,18 +504,18 @@ namespace SocialMediaMini.Service
             }
             else
             {
-                
+
 
                 var listUserIds = fMessage.ChatRoom.GetUserIds();
-                long ?userId2 = listUserIds.Where(u => u != userId).FirstOrDefault();
-                if(userId2 == null)
+                long? userId2 = listUserIds.Where(u => u != userId).FirstOrDefault();
+                if (userId2 == null)
                 {
                     return Result<Respone_NotificationDTO.Respone_NotificationMessage>.Failure(HttpStatusCode.NotFound, "Có lỗi xảy ra. Vui lòng thử lại sau");
                 }
 
                 //check block
                 var listBlockUser1 = fUser.GetBlockIds();
-                if(listBlockUser1.Contains(userId2.Value))
+                if (listBlockUser1.Contains(userId2.Value))
                 {
                     return Result<Respone_NotificationDTO.Respone_NotificationMessage>.Failure(HttpStatusCode.Forbidden, "Bạn và người này đã chặn nhau nên không thể sử dụng chức năng này!");
                 }
@@ -489,7 +552,7 @@ namespace SocialMediaMini.Service
                 }
 
             };
-            if(fMessage.ParrentMessageId != null)
+            if (fMessage.ParrentMessageId != null)
             {
                 dataRsp.Parrent = new Respone_NotificationDTO.Respone_NotificationMessage()
                 {

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using SocialMediaMini.API.Extensions;
 using SocialMediaMini.Common.Helpers;
 using SocialMediaMini.Service;
+using SocialMediaMini.Shared.Dto.Request;
 using System.Net.Http;
 
 namespace SocialMediaMini.API.Areas.User
@@ -83,6 +84,19 @@ namespace SocialMediaMini.API.Areas.User
                 //await LoggerHelper.LogMsgAsync("ReadMessages(long chatRoomId)", "", ex);
                 return this.InternalServerError();
             }
+        }
+
+        [HttpPost("create-group")]
+        public async Task<IActionResult> CreateGroupChatAsync(Request_CreateGroupchat request)
+        {
+            var suserId = this.HttpContext.User.FindFirst("UserId")?.Value;
+            long userId = 0;
+            if (suserId == null || !long.TryParse(suserId, out userId))
+            {
+                return Unauthorized();
+            }
+            var rs = await _chatRoomService.CreateGroupChatAsync(userId, request);
+            return rs.ToActionResult();
         }
     }
 }
