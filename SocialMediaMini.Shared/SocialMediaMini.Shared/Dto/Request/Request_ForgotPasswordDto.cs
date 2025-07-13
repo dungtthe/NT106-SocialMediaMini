@@ -11,5 +11,8 @@ namespace SocialMediaMini.Shared.Dto.Request
     {
         [Required(ErrorMessage = "Email không được để trống")]
         public string Email { get; set; }
+
+        [Required(ErrorMessage = "UserName không được để trống")]
+        public string UserName { get; set; }
     }
 }

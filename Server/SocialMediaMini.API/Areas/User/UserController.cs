@@ -55,7 +55,7 @@ namespace SocialMediaMini.API.Areas.User
         [HttpPost("forgot-password")] 
         public async Task<IActionResult> RequestForgotPasswordAsync(Request_ForgotPasswordDto request)
         {
-            var rs = await _userService.RequestForgotPasswordAsync(request.Email);
+            var rs = await _userService.RequestForgotPasswordAsync(request);
             return rs.ToActionResult();
         }
 

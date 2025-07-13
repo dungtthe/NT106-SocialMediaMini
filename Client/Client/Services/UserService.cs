@@ -94,5 +94,29 @@ namespace Client.Services
 
             return null;
         }
+
+
+        public static async Task<Tuple<bool,string>> RequestForgotPasswordAsync(Request_ForgotPasswordDto request)
+        {
+            try
+            {
+                var response = await ApiHelpers.PostAsync(new ApiRequest("/api/user/forgot-password", JsonConvert.SerializeObject(request), false));
+                if (response.StatusCode == HttpStatusCode.Ok)
+                {
+                    var rspData = response.ResponseBody;
+                    if (rspData != null)
+                    {
+                        return new Tuple<bool, string> (true, rspData);
+                    }
+                }
+                else
+                {
+                    return new Tuple<bool, string>(false, response.ResponseBody);
+                }
+            }
+            catch { }
+
+            return new Tuple<bool, string>(false, "Không thể truy cập tới máy chủ. Vui lòng thử lại sau!");
+        }
     }
 }

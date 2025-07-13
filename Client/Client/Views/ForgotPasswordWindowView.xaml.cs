@@ -1,4 +1,6 @@
 ﻿using Client.Helpers;
+using Client.Services;
+using Client.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,6 +48,33 @@ namespace Client.Views
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+
+
+        private async void btnSend_Click(object sender, RoutedEventArgs e)
+        {
+            string email = txtEmail.Text;
+            string userName = txtUserName.Text;
+            if(string.IsNullOrEmpty(email) || string.IsNullOrEmpty(userName))
+            {
+                ToastManager.AddToast(Const.Type.ToastType.Error, "Vui lòng nhập đầy đủ thông tin!");
+                return;
+            }
+
+            var rsp = await UserService.RequestForgotPasswordAsync(new SocialMediaMini.Shared.Dto.Request.Request_ForgotPasswordDto()
+            {
+                Email = email,
+                UserName = userName,
+            });
+            if (rsp.Item1)
+            {
+                ToastManager.AddToast(Const.Type.ToastType.Success, rsp.Item2);
+            }
+            else
+            {
+                ToastManager.AddToast(Const.Type.ToastType.Error, rsp.Item2);
+            }
         }
     }
 }

@@ -24,7 +24,7 @@ namespace SocialMediaMini.Service
         Task<Result<string>> RegisterAsync(Request_RegisterDTO request);
         Task<Result<Respone_LoginDTO>> LoginAsync(Request_LoginDTO request);
         Task<Result<List<Respone_FriendSumaryDto>>> GetFriendsSummaryAsync(long userId);
-        Task<Result<string>> RequestForgotPasswordAsync(string email);
+        Task<Result<string>> RequestForgotPasswordAsync(Request_ForgotPasswordDto request);
         Task<Result<string>> ValidateResetPasswordTokenAsync(string token);
     }
 
@@ -47,10 +47,10 @@ namespace SocialMediaMini.Service
             if (fUser == null || fUser.Password != SecurityHelper.HashPassword(request.Password))
             {
                 return Result<Respone_LoginDTO>.Failure(HttpStatusCode.NotFound, "Tên tài khoản hoặc mật khẩu không chính xác!");
-              
+
             }
             var token = GenerateJwtToken(fUser);
-            var rs = Result<Respone_LoginDTO>.Success(new Respone_LoginDTO() 
+            var rs = Result<Respone_LoginDTO>.Success(new Respone_LoginDTO()
             {
                 UserId = fUser.Id,
                 FullName = fUser.FullName,
@@ -269,7 +269,7 @@ namespace SocialMediaMini.Service
         public async Task<Result<List<Respone_FriendSumaryDto>>> GetFriendsSummaryAsync(long userId)
         {
             var fUser = await _dbContext.Users.FindAsync(userId);
-            if(fUser == null)
+            if (fUser == null)
             {
                 return Result<List<Respone_FriendSumaryDto>>.Failure(HttpStatusCode.NotFound, "Có lỗi xảy ra. Vui lòng thử lại sau");
             }
@@ -277,10 +277,10 @@ namespace SocialMediaMini.Service
             var result = new List<Respone_FriendSumaryDto>();
 
             var friendIds = fUser.GetFriendIds();
-            foreach( var friendId in friendIds)
+            foreach (var friendId in friendIds)
             {
                 var fFriend = await _dbContext.Users.FindAsync(friendId);
-                if(fFriend != null)
+                if (fFriend != null)
                 {
                     result.Add(new Respone_FriendSumaryDto()
                     {
@@ -294,16 +294,16 @@ namespace SocialMediaMini.Service
 
         }
 
-        public async Task<Result<string>> RequestForgotPasswordAsync(string email)
+        public async Task<Result<string>> RequestForgotPasswordAsync(Request_ForgotPasswordDto request)
         {
-            var alreadyPending = UserServiceHelper.PasswordResetTokenToEmailMap.Any(kvp => kvp.Value.Equals(email, StringComparison.OrdinalIgnoreCase));
+            var alreadyPending = UserServiceHelper.PasswordResetTokenToEmailMap.Any(kvp => kvp.Value.Equals(request.Email, StringComparison.OrdinalIgnoreCase));
             if (alreadyPending)
             {
                 return Result<string>.Failure(HttpStatusCode.Conflict, "Vui lòng kiểm tra Email để kích hoạt mật khẩu mới");
             }
 
-            var fUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
-            if (fUser == null)
+            var fUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
+            if (fUser == null || fUser.UserName.ToLower() != request.UserName.ToLower())
             {
                 return Result<string>.Failure(HttpStatusCode.NotFound, "HMM");
             }
@@ -323,13 +323,13 @@ namespace SocialMediaMini.Service
                         <p>Nếu bạn không yêu cầu, vui lòng bỏ qua email này.</p>";
 
             // Gửi email
-            await _emailService.SendEmailAsync(email, "Đặt lại mật khẩu", body);
+            await _emailService.SendEmailAsync(request.Email, "Đặt lại mật khẩu", body);
             return Result<string>.Success("Vui lòng kiểm tra Email để kích hoạt mật khẩu mới");
         }
 
         public async Task<Result<string>> ValidateResetPasswordTokenAsync(string token)
         {
-            if(UserServiceHelper.PasswordResetTokenToEmailMap.TryGetValue(token, out var email))
+            if (UserServiceHelper.PasswordResetTokenToEmailMap.TryGetValue(token, out var email))
             {
                 UserServiceHelper.PasswordResetTokenToEmailMap.TryRemove(token, out _);
 
