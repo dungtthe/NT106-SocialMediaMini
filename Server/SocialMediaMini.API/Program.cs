@@ -55,7 +55,9 @@ builder.Services.AddSignalR();
 // intended for a different user!
 builder.Services.AddSingleton<IUserIdProvider, NameUserIdProvider>();
 
-
+//mail
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+builder.Services.AddTransient<IEmailService, EmailService>();
 
 //add jwt
 builder.Services.AddAuthentication(options =>

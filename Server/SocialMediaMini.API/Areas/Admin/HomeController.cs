@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using SocialMediaMini.Common.Helpers;
 using SocialMediaMini.DataAccess;
 using SocialMediaMini.DataAccess.Models;
+using SocialMediaMini.Service;
 using SocialMediaMini.Shared.Const.Type;
 
 namespace SocialMediaMini.API.Areas.Admin
@@ -14,9 +15,11 @@ namespace SocialMediaMini.API.Areas.Admin
     public class HomeController : ControllerBase
     {
         private readonly SocialMediaMiniContext _dbContext;
-        public HomeController(SocialMediaMiniContext dbContext)
+        private readonly IEmailService _emailService;
+        public HomeController(SocialMediaMiniContext dbContext, IEmailService emailService)
         {
             _dbContext = dbContext;
+            _emailService = emailService;
         }
 
         [HttpGet("/seed")]
@@ -253,6 +256,14 @@ namespace SocialMediaMini.API.Areas.Admin
             }
             await _dbContext.SaveChangesAsync();
             return Ok("seed ok");
+        }
+
+
+        [HttpGet("test-mail")]
+        public async Task<IActionResult> TestMail()
+        {
+            await _emailService.SendEmailAsync("dungtienthe1920@gmail.com", "subject test", "<h1>hehehe</h1>");
+            return Ok("ok");
         }
     }
 }
