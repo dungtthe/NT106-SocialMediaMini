@@ -11,27 +11,76 @@
     Height="991"
     d:DesignHeight="991"
     d:DesignWidth="1288"
-    Background="{DynamicResource ColorWhiteOne}">
+    Background="#F5F7FA">
 
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/ResourcesXAML/ScrollBar.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <!-- Sample Placeholder User Data -->
-            <models:UserModel x:Key="PlaceholderUser1" FullName="Placeholder User 1" Avatar="/Resources/Images/meolag.jpg" />
-            <models:UserModel x:Key="PlaceholderUser2" FullName="Placeholder User 2" Avatar="/Resources/Images/meolag.jpg" />
-            <models:UserModel x:Key="PlaceholderUser3" FullName="Placeholder User 3" Avatar="/Resources/Images/meolag.jpg" />
+
             <!-- Sample Friend List -->
             <x:Array x:Key="FriendList" Type="{x:Type models:UserModel}">
-                <StaticResource ResourceKey="PlaceholderUser1" />
-                <StaticResource ResourceKey="PlaceholderUser2" />
-                <StaticResource ResourceKey="PlaceholderUser3" />
+                <models:UserModel FullName="Nguyễn Văn A" Avatar="/Resources/Images/no_img_user.png" />
+                <models:UserModel FullName="Nguyễn Văn B" Avatar="/Resources/Images/no_img_user.png" />
+                <models:UserModel FullName="Nguyễn Văn C" Avatar="/Resources/Images/no_img_user.png" />
             </x:Array>
+            <!-- Converters and Styles -->
+            <Style x:Key="FriendCardStyle" TargetType="Border">
+                <Setter Property="Background" Value="White" />
+                <Setter Property="CornerRadius" Value="12" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Margin" Value="0,0,0,12" />
+                <Setter Property="Padding" Value="15" />
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect BlurRadius="8" Opacity="0.15" ShadowDepth="2" Color="#000000" />
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#E8F0FE" />
+                        <Setter Property="Effect">
+                            <Setter.Value>
+                                <DropShadowEffect BlurRadius="12" Opacity="0.25" ShadowDepth="3" Color="#000000" />
+                            </Setter.Value>
+                        </Setter>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style x:Key="ButtonStyle" TargetType="Button">
+                <Setter Property="Background" Value="#3B82F6" />
+                <Setter Property="Foreground" Value="White" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Padding" Value="10,5" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="FontWeight" Value="Medium" />
+                <Setter Property="Cursor" Value="Hand" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="8">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#2563EB" />
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Background" Value="#1E40AF" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
         </ResourceDictionary>
     </Page.Resources>
 
-    <Grid Margin="20">
+    <Grid Margin="30">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -41,48 +90,42 @@
         <Border
             Grid.Row="0"
             Background="White"
-            BorderBrush="{DynamicResource ColorBlueOne}"
-            BorderThickness="1"
-            CornerRadius="8"
-            Margin="0,0,0,15">
+            CornerRadius="12"
+            Margin="0,0,0,20"
+            Padding="10">
             <Border.Effect>
-                <DropShadowEffect
-                    BlurRadius="5"
-                    Opacity="0.2"
-                    ShadowDepth="2" />
+                <DropShadowEffect BlurRadius="8" Opacity="0.15" ShadowDepth="2" Color="#000000" />
             </Border.Effect>
-            <Grid Margin="10">
+            <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Image
                     Source="/Resources/Icons/icon-search.png"
-                    Width="20"
-                    Height="20"
+                    Width="24"
+                    Height="24"
                     Margin="0,0,10,0"
                     VerticalAlignment="Center" />
                 <TextBox
                     Grid.Column="1"
-                    FontSize="14"
+                    FontSize="16"
                     BorderThickness="0"
                     VerticalAlignment="Center"
-                    Tag="Search friends...">
+                    Background="Transparent"
+                    Tag="Tìm kiếm bạn bè...">
                     <TextBox.Style>
                         <Style TargetType="TextBox">
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="TextBox">
                                         <Grid>
-                                            <ScrollViewer
-                                                x:Name="PART_ContentHost"
-                                                Margin="0"
-                                                VerticalAlignment="Center" />
+                                            <ScrollViewer x:Name="PART_ContentHost" VerticalAlignment="Center" />
                                             <TextBlock
                                                 Text="{TemplateBinding Tag}"
                                                 FontStyle="Italic"
-                                                Foreground="Gray"
-                                                Margin="0,0,0,0"
+                                                Foreground="#6B7280"
+                                                Margin="2,0,0,0"
                                                 VerticalAlignment="Center"
                                                 IsHitTestVisible="False">
                                                 <TextBlock.Style>
@@ -117,19 +160,8 @@
                 Margin="0,0,0,20">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border
-                            Background="White"
-                            BorderBrush="{DynamicResource ColorBlueOne}"
-                            BorderThickness="1"
-                            CornerRadius="8"
-                            Margin="0,0,0,10">
-                            <Border.Effect>
-                                <DropShadowEffect
-                                    BlurRadius="5"
-                                    Opacity="0.2"
-                                    ShadowDepth="2" />
-                            </Border.Effect>
-                            <Grid Margin="15">
+                        <Border Style="{StaticResource FriendCardStyle}">
+                            <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
@@ -138,86 +170,50 @@
                                 </Grid.ColumnDefinitions>
                                 <!-- Avatar -->
                                 <Ellipse
-                                    Width="40"
-                                    Height="40"
-                                    Margin="0,0,10,0">
+                                    Width="50"
+                                    Height="50"
+                                    Margin="0,0,15,0">
                                     <Ellipse.Fill>
-                                        <!-- <ImageBrush ImageSource="{Binding Avatar}" /> -->
-                                        <ImageBrush ImageSource="/Resources/Images/meolag.jpg"/>
+                                        <ImageBrush ImageSource="/Resources/Images/no_img_user.png" />
                                     </Ellipse.Fill>
                                 </Ellipse>
-                                <!-- Username -->
-                                <TextBlock
-                                    Grid.Column="1"
-                                    Text="{Binding FullName}"
-                                    FontSize="16"
-                                    FontWeight="Bold"
-                                    VerticalAlignment="Center" />
+                                <!-- User Info -->
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                    <TextBlock
+                                        Text="{Binding FullName}"
+                                        FontSize="18"
+                                        FontWeight="SemiBold"
+                                        Foreground="#111827" />
+                                    <TextBlock
+                                        Text="Online"
+                                        FontSize="12"
+                                        Foreground="#6B7280"
+                                        Margin="0,2,0,0" />
+                                </StackPanel>
                                 <!-- Message Button -->
                                 <Button
                                     Grid.Column="2"
-                                    Width="120"
-                                    Height="30"
-                                    Background="Transparent"
-                                    BorderBrush="{DynamicResource ColorBlueOne}"
-                                    BorderThickness="1"
-                                    Cursor="Hand"
-                                    Margin="0,0,5,0">
-                                    <Button.Template>
-                                        <ControlTemplate TargetType="Button">
-                                            <Border
-                                                Background="{TemplateBinding Background}"
-                                                BorderBrush="{TemplateBinding BorderBrush}"
-                                                BorderThickness="{TemplateBinding BorderThickness}"
-                                                CornerRadius="4">
-                                                <StackPanel
-                                                    Orientation="Horizontal"
-                                                    HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center">
-                                                    <Image
-                                                        Source="/Resources/Icons/sendmsg.png"
-                                                        Width="16"
-                                                        Height="16"
-                                                        Margin="0,0,5,0" />
-                                                    <TextBlock
-                                                        Text="Nhắn tin"
-                                                        FontSize="12"
-                                                        VerticalAlignment="Center" />
-                                                </StackPanel>
-                                            </Border>
-                                        </ControlTemplate>
-                                    </Button.Template>
-                                    <Button.Style>
-                                        <Style TargetType="Button">
-                                            <Style.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter Property="Background" Value="{DynamicResource ColorBlueOne}" />
-                                                    <Setter Property="Foreground" Value="White" />
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Button.Style>
-                                </Button>
-                                <!-- More Button  -->
+                                    Content="Nhắn tin"
+                                    Style="{StaticResource ButtonStyle}"
+                                    Margin="0,0,10,0" />
+                                <!-- More Button -->
                                 <Button
                                     Grid.Column="3"
                                     Width="40"
-                                    Height="30"
+                                    Height="40"
                                     Background="Transparent"
-                                    BorderBrush="{DynamicResource ColorBlueOne}"
-                                    BorderThickness="1"
-                                    Cursor="Hand">
+                                    BorderThickness="0">
                                     <Button.Template>
                                         <ControlTemplate TargetType="Button">
                                             <Border
                                                 Background="{TemplateBinding Background}"
                                                 BorderBrush="{TemplateBinding BorderBrush}"
                                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                                CornerRadius="4">
+                                                CornerRadius="8">
                                                 <Image
                                                     Source="/Resources/Icons/More.png"
-                                                    Width="16"
-                                                    Height="16"
+                                                    Width="20"
+                                                    Height="20"
                                                     Stretch="Uniform" />
                                             </Border>
                                         </ControlTemplate>
@@ -226,7 +222,7 @@
                                         <Style TargetType="Button">
                                             <Style.Triggers>
                                                 <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter Property="Background" Value="{DynamicResource ColorBlueOne}" />
+                                                    <Setter Property="Background" Value="#E5E7EB" />
                                                 </Trigger>
                                             </Style.Triggers>
                                         </Style>
