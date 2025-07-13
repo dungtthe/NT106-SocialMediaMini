@@ -24,17 +24,21 @@ namespace SocialMediaMini.Service
         Task<Result<string>> RegisterAsync(Request_RegisterDTO request);
         Task<Result<Respone_LoginDTO>> LoginAsync(Request_LoginDTO request);
         Task<Result<List<Respone_FriendSumaryDto>>> GetFriendsSummaryAsync(long userId);
+        Task<Result<string>> RequestForgotPasswordAsync(string email);
+        Task<Result<string>> ValidateResetPasswordTokenAsync(string token);
     }
 
     public class UserService : IUserService
     {
         private readonly SocialMediaMiniContext _dbContext;
         private readonly IConfiguration _configuration;
+        private readonly IEmailService _emailService;
 
-        public UserService(SocialMediaMiniContext dbContext, IConfiguration configuration)
+        public UserService(SocialMediaMiniContext dbContext, IConfiguration configuration, IEmailService emailService)
         {
             _dbContext = dbContext;
             _configuration = configuration;
+            _emailService = emailService;
         }
 
         public async Task<Result<Respone_LoginDTO>> LoginAsync(Request_LoginDTO request)
@@ -288,6 +292,63 @@ namespace SocialMediaMini.Service
             }
             return Result<List<Respone_FriendSumaryDto>>.Success(result);
 
+        }
+
+        public async Task<Result<string>> RequestForgotPasswordAsync(string email)
+        {
+            var alreadyPending = UserServiceHelper.PasswordResetTokenToEmailMap.Any(kvp => kvp.Value.Equals(email, StringComparison.OrdinalIgnoreCase));
+            if (alreadyPending)
+            {
+                return Result<string>.Failure(HttpStatusCode.Conflict, "Vui lòng kiểm tra Email để kích hoạt mật khẩu mới");
+            }
+
+            var fUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
+            if (fUser == null)
+            {
+                return Result<string>.Failure(HttpStatusCode.NotFound, "HMM");
+            }
+
+
+            var linkGe = UserServiceHelper.GenerateLinkResetPassword();
+            if (!UserServiceHelper.PasswordResetTokenToEmailMap.TryAdd(linkGe, fUser.Email))
+            {
+                return Result<string>.Failure(HttpStatusCode.InternalServerError, "Đã xảy ra lỗi. Vui lòng thử lại!");
+            }
+            var issuer = _configuration["Jwt:Issuer"];
+            var link = $"{issuer}/validate-reset-password/{linkGe}";
+            string body = $@"
+                        <p>Chúng tôi nhận được yêu cầu đặt lại mật khẩu từ bạn.</p>
+                        <p>Vui lòng nhấn vào đường dẫn bên dưới để đặt lại mật khẩu:</p>
+                        <p><a href=""{link}"" target=""_blank"">Đặt lại mật khẩu</a></p>
+                        <p>Nếu bạn không yêu cầu, vui lòng bỏ qua email này.</p>";
+
+            // Gửi email
+            await _emailService.SendEmailAsync(email, "Đặt lại mật khẩu", body);
+            return Result<string>.Success("Vui lòng kiểm tra Email để kích hoạt mật khẩu mới");
+        }
+
+        public async Task<Result<string>> ValidateResetPasswordTokenAsync(string token)
+        {
+            if(UserServiceHelper.PasswordResetTokenToEmailMap.TryGetValue(token, out var email))
+            {
+                UserServiceHelper.PasswordResetTokenToEmailMap.TryRemove(token, out _);
+
+                var fUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
+                if (fUser == null)
+                {
+                    return Result<string>.Failure(HttpStatusCode.NotFound, "Hệ thống đã xảy ra lỗi. Vui lòng thử lại");
+                }
+
+                var passNew = UserServiceHelper.GeneratePassword();
+                fUser.Password = SecurityHelper.HashPassword(passNew);
+                _dbContext.Users.Update(fUser);
+                await _dbContext.SaveChangesAsync();
+                return Result<string>.Success($"Mật khẩu mới của bạn là: {passNew}");
+            }
+            else
+            {
+                return Result<string>.Failure(HttpStatusCode.NotFound, "HMM");
+            }
         }
     }
 }

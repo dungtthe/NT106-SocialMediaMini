@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Writers;
 using Newtonsoft.Json;
 using SocialMediaMini.API.Extensions;
 using SocialMediaMini.Common.Helpers;
@@ -48,5 +50,21 @@ namespace SocialMediaMini.API.Areas.User
             var rs = await _userService.GetFriendsSummaryAsync(userId);
             return rs.ToActionResult();
         }
+
+
+        [HttpPost("forgot-password")] 
+        public async Task<IActionResult> RequestForgotPasswordAsync(Request_ForgotPasswordDto request)
+        {
+            var rs = await _userService.RequestForgotPasswordAsync(request.Email);
+            return rs.ToActionResult();
+        }
+
+        [HttpGet("/validate-reset-password/{token}")]
+        public async Task<IActionResult> ValidateResetPasswordTokenAsync(string token)
+        {
+            var rs = await _userService.ValidateResetPasswordTokenAsync(token);
+            return rs.ToActionResult();
+        }
+
     }
 }
